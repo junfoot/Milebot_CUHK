@@ -1,0 +1,77 @@
+/*******************************************************************************
+*   Copyright (C) Shenzhen MileBot Robotics Tech Co., Ltd.
+*                  All Rights Reserved.
+*   Department: R&D SW
+********************************************************************************
+* File Name   : timer_class.h
+* Author      : wb
+* Version     : v0.01
+* Date        : 2017/6/1
+* Description : timer_class.h
+*******************************************************************************/
+/*-History----------------------------------------------------------------------
+* Version   Date      Name        Changes and comments
+* v0.01     2017/6/1  wb    initial version
+*=============================================================================*/
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef _TIMER_CLASS_H_
+#define _TIMER_CLASS_H_
+     
+/**** Includes ****/
+
+     
+/**** Definition of constants ****/
+
+
+/**** Definition of types ****/ 
+
+
+/**** Definition of macros ****/
+#define TIMER_PASS_1
+
+typedef void (*timer)(void);
+
+#endif //_TIMER_CLASS_H_
+
+/*define timer_array[TIMER_MAX] for y,z*/
+#ifdef TIMER_PASS_3
+    #undef  TIMER_PASS_3
+    #undef  BEGIN_TIMERS
+    #undef  END_TIMERS
+    #undef  TIMER
+    #define BEGIN_TIMERS        const TIMER_DESC_TYPE timer_array [TIMER_MAX] = {
+    #define END_TIMERS          };
+    #define TIMER(x,y,z)          {y,z},
+#endif
+
+/*declare callback function:y*/
+#ifdef TIMER_PASS_2
+    #undef  TIMER_PASS_2
+    #define TIMER_PASS_3
+    #undef  BEGIN_TIMERS
+    #undef  END_TIMERS
+    #undef  TIMER
+    #define BEGIN_TIMERS
+    #define END_TIMERS
+    #define TIMER(x,y,z)         extern void y(uint16_t param);
+#endif
+
+/*define enum of TIMERS_ENUM:x*/
+#ifdef TIMER_PASS_1
+    #undef TIMER_PASS_1
+    #define TIMER_PASS_2
+    #define BEGIN_TIMERS        enum TIMERS_ENUM {
+    #define END_TIMERS          TIMER_MAX };
+    #define TIMER(x,y,z)          x,
+#endif
+
+/**** Declaration of constants ****/
+
+
+/**** Declaration of variables ****/
+
+
+/**** Declaration of functions ****/
+
+
+/****************************** END OF FILE ***********************************/

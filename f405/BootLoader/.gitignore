@@ -1,0 +1,8 @@
+/MDK-ARM/DebugConfig/*
+/MDK-ARM/list/*
+/MDK-ARM/obj/*
+/MDK-ARM/debug.log
+/MDK-ARM/JLinkLog.txt
+/MDK-ARM/JLinkSettings.ini
+/MDK-ARM/*.uvguix.*
+/MDK-ARM/EventRecorderStub.scvd
