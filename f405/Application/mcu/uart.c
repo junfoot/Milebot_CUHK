@@ -367,7 +367,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 //        else
 //          uart1_rx_data_config_dma(pDMA_buf, UART1_DMA_BUF_LEN); 
 		
-		
 			
 		//取出串口接收到的数据
         buf_len = (UART1_DMA_BUF_LEN - (huart->hdmarx->Instance->NDTR));    

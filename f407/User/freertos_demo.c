@@ -81,6 +81,11 @@ QueueHandle_t sem4;      // 暂时就用了sem1、sem3
 
 float exo_state[32];
 
+/* PC */
+uint8_t pc_o[20];
+float pc_t_l = 0;
+float pc_t_r = 0;
+
 
 /* --------------------------变量-------------------------------------------- */
 
@@ -185,13 +190,18 @@ void task2(void *pvParameters)
     {
         xSemaphoreTake(sem1,portMAX_DELAY); /* 获取信号量并死等 */
         
-				vTaskDelay(3);
         
         /* 数据处理与滤波 */
+		char *p = (char*)pc_o;
+		pc_t_l = strtof(p, &p); // 提取第一个数字
+		pc_t_r = strtof(p, &p); // 提取第二个数字
 
-        
+		// test
+		printf("t:%f,%f\r\n",pc_t_l,pc_t_r);
+		
+		
         // 喂狗
-//        iwdg_feed();
+        iwdg_feed();
     }
 }
 

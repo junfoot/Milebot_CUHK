@@ -33,7 +33,7 @@
 
 
 /**** Definition of macros ****/
-#define UART1_DMA_BUF_LEN       128
+#define UART1_DMA_BUF_LEN       9
 #define UART2_DMA_BUF_LEN       256
 #define UART5_DMA_BUF_LEN       256
 #define UART6_DMA_BUF_LEN       32

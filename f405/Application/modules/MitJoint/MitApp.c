@@ -262,10 +262,8 @@ void mit_task(void *argument)
 		TorqueLeftHip = 0;
 		TorqueRightHip = 0;
 		
-		actuator_state[LEFT_HIP].actuator_cmd.set_torque = actuator_state[LEFT_HIP].dir * TorqueLeftHip;
-		actuator_state[RIGHT_HIP].actuator_cmd.set_torque = actuator_state[RIGHT_HIP].dir * TorqueRightHip;
-		
-//		actuator_state[RIGHT_HIP].actuator_cmd.set_position = 0;
+		actuator_state[LEFT_HIP].actuator_cmd.set_torque = TorqueLeftHip;
+		actuator_state[RIGHT_HIP].actuator_cmd.set_torque = TorqueRightHip;
         
         //Circular send command to and get state from actuators
         for(i = FIRST_JOINT; i < ALL_JOINTS; i++)
@@ -301,6 +299,9 @@ void mit_task(void *argument)
 //                
 //                int Send_Count = DataScope_Data_Generate(10);
 //                uart2_dma_send_data(DataScope_OutPut_Buffer, Send_Count);	
+				
+				
+//					actuator_state[LEFT_HIP].dir
 				
 									// °´Ë³ÐòÌî³äfloatÊý¾Ý
 									index = 0;
