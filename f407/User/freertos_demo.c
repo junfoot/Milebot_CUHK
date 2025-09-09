@@ -29,6 +29,7 @@
 #include "./BSP/DMA/dma.h"
 #include "./BSP/WDG/wdg.h"
 #include "math.h"
+#include "stdlib.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -85,6 +86,8 @@ float exo_state[32];
 uint8_t pc_o[20];
 float pc_t_l = 0;
 float pc_t_r = 0;
+
+uint8_t tcmd[10];
 
 
 /* --------------------------变量-------------------------------------------- */
@@ -192,13 +195,22 @@ void task2(void *pvParameters)
         
         
         /* 数据处理与滤波 */
-		char *p = (char*)pc_o;
-		pc_t_l = strtof(p, &p); // 提取第一个数字
-		pc_t_r = strtof(p, &p); // 提取第二个数字
-
-		// test
-		printf("t:%f,%f\r\n",pc_t_l,pc_t_r);
+				char *p = (char*)pc_o;		
+				if (*p == 't' && *(p+1) == ':') {p += 2;}
+				pc_t_l = strtof(p, &p); // 提取第一个数字
+				p++;
+				pc_t_r = strtof(p, &p); // 提取第二个数字
+				// test
+//				printf("%f %f\r\n", pc_t_l, pc_t_r);
 		
+				
+				// send command to low level
+				tcmd[0] = 0xAB;
+				memcpy(tcmd + 1, &pc_t_l, sizeof(float));
+				memcpy(tcmd + 1 + sizeof(float), &pc_t_r, sizeof(float));
+				tcmd[sizeof(tcmd)-1] = 0xCD;
+				usart2_send_data(tcmd, sizeof(tcmd));
+				
 		
         // 喂狗
         iwdg_feed();
@@ -234,7 +246,8 @@ void task4(void *pvParameters)
     {
         xSemaphoreTake(sem3,portMAX_DELAY); /* 获取信号量并死等 */
 	 
-				printf("%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n", exo_state[0], exo_state[1], exo_state[2], exo_state[3]
+				printf("%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n", pc_t_l, pc_t_r
+																														, exo_state[0], exo_state[1], exo_state[2], exo_state[3]
 																														, exo_state[4], exo_state[5], exo_state[6], exo_state[7]);
 			
 //				printf("test\r\n");

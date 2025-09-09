@@ -63,7 +63,8 @@ extern UART_HandleTypeDef g_usart2_handler;
 //                      }while(0)
 
 
-#define USART2_REC_LEN               128          /* 定义最大接收字节数 128 */
+#define USART2_REC_LEN               128          /* 根据需要修改 num * 4 + 4 */
+
 #define USART2_EN_RX                 1           /* 使能（1）/禁止（0）USART2接收 */
 
 

@@ -9,6 +9,7 @@
 
 #include "./BSP/USART2/usart2.h"
 #include "./SYSTEM/delay/delay.h"
+#include "./BSP/DMA/dma.h"
 
 #include "string.h"
 #include "stdio.h"
@@ -34,106 +35,121 @@ extern float exo_state[];
 
 void USART2_UX_IRQHandler(void)
 {
-//    HAL_UART_IRQHandler(&g_usart2_handler);
-    static uint16_t rx_index = 0;
-    static uint8_t expected_len = 0;
-    static uint8_t checksum = 0;
-		static RxState state = RX_STATE_WAIT_HEAD1;
-    uint8_t data;
-    
-    if ((__HAL_UART_GET_FLAG(&g_usart2_handler, UART_FLAG_RXNE) != RESET)) /* 接收到数据 */
+    uint16_t rx_len = 0;
+		uint16_t expected_len = 0;
+    uint8_t checksum = 0;
+	
+    if(__HAL_UART_GET_FLAG(&g_usart2_handler, UART_FLAG_IDLE) != RESET)
     {
-        HAL_UART_Receive(&g_usart2_handler, &data, 1, 1000);
+        __HAL_UART_CLEAR_IDLEFLAG(&g_usart2_handler);
+				HAL_UART_DMAStop(&g_usart2_handler);
 
-				// ------------------ check data received -------------------------
-				switch(state)
+				// receive length
+        rx_len = USART2_REC_LEN - __HAL_DMA_GET_COUNTER(&g_dma_handle_usart2_rx);
+			
+//				printf("66:%d\r\n", rx_len);
+//				printf("buf: %02X %02X %02X %02X\r\n",
+//					 g_USART2_rx_buf[0], g_USART2_rx_buf[1],
+//					 g_USART2_rx_buf[2], g_USART2_rx_buf[3]);
+
+
+        // check
+        if (rx_len >= 4 && g_USART2_rx_buf[0] == 0xAA && g_USART2_rx_buf[1] == 0x55)
         {
-        case RX_STATE_WAIT_HEAD1:
-            if(data == 0xAA)
+            expected_len = g_USART2_rx_buf[2];
+            if (rx_len == expected_len)
             {
-                state = RX_STATE_WAIT_HEAD2;
-                checksum = data;
-            }
-            break;
-            
-        case RX_STATE_WAIT_HEAD2:
-            if(data == 0x55)
-            {
-                state = RX_STATE_WAIT_LENGTH;
-                checksum += data;
-            }
-            else
-            {
-                state = RX_STATE_WAIT_HEAD1;
-            }
-            break;
-            
-        case RX_STATE_WAIT_LENGTH:
-//						printf("e:%d\r\n",expected_len);
-            expected_len = data;
-            checksum += data;
-            
-            if(expected_len <= USART2_REC_LEN)
-            {
-                state = RX_STATE_RECEIVING_DATA;
-                rx_index = 0;
-            }
-            else
-            {
-                state = RX_STATE_WAIT_HEAD1;
-            }
-            break;
-            
-        case RX_STATE_RECEIVING_DATA:
-            g_USART2_rx_buf[rx_index++] = data;
-//            checksum += 1;
-						checksum += data;
-            
-            if(rx_index >= (expected_len - 4))  // 减去校验位
-            {
-                state = RX_STATE_CHECK_SUM;
-            }
-            break;
-            
-        case RX_STATE_CHECK_SUM:
-//						printf("%x %x\r\n", checksum, data);
-            if(checksum == data)
-//						if(1)
-            {
-                // 校验成功，处理数据
-                if(expected_len == 36)  // 8个float + 帧头2 + 长度1 + 校验1
+                checksum = 0;
+                for(uint16_t i=0; i<expected_len-1; i++)
+                    checksum += g_USART2_rx_buf[i];
+
+                if(checksum == g_USART2_rx_buf[expected_len-1])
                 {
-                    memcpy(&exo_state, g_USART2_rx_buf, 32);
+										memcpy(&exo_state, &g_USART2_rx_buf[3], expected_len - 4);
                 }
             }
-            state = RX_STATE_WAIT_HEAD1;
-            break;
         }
-		}
-				// ------------------ check data received -------------------------
-			
-//			uint8_t res;
-//			if ((__HAL_UART_GET_FLAG(&g_usart2_handler, UART_FLAG_RXNE) != RESET)) /* 接收到数据 */
-//			{
-//					HAL_UART_Receive(&g_usart2_handler, &res, 1, 1000);
-////					HAL_UART_Receive_DMA(&g_usart2_handler &res, 1);
 
-//					if (g_USART2_rx_cnt < USART2_REC_LEN)         /* 缓冲区未满 */
-//					{		
-//							g_USART2_rx_buf[g_USART2_rx_cnt] = res;   /* 记录接收到的值 */
-//							g_USART2_rx_cnt++;                       /* 接收数据增加1 */
-//					}
-//					
-//					/* 接收完成 */
-//					if (g_USART2_rx_cnt == 36)
-//					{
-//							printf("%02x ", g_USART2_rx_buf[0]);
-//							
-//							g_USART2_rx_cnt = 0;    /* 清零 */
-//					}
-//			}
+        // reopen dma
+        HAL_UART_Receive_DMA(&g_usart2_handler, g_USART2_rx_buf, USART2_REC_LEN);
+    }
+
+  		
+//		static uint16_t rx_index = 0;
+//    static uint8_t expected_len = 0;
+//    static uint8_t checksum = 0;
+//		static RxState state = RX_STATE_WAIT_HEAD1;
+//    uint8_t data;  
+//    if ((__HAL_UART_GET_FLAG(&g_usart2_handler, UART_FLAG_RXNE) != RESET)) /* ????? */
+//    {
+//        HAL_UART_Receive(&g_usart2_handler, &data, 1, 1000);
+
+//				// ------------------ check data received -------------------------
+//				switch(state)
+//        {
+//        case RX_STATE_WAIT_HEAD1:
+//            if(data == 0xAA)
+//            {
+//                state = RX_STATE_WAIT_HEAD2;
+//                checksum = data;
+//            }
+//            break;
+//            
+//        case RX_STATE_WAIT_HEAD2:
+//            if(data == 0x55)
+//            {
+//                state = RX_STATE_WAIT_LENGTH;
+//                checksum += data;
+//            }
+//            else
+//            {
+//                state = RX_STATE_WAIT_HEAD1;
+//            }
+//            break;
+//            
+//        case RX_STATE_WAIT_LENGTH:
+////						printf("e:%d\r\n",expected_len);
+//            expected_len = data;
+//            checksum += data;
+//            
+//            if(expected_len <= USART2_REC_LEN)
+//            {
+//                state = RX_STATE_RECEIVING_DATA;
+//                rx_index = 0;
+//            }
+//            else
+//            {
+//                state = RX_STATE_WAIT_HEAD1;
+//            }
+//            break;
+//            
+//        case RX_STATE_RECEIVING_DATA:
+//            g_USART2_rx_buf[rx_index++] = data;
+////            checksum += 1;
+//						checksum += data;
+//            
+//            if(rx_index >= (expected_len - 4))  // ?????
+//            {
+//                state = RX_STATE_CHECK_SUM;
+//            }
+//            break;
+//            
+//        case RX_STATE_CHECK_SUM:
+////						printf("%x %x\r\n", checksum, data);
+//            if(checksum == data)
+////						if(1)
+//            {
+//                // ????,????
+//                if(expected_len == 36)  // 8?float + ??2 + ??1 + ??1
+//                {
+//                    memcpy(&exo_state, g_USART2_rx_buf, 32);
+//                }
+//            }
+//            state = RX_STATE_WAIT_HEAD1;
+//            break;
+//        }
+//		}
 						
-    
 }
 
 #endif
@@ -182,9 +198,11 @@ void usart2_init(uint32_t baudrate)
 
 #if USART2_EN_RX /* 如果使能了接收 */
                 /* 使能接收中断 */
-    __HAL_UART_ENABLE_IT(&g_usart2_handler, UART_IT_RXNE);   /* 开启接收中断 */
+//    __HAL_UART_ENABLE_IT(&g_usart2_handler, UART_IT_RXNE);   /* 开启接收中断 */
+		HAL_UART_Receive_DMA(&g_usart2_handler, g_USART2_rx_buf, USART2_REC_LEN);
+		__HAL_UART_ENABLE_IT(&g_usart2_handler, UART_IT_IDLE);  // 使能串口空闲中断
     HAL_NVIC_EnableIRQ(USART2_UX_IRQn);                      /* 使能USART2中断 */
-    HAL_NVIC_SetPriority(USART2_UX_IRQn, 7, 0);              /* 抢占优先级3，子优先级3 */
+    HAL_NVIC_SetPriority(USART2_UX_IRQn, 5, 0);              /* 抢占优先级3，子优先级3 */
     
 //    HAL_UART_Receive_IT( &g_usart2_handler, g_USART2_rx_buf, 2);
 #endif

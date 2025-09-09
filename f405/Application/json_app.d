@@ -1,0 +1,9 @@
+..\json_app.o: ..\modules\wireless\json_app.c
+..\json_app.o: ..\modules\wireless\json_app.h
+..\json_app.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+..\json_app.o: ..\mcu\internal_flash.h
+..\json_app.o: ..\modules\wireless\cJSON.h
+..\json_app.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
+..\json_app.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
+..\json_app.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+..\json_app.o: ..\modules\wireless\normal_lib.h

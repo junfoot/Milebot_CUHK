@@ -110,56 +110,21 @@ unsigned int PackingData(uint8_t* packing_buf, const uint8_t* buf, uint8_t len)
     return index;    
 }
 
-uint8_t * check_pack(uint8_t* buf, uint8_t len, int8_t *data_lenght)//返回解包后的有效数据总字节长度
-{
-    uint8_t index = 0;
-    uint8_t i = 0;
-    uint8_t check_sum = 0;
-
-    if(len < 4)
-    {
-        return 0;
-    }
-    while((buf[index] != 0xaa) || (buf[index+1] != 0x55))
-    {
-        index++;
-        if(index >= (len - 4))
-        {
-            return 0;
-        }
-    }
-    
-    for(i = 0; i < (buf[index+2] - 1); i++)//buf[index+2]是这一数据帧的总长度，计算check_sum要减一
-    {
-        check_sum += buf[index+i];
-    }
-
-    if(check_sum == buf[index+i])//checkSum正确
-    {
-        *data_lenght = buf[index+2] - 4;
-        return buf+3;
-        
-    }
-    else
-    {
-        *data_lenght = 0;
-    }
-
-    return 0;
-}
-
 // --------------------------------------------- 2025 ZHZ add -------------------------------------------
 #define FLOAT_SIZE 4
 #define NUM_FLOATS 8
 #define RAW_DATA_LEN (NUM_FLOATS * FLOAT_SIZE)
 
+#define SIGN(x)  ((x) >= 0 ? 1 : -1)
+
+
 float TorqueLeftHip,TorqueRightHip = 0;
 int TorqueLeftHip_dir,TorqueRightHip_dir = 0; // +1:flexion assist; 0:no assist; -1:extension assist
 uint8_t *data_buf = 0;
 int8_t data_lenght = 0;
-int tmpTorque1,tmpTorque2,resolution = 50000;
 uint8_t * data_buf_torque;
 
+float TorqueLeftRaw = 0, TorqueRightRaw = 0;
 
 void mit_task(void *argument)
 {
@@ -168,103 +133,79 @@ void mit_task(void *argument)
     uint8_t left_lift_sate = 0;
     uint8_t right_lift_sate = 0;
 	
-	uint8_t index = 0;
-	float float_data[NUM_FLOATS];
-	uint8_t buff[RAW_DATA_LEN];
-	unsigned int packed_len;
-	uint8_t packed_data[RAW_DATA_LEN + 4];
-	float Torque_limit,Torque_limit_init = 1;
-	
-	int count_num = 0;
-	
-    
-    // Wait for the actuators to power up
-    osDelay(2000);
+		uint8_t index = 0;
+		float float_data[NUM_FLOATS];
+		uint8_t buff[RAW_DATA_LEN];
+		unsigned int packed_len;
+		uint8_t packed_data[RAW_DATA_LEN + 4];
+		float Torque_limit,Torque_limit_init = 1;
+		
+		int count_num = 0;
+		
+			
+			// Wait for the actuators to power up
+			osDelay(2000);
 
-    // Receive actuator commands from control task
-    if(!advanced_mode_switch)
-        AbiBindMsgACTUATOR_CMD(ACTUATOR_CMD_ID, &actuator_cmd_ev, actuator_cmd_cb);
+			// Receive actuator commands from control task
+			if(!advanced_mode_switch)
+					AbiBindMsgACTUATOR_CMD(ACTUATOR_CMD_ID, &actuator_cmd_ev, actuator_cmd_cb);
 
-    actuator_init(&actuator_state[LEFT_HIP]);
-    actuator_init(&actuator_state[RIGHT_HIP]);
+			actuator_init(&actuator_state[LEFT_HIP]);
+			actuator_init(&actuator_state[RIGHT_HIP]);
 
-    //loop while(1)
-    while(1)
-    {
-        
-//        if(advanced_mode_switch)
-//        {
-//            if(data_buf == 1234)
-//            {
-//                
-//                 actuator_state[LEFT_HIP].actuator_cmd.set_torque = actuator_state[LEFT_HIP].dir * 1;
-//            }
-//            else
-//            {
-//                 actuator_state[LEFT_HIP].actuator_cmd.set_torque = actuator_state[LEFT_HIP].dir * 0;
-//            }
-//            actuator_state[RIGHT_HIP].actuator_cmd.set_torque = actuator_state[RIGHT_HIP].dir * 0;
-//        }
-		
-		data_buf_torque = check_pack(uart1_dma_rx_buf_raw,uart1_dma_rx_buf_len,&data_lenght);			
-		if(data_buf_torque && data_lenght == 8) // 检查是否是预期的两个int
-		{
-			memcpy(&tmpTorque1, data_buf_torque, 4);
-			memcpy(&tmpTorque2, data_buf_torque+4, 4);
+			//loop while(1)
+			while(1)
+			{
+				// get torque command
+				if(uart1_dma_rx_buf_raw[0] == 0xAB && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xCD)
+				{
+						memcpy(&TorqueLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
+						memcpy(&TorqueRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
+					
+						uart1_dma_rx_buf_len = 0;
+				}
 
-			TorqueLeftHip = fmax(fmin((float)(tmpTorque1 - resolution)*Torque_limit/resolution,Torque_limit),-Torque_limit);
-			if ((tmpTorque1 - resolution)>0)
-			{
-					TorqueLeftHip_dir = 1;
-			}else if ((tmpTorque1 - resolution)<0)
-			{
-					TorqueLeftHip_dir = -1;
-			}else
-			{
-					TorqueLeftHip_dir = 0;
-			}
-		
-			TorqueRightHip = fmax(fmin((float)(tmpTorque2 - resolution)*Torque_limit/resolution,Torque_limit),-Torque_limit);
-			if ((tmpTorque2 - resolution)>0)
-			{
-					TorqueRightHip_dir = 1;
-			}else if ((tmpTorque2 - resolution)<0)
-			{
-					TorqueRightHip_dir = -1;
-			}else
-			{
-					TorqueRightHip_dir = 0;
-			}
-		
-		
-			uart1_dma_rx_buf_len = 0;
-		}
-		
-		// angle limit
-		if (((actuator_info[LEFT_HIP].output_angle * 180.0 / 3.14) > 90)&&(actuator_info[LEFT_HIP].output_angle * TorqueLeftHip_dir > 0))
-		{
-				TorqueLeftHip = 0;
-		}
-		if ((-(actuator_info[LEFT_HIP].output_angle * 180.0 / 3.14) > 25)&&(actuator_info[LEFT_HIP].output_angle * TorqueLeftHip_dir > 0))
-		{
-				TorqueLeftHip = 0;
-		}
-		if (((actuator_info[RIGHT_HIP].output_angle * 180.0 / 3.14) > 90)&&(actuator_info[RIGHT_HIP].output_angle * TorqueRightHip_dir > 0))
-		{
-				TorqueRightHip = 0;
-		}
-		if ((-(actuator_info[RIGHT_HIP].output_angle * 180.0 / 3.14) > 25)&&(actuator_info[RIGHT_HIP].output_angle * TorqueRightHip_dir > 0))
-		{
-				TorqueRightHip = 0;
-		}
-		
-		
-		TorqueLeftHip = 0;
-		TorqueRightHip = 0;
-		
-		actuator_state[LEFT_HIP].actuator_cmd.set_torque = TorqueLeftHip;
-		actuator_state[RIGHT_HIP].actuator_cmd.set_torque = TorqueRightHip;
-        
+				// torque limit
+				float TorqueLimit = 0.2;
+				if (fabs(TorqueLeftRaw) < TorqueLimit){
+					TorqueLeftHip = TorqueLeftRaw;
+				}
+				else{
+					TorqueLeftHip = SIGN(TorqueLeftRaw) * TorqueLimit;
+				}
+				if (fabs(TorqueRightRaw) < TorqueLimit){
+					TorqueRightHip = TorqueRightRaw;
+				}
+				else{
+					TorqueRightHip = SIGN(TorqueRightRaw) * TorqueLimit;
+				}
+				
+				
+				// angle limit
+				if (((actuator_info[LEFT_HIP].output_angle * 180.0 / 3.14) > 90)&&(actuator_info[LEFT_HIP].output_angle * TorqueLeftHip_dir > 0))
+				{
+						TorqueLeftHip = 0;
+				}
+				if ((-(actuator_info[LEFT_HIP].output_angle * 180.0 / 3.14) > 25)&&(actuator_info[LEFT_HIP].output_angle * TorqueLeftHip_dir > 0))
+				{
+						TorqueLeftHip = 0;
+				}
+				if (((actuator_info[RIGHT_HIP].output_angle * 180.0 / 3.14) > 90)&&(actuator_info[RIGHT_HIP].output_angle * TorqueRightHip_dir > 0))
+				{
+						TorqueRightHip = 0;
+				}
+				if ((-(actuator_info[RIGHT_HIP].output_angle * 180.0 / 3.14) > 25)&&(actuator_info[RIGHT_HIP].output_angle * TorqueRightHip_dir > 0))
+				{
+						TorqueRightHip = 0;
+				}
+				
+				
+//				TorqueLeftHip = 0;
+//				TorqueRightHip = 0;
+				
+				actuator_state[LEFT_HIP].actuator_cmd.set_torque = TorqueLeftHip;
+				actuator_state[RIGHT_HIP].actuator_cmd.set_torque = TorqueRightHip;
+					
         //Circular send command to and get state from actuators
         for(i = FIRST_JOINT; i < ALL_JOINTS; i++)
         {

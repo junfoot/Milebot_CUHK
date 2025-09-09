@@ -372,8 +372,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         buf_len = (UART1_DMA_BUF_LEN - (huart->hdmarx->Instance->NDTR));    
         if(buf_len > 0)
         {
-            memcpy(&uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len], uart1_dma_rx_buf, buf_len);
-            uart1_dma_rx_buf_len += buf_len;
+            memcpy(uart1_dma_rx_buf_raw, uart1_dma_rx_buf, buf_len);
+            uart1_dma_rx_buf_len = buf_len;
         }
 
         //重新进入接收数据的状态

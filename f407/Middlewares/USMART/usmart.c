@@ -53,6 +53,7 @@
 
 #include "string.h"
 #include "utils.h"
+#include "stdlib.h"
 
 //extern float pc_test;
 extern uint8_t pc_o[20];
@@ -457,7 +458,8 @@ void usmart_scan(void)
     {
         if (g_usart_rx_buf[1] == 0x3A)
         {
-			memcpy(pc_o, g_usart_rx_buf, sizeof(pc_o));
+						memcpy(pc_o, g_usart_rx_buf, sizeof(pc_o));
+//						pc_o[sizeof(pc_o)-1] = '\0';
         }
     }
 	else

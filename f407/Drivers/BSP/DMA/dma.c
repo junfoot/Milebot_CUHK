@@ -31,6 +31,7 @@
 #include "./BSP/USART6/usart6.h"
 
 DMA_HandleTypeDef  g_dma_handle;                  /* DMA句柄 */
+DMA_HandleTypeDef  g_dma_handle_usart2_rx;
 DMA_HandleTypeDef  g_dma_handle_usart2;
 DMA_HandleTypeDef  g_dma_handle_usart3;
 DMA_HandleTypeDef  g_dma_handle_uart5;
@@ -68,7 +69,33 @@ void dma_init(void)
 //    HAL_DMA_DeInit(&g_dma_handle);
     HAL_DMA_Init(&g_dma_handle);
     HAL_UART_Receive_DMA(&g_uart1_handle, g_usart_rx_buf, USART_REC_LEN);
+		
+		/* ---------------------------------------------------------------- */
+
+		g_dma_handle_usart2_rx.Instance = DMA1_Stream5;
+    g_dma_handle_usart2_rx.Init.Channel = DMA_CHANNEL_4;
+    g_dma_handle_usart2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+    g_dma_handle_usart2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+    g_dma_handle_usart2_rx.Init.MemInc = DMA_MINC_ENABLE;
+    g_dma_handle_usart2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    g_dma_handle_usart2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    g_dma_handle_usart2_rx.Init.Mode = DMA_NORMAL;
+    g_dma_handle_usart2_rx.Init.Priority = DMA_PRIORITY_VERY_HIGH;
+    g_dma_handle_usart2_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;            /* 关闭FIFO模式 */
+    g_dma_handle_usart2_rx.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;    /* FIFO阈值配置 */
+    g_dma_handle_usart2_rx.Init.MemBurst = DMA_MBURST_SINGLE;               /* 存储器突发单次传输 */
+    g_dma_handle_usart2_rx.Init.PeriphBurst = DMA_PBURST_SINGLE;            /* 外设突发单次传输 */
+    /* interrupt configuration */
+		
+//		HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 6, 0);
+//    HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
     
+		HAL_UART_Receive_DMA(&g_usart2_handler, g_USART2_rx_buf, USART2_REC_LEN);
+		
+		HAL_DMA_Init(&g_dma_handle_usart2_rx);
+		__HAL_LINKDMA(&g_usart2_handler, hdmarx, g_dma_handle_usart2_rx);
+	
+		
     /* ---------------------------------------------------------------- */
     g_dma_handle_usart2.Instance = DMA1_Stream6;
     g_dma_handle_usart2.Init.Channel = DMA_CHANNEL_4;
@@ -84,7 +111,7 @@ void dma_init(void)
     HAL_NVIC_EnableIRQ(DMA1_Stream6_IRQn);
     HAL_DMA_Init(&g_dma_handle_usart2);
     __HAL_LINKDMA(&g_usart2_handler,hdmatx,g_dma_handle_usart2);
-        /* ---------------------------------------------------------------- */
+    /* ---------------------------------------------------------------- */
     g_dma_handle_usart3.Instance = DMA1_Stream3;
     g_dma_handle_usart3.Init.Channel = DMA_CHANNEL_4;
     g_dma_handle_usart3.Init.Direction = DMA_MEMORY_TO_PERIPH;

@@ -29,6 +29,7 @@
 
 
 extern DMA_HandleTypeDef g_dma_handle; 
+extern DMA_HandleTypeDef g_dma_handle_usart2_rx;
 extern DMA_HandleTypeDef g_dma_handle_usart2; 
 extern DMA_HandleTypeDef g_dma_handle_usart3; 
 extern DMA_HandleTypeDef g_dma_handle_uart5; 

@@ -187,13 +187,15 @@ void SysTick_Handler(void)
 
 //}
 
+
+
 void DMA1_Stream6_IRQHandler(void)
 {
     if (__HAL_DMA_GET_FLAG(&g_dma_handle_usart2, DMA_FLAG_TCIF2_6))
     {
         __HAL_DMA_CLEAR_FLAG(&g_dma_handle_usart2, DMA_FLAG_TCIF2_6);
         __HAL_UART_CLEAR_FLAG(&g_usart2_handler, UART_FLAG_TC);
-        HAL_UART_DMAStop(&g_usart2_handler);      /* 关闭串口DMA */  
+//        HAL_UART_DMAStop(&g_usart2_handler);      /* 关闭串口DMA */  
     }
 }
 
