@@ -34,11 +34,15 @@
 #include "queue.h"
 #include "semphr.h"
 
+#include "ad7606.h"
+
 TIM_HandleTypeDef g_tim6_handler;         /* 定时器参数句柄 */
 TIM_HandleTypeDef g_tim7_handler; 
+TIM_HandleTypeDef g_tim3_handler; 
 
 extern QueueHandle_t sem1;
 extern QueueHandle_t sem3;
+extern QueueHandle_t sem4;
 
 /**
  * @brief       基本定时器TIMX定时中断初始化函数
@@ -88,7 +92,7 @@ void BTIM_TIM6_INT_IRQHandler(void)
     __HAL_TIM_CLEAR_IT(&g_tim6_handler, TIM_IT_UPDATE);
 }
 
-
+/******************************************************************************************/
 
 void btim_tim7_int_init(uint16_t arr, uint16_t psc)
 {
@@ -124,5 +128,50 @@ void BTIM_TIM7_INT_IRQHandler(void)
         }
     }
     __HAL_TIM_CLEAR_IT(&g_tim7_handler, TIM_IT_UPDATE);
+}
+
+/******************************************************************************************/
+
+void btim_tim3_int_init(uint16_t arr, uint16_t psc)
+{
+	BTIM_TIM3_INT_CLK_ENABLE();                     /* 使能TIMx时钟 */
+	
+    g_tim3_handler.Instance = BTIM_TIM3_INT;                      /* 定时器x */
+    g_tim3_handler.Init.Prescaler = psc;                          /* 分频 */
+    g_tim3_handler.Init.CounterMode = TIM_COUNTERMODE_UP;         /* 递增计数模式 */
+    g_tim3_handler.Init.Period = arr;                             /* 自动装载值 */
+    HAL_TIM_Base_Init(&g_tim3_handler);
+	
+	
+	HAL_NVIC_SetPriority(BTIM_TIM3_INT_IRQn, 5, 0); /* 抢占1，子优先级3 */
+	HAL_NVIC_EnableIRQ(BTIM_TIM3_INT_IRQn);         /* 开启ITMx中断 */
+   
+    HAL_TIM_Base_Start_IT(&g_tim3_handler);                       /* 使能定时器x和定时器更新中断 */
+}
+
+/**
+ * @brief       基本定时器TIMX中断服务函数
+ * @param       无
+ * @retval      无
+ */
+void BTIM_TIM3_INT_IRQHandler(void)
+{
+//    HAL_TIM_IRQHandler(&g_timx_handler);  /* 定时器回调函数 */
+//    BaseType_t err;
+//    if(__HAL_TIM_GET_FLAG(&g_tim3_handler, TIM_FLAG_UPDATE) != RESET)
+//    {
+//        if(sem4 != NULL)  // 释放信号量sem3
+//        {
+//            err = xSemaphoreGiveFromISR(sem4, NULL);
+//        }
+//    }
+	
+	// start adc convert
+	AD_CONVST_LOW_1();  /* 上升沿开始转换，低电平持续时间至少25ns  */
+	AD_CONVST_LOW_1();
+	AD_CONVST_LOW_1();  /* 连续执行2次，低电平约50ns */
+	AD_CONVST_HIGH_1();	
+	
+    __HAL_TIM_CLEAR_IT(&g_tim3_handler, TIM_IT_UPDATE);
 }
 

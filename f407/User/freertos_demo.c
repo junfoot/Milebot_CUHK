@@ -51,7 +51,7 @@ void start_task(void *pvParameters);        /* 任务函数 */
 
 /* TASK1 任务 配置 */
 #define TASK1_PRIO      3                   /* 任务优先级 */
-#define TASK1_STK_SIZE  256                 /* 任务堆栈大小 */
+#define TASK1_STK_SIZE  128                 /* 任务堆栈大小 */
 TaskHandle_t            Task1Task_Handler;  /* 任务句柄 */
 void task1(void *pvParameters);             /* 任务函数 */
 
@@ -77,7 +77,7 @@ void task4(void *pvParameters);             /* 任务函数 */
 QueueHandle_t sem1;
 QueueHandle_t sem2;
 QueueHandle_t sem3;
-QueueHandle_t sem4;      // 暂时就用了sem1,2,3
+QueueHandle_t sem4;     
 
 
 float exo_state[32];
@@ -180,8 +180,11 @@ void start_task(void *pvParameters)
 void task1(void *pvParameters)
 {
     while(1) 
-    {     
-        vTaskDelay(1000);
+    {   
+//		xSemaphoreTake(sem4,portMAX_DELAY); /* 获取信号量并死等 */		
+        
+
+		vTaskDelay(1000);
     }
 }
 
@@ -195,11 +198,7 @@ void task2(void *pvParameters)
     {
         xSemaphoreTake(sem1,portMAX_DELAY); /* 获取信号量并死等 */
 		
-		// start adc convert
-		AD_CONVST_LOW_1();  /* 上升沿开始转换，低电平持续时间至少25ns  */
-		AD_CONVST_LOW_1();
-		AD_CONVST_LOW_1();  /* 连续执行2次，低电平约50ns */
-		AD_CONVST_HIGH_1();
+
         
         
         /* 数据处理与滤波 */

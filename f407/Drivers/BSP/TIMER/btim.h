@@ -46,11 +46,18 @@
 #define BTIM_TIM7_INT_IRQHandler            TIM7_IRQHandler
 #define BTIM_TIM7_INT_CLK_ENABLE()          do{ __HAL_RCC_TIM7_CLK_ENABLE(); }while(0)  /* TIM7 时钟使能 */
 
+#define BTIM_TIM3_INT                       TIM3
+#define BTIM_TIM3_INT_IRQn                  TIM3_IRQn
+#define BTIM_TIM3_INT_IRQHandler            TIM3_IRQHandler
+#define BTIM_TIM3_INT_CLK_ENABLE()          do{ __HAL_RCC_TIM3_CLK_ENABLE(); }while(0)  /* TIM7 时钟使能 */
+
 /******************************************************************************************/
 
 void btim_tim6_int_init(uint16_t arr, uint16_t psc);    /* 基本定时器 定时中断初始化函数 */
 void btim_tim7_int_init(uint16_t arr, uint16_t psc);    /* 基本定时器 定时中断初始化函数 */
-int limit(int num, int down, int up);
+void btim_tim3_int_init(uint16_t arr, uint16_t psc);    /* 定时器 定时中断初始化函数 */
+
+//int limit(int num, int down, int up);
 #endif
 
 
