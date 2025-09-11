@@ -6,6 +6,7 @@
 "..\..\output\gait.o"
 "..\..\output\freertos_demo.o"
 "..\..\output\utils.o"
+"..\..\output\ad7606.o"
 "..\..\output\delay.o"
 "..\..\output\sys.o"
 "..\..\output\usart.o"

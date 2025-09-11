@@ -34,6 +34,8 @@
 #include "./BSP/DMA/dma.h"
 #include "./BSP/WDG/wdg.h"
 
+#include "ad7606.h"
+
 #define BAUD 460800
 
 int main(void)
@@ -58,6 +60,8 @@ int main(void)
 //    usart3_init(BAUD);
 //    uart5_init(BAUD);
 //    usart6_init(BAUD);
+	
+	AD7606_Init();
     
     printf("\r\n HELLO! \r\n\r\n");
 

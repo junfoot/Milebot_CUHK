@@ -39,7 +39,7 @@
 #include "./USMART/usmart.h"
 #include "./USMART/usmart_port.h"
 
-
+#include "ad7606.h"
 
 /* START_TASK 任务 配置
  * 包括: 任务句柄 任务优先级 堆栈大小 创建任务
@@ -56,14 +56,14 @@ TaskHandle_t            Task1Task_Handler;  /* 任务句柄 */
 void task1(void *pvParameters);             /* 任务函数 */
 
 /* TASK2 任务 配置  */
-#define TASK2_PRIO      5                   /* 任务优先级 */
+#define TASK2_PRIO      4                   /* 任务优先级 */
 #define TASK2_STK_SIZE  512                 /* 任务堆栈大小 */
 TaskHandle_t            Task2Task_Handler;  /* 任务句柄 */
 void task2(void *pvParameters);             /* 任务函数 */
 
 /* TASK3 任务 配置  */
-#define TASK3_PRIO      2                   /* 任务优先级 */
-#define TASK3_STK_SIZE  256                 /* 任务堆栈大小 */
+#define TASK3_PRIO      5                   /* 任务优先级 */
+#define TASK3_STK_SIZE  512                 /* 任务堆栈大小 */
 TaskHandle_t            Task3Task_Handler;  /* 任务句柄 */
 void task3(void *pvParameters);             /* 任务函数 */
 
@@ -77,7 +77,7 @@ void task4(void *pvParameters);             /* 任务函数 */
 QueueHandle_t sem1;
 QueueHandle_t sem2;
 QueueHandle_t sem3;
-QueueHandle_t sem4;      // 暂时就用了sem1、sem3
+QueueHandle_t sem4;      // 暂时就用了sem1,2,3
 
 
 float exo_state[32];
@@ -89,6 +89,8 @@ float pc_t_r = 0;
 
 uint8_t tcmd[10];
 
+static int16_t adc_data_raw[8];
+float adc_data_raw_f[8];
 
 /* --------------------------变量-------------------------------------------- */
 
@@ -192,6 +194,12 @@ void task2(void *pvParameters)
     while(1) 
     {
         xSemaphoreTake(sem1,portMAX_DELAY); /* 获取信号量并死等 */
+		
+		// start adc convert
+		AD_CONVST_LOW_1();  /* 上升沿开始转换，低电平持续时间至少25ns  */
+		AD_CONVST_LOW_1();
+		AD_CONVST_LOW_1();  /* 连续执行2次，低电平约50ns */
+		AD_CONVST_HIGH_1();
         
         
         /* 数据处理与滤波 */
@@ -221,13 +229,43 @@ void task2(void *pvParameters)
 
 
 /**
- * @brief       task3 
+ * @brief       task3    ADC related
  */
 void task3(void *pvParameters)
 {
+	uint8_t i;
+	uint8_t data;
+	
     while(1)
     {
-        vTaskDelay(1000);
+		xSemaphoreTake(sem2,portMAX_DELAY); /* 获取信号量并死等 */
+		
+		// adc data acquiring
+		if (BUSY_IS_LOW_1())      /* BUSY = 0 时.ad7606处于空闲状态ad转换结束 */
+		{
+			AD_CS_0_1(); /* SPI片选 = 0 */
+
+			for (i = 0; i < CH_NUM; i++)
+			{
+				data = bsp_spiRead1();
+				adc_data_raw[i] = data;
+				data = bsp_spiRead1();
+				adc_data_raw[i] = adc_data_raw[i] * 256 + data; /* 读数据 */
+			}
+			
+			AD_CS_1_1();   /* SPI片选 = 1 */
+		}
+		
+		//adc data processing
+		for (i = 0; i < CH_NUM; i++)
+        {
+            adc_data_raw_f[i] = adc_data_raw[i] * VoltageRange / 32768;
+			printf("%.3f ", adc_data_raw_f[i]);
+        }
+		printf("\r\n");
+		
+		
+//        vTaskDelay(5);
     }
 }
 
@@ -247,8 +285,8 @@ void task4(void *pvParameters)
         xSemaphoreTake(sem3,portMAX_DELAY); /* 获取信号量并死等 */
 	 
 				printf("%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n", pc_t_l, pc_t_r
-																														, exo_state[0], exo_state[1], exo_state[2], exo_state[3]
-																														, exo_state[4], exo_state[5], exo_state[6], exo_state[7]);
+																				, exo_state[0], exo_state[1], exo_state[2], exo_state[3]
+																				, exo_state[4], exo_state[5], exo_state[6], exo_state[7]);
 			
 //				printf("test\r\n");
     }
