@@ -43,8 +43,8 @@ void USART2_UX_IRQHandler(void)
     {
         __HAL_UART_CLEAR_IDLEFLAG(&g_usart2_handler);
 		
-//		HAL_UART_DMAStop(&g_usart2_handler);
-		HAL_DMA_Abort(&g_dma_handle_usart2_rx);
+				HAL_UART_DMAStop(&g_usart2_handler);
+//				HAL_DMA_Abort(&g_dma_handle_usart2_rx);
 		
 				// receive length
         rx_len = USART2_REC_LEN - __HAL_DMA_GET_COUNTER(&g_dma_handle_usart2_rx);

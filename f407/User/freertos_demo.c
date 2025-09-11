@@ -259,10 +259,10 @@ void task3(void *pvParameters)
 		//adc data processing
 		for (i = 0; i < CH_NUM; i++)
         {
-            adc_data_raw_f[i] = adc_data_raw[i] * VoltageRange / 32768;
-			printf("%.3f ", adc_data_raw_f[i]);
+            adc_data_raw_f[i] = (float)adc_data_raw[i] * VoltageRange / 32768;
+						printf("%.3f ", adc_data_raw_f[i]);
         }
-		printf("\r\n");
+				printf("\r\n");
 		
 		
 //        vTaskDelay(5);

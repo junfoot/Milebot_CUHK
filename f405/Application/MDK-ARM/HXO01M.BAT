@@ -1,4 +1,7 @@
 SET PATH=C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Program Files\MATLAB\R2024a\runtime\win64;D:\Program Files\MATLAB\R2024a\bin;D:\Program Files\Bandizip\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;D:\ffmpeg-7.0.2-full_build\bin;D:\Program Files\Git\cmd;C:\Users\13416\AppData\Roaming\Python\Python311\Scripts;C:\ProgramData\anaconda3\Scripts;C:\OpenSim 4.5\bin;C:\Program Files\dotnet\;C:\Program Files (x86)\Wolfram Research\WolframScript\;C:\Users\13416\AppData\Local\Microsoft\WindowsApps;;C:\Program Files\JetBrains\PyCharm Community Edition 2024.1.3\bin;;D:\texlive\2023\bin\windows;D:\Programs\Microsoft VS Code\bin
+SET ARMCC5_ASMOPT=--diag_suppress=9931
+SET ARMCC5_CCOPT=--diag_suppress=9931
+SET ARMCC5_LINKOPT=--diag_suppress=9931
 SET CPU_TYPE=STM32F405RGTx
 SET CPU_VENDOR=STMicroelectronics
 SET UV2_TARGET=HXO01M

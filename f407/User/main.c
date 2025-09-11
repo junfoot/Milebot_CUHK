@@ -50,9 +50,9 @@ int main(void)
 //    lcd_init();                             /* 初始化LCD */
 //    extix_init();                             /* 初始化按键 */
 //    key_init();
-    btim_tim6_int_init(50 - 1, 8400 - 1); /* 84 000 000 / 84 00 = 10 000 10Khz的计数频率，计数100次为10ms */
-    btim_tim7_int_init(100 - 1, 8400 - 1); /* 计数50次为5ms 200Hz */
-    iwdg_init(IWDG_PRESCALER_64, 50);   // 64 * 50 / 32 = 100ms (10Hz)     
+    btim_tim6_int_init(1000 - 1, 8400 - 1); /* 84 000 000 / 84 00 = 10 000 10Khz的计数频率，计数100次为10ms */
+    btim_tim7_int_init(10000 - 1, 8400 - 1); /* 计数50次为5ms 200Hz */
+    iwdg_init(IWDG_PRESCALER_64, 5000);   // 64 * 50 / 32 = 100ms (10Hz)     
     
 //    can_ini(CAN_SJW_1TQ, CAN_BS2_6TQ, CAN_BS1_7TQ, 3, CAN_MODE_NORMAL);  /* CAN初始化, 环回模式, 波特率1000Kbps */
     
@@ -61,7 +61,7 @@ int main(void)
 //    uart5_init(BAUD);
 //    usart6_init(BAUD);
 	
-	AD7606_Init();
+		AD7606_Init();
     
     printf("\r\n HELLO! \r\n\r\n");
 

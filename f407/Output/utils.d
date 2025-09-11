@@ -1,11 +1,11 @@
 ..\..\output\utils.o: ..\..\User\utils.c
 ..\..\output\utils.o: ..\..\Drivers\CMSIS\DSP\Include\arm_math.h
 ..\..\output\utils.o: ..\..\Drivers\CMSIS\Include\cmsis_compiler.h
-..\..\output\utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\..\output\utils.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 ..\..\output\utils.o: ..\..\Drivers\CMSIS\Include\cmsis_armcc.h
-..\..\output\utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-..\..\output\utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-..\..\output\utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
-..\..\output\utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+..\..\output\utils.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
+..\..\output\utils.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
+..\..\output\utils.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\float.h
+..\..\output\utils.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\limits.h
 ..\..\output\utils.o: ..\..\User\utils.h
-..\..\output\utils.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\utils.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
