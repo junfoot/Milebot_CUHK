@@ -195,6 +195,10 @@ void task2(void *pvParameters)
 				p++;
 				pc_t_r = strtof(p, &p); // 提取第二个数字
 
+				
+				
+				// MAIN CONTROL
+				
 		
 				// send command to low level
 				tcmd[0] = 0xAB;
@@ -227,7 +231,7 @@ void task3(void *pvParameters)
     {		
 			notifyValueTask3 = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
-		// adc data acquiring
+			// adc data acquiring
 			AD_CS_0_1(); /* SPI片选 = 0 */
 
 			for (i = 0; i < CH_NUM; i++)
@@ -235,19 +239,12 @@ void task3(void *pvParameters)
 				high = bsp_spiRead1();
 				low  = bsp_spiRead1();
 				adc_data_raw[i] = ((uint16_t)high << 8) | low;
+				adc_data_raw_f[i] = (float)adc_data_raw[i] * VoltageRange / 32768;
 			}
 			
 			AD_CS_1_1();   /* SPI片选 = 1 */
 		
-//		//adc data processing
-//		printf("a:");
-//		for (i = 0; i < CH_NUM; i++)
-//		{
-//				adc_data_raw_f[i] = (float)adc_data_raw[i] * VoltageRange / 32768;
-//				printf("%.3f,", adc_data_raw_f[i]);
-//		}
-//		printf("\r\n");
-
+			// emg data processing
 
     }
 }
@@ -283,7 +280,6 @@ void task4(void *pvParameters)
 				len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,%7.3f,", pc_t_l, pc_t_r);
 				for (i = 0; i < CH_NUM; i++)
 				{
-						adc_data_raw_f[i] = (float)adc_data_raw[i] * VoltageRange / 32768;
 						len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", adc_data_raw_f[i]);
 				}
 				for (i = 0; i < 8; i++)
@@ -291,7 +287,11 @@ void task4(void *pvParameters)
 						len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", exo_state[i]);
 				}
 				len += snprintf(buf + len, sizeof(buf) - len, "\r\n");
-				HAL_UART_Transmit_DMA(&g_usart1_handler, (uint8_t*)buf, len);
+				
+				if (g_usart1_handler.gState == HAL_UART_STATE_READY)
+				{
+						HAL_UART_Transmit_DMA(&g_usart1_handler, (uint8_t*)buf, len);
+				}		
     }
 }
 

@@ -3,9 +3,9 @@
 <title>Static Call Graph - [..\..\Output\atk_f407.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\Output\atk_f407.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Sep 12 14:48:36 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Sep 12 16:54:09 2025
 <BR><P>
-<H3>Maximum Stack Usage =        712 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        704 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 task4 &rArr; ulTaskGenericNotifyTake &rArr; vPortExitCritical &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 <P>
@@ -1992,8 +1992,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos_demo.o(i.start_task)
 </UL>
-<P><STRONG><a name="[82]"></a>task3</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, freertos_demo.o(i.task3))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176 + Unknown Stack Size
+<P><STRONG><a name="[82]"></a>task3</STRONG> (Thumb, 126 bytes, Stack size 8 bytes, freertos_demo.o(i.task3))
+<BR><BR>[Stack]<UL><LI>Max Depth = 184 + Unknown Stack Size
 <LI>Call Chain = task3 &rArr; ulTaskGenericNotifyTake &rArr; vPortExitCritical &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ulTaskGenericNotifyTake
@@ -2002,8 +2002,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos_demo.o(i.start_task)
 </UL>
-<P><STRONG><a name="[83]"></a>task4</STRONG> (Thumb, 266 bytes, Stack size 536 bytes, freertos_demo.o(i.task4))
-<BR><BR>[Stack]<UL><LI>Max Depth = 712 + Unknown Stack Size
+<P><STRONG><a name="[83]"></a>task4</STRONG> (Thumb, 224 bytes, Stack size 528 bytes, freertos_demo.o(i.task4))
+<BR><BR>[Stack]<UL><LI>Max Depth = 704 + Unknown Stack Size
 <LI>Call Chain = task4 &rArr; ulTaskGenericNotifyTake &rArr; vPortExitCritical &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ulTaskGenericNotifyTake
