@@ -4,7 +4,7 @@
 ..\..\output\btim.o: ..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\..\output\btim.o: ..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f407xx.h
 ..\..\output\btim.o: ..\..\Drivers\CMSIS\Include\core_cm4.h
-..\..\output\btim.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\..\output\btim.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 ..\..\output\btim.o: ..\..\Drivers\CMSIS\Include\cmsis_version.h
 ..\..\output\btim.o: ..\..\Drivers\CMSIS\Include\cmsis_compiler.h
 ..\..\output\btim.o: ..\..\Drivers\CMSIS\Include\cmsis_armcc.h
@@ -16,7 +16,7 @@
 ..\..\output\btim.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h
 ..\..\output\btim.o: ..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\..\output\btim.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy/stm32_hal_legacy.h
-..\..\output\btim.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\..\output\btim.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 ..\..\output\btim.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\..\output\btim.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_exti.h
 ..\..\output\btim.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
@@ -70,11 +70,11 @@
 ..\..\output\btim.o: ..\..\Drivers\CMSIS\Include\core_cm4.h
 ..\..\output\btim.o: ..\..\Drivers\./BSP/TIMER/btim.h
 ..\..\output\btim.o: ..\..\Drivers\./BSP/LCD/lcd.h
-..\..\output\btim.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\btim.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
 ..\..\output\btim.o: ..\..\User\DS_300c.h
-..\..\output\btim.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-..\..\output\btim.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-..\..\output\btim.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\..\output\btim.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+..\..\output\btim.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
+..\..\output\btim.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
 ..\..\output\btim.o: ..\..\Drivers\./SYSTEM/delay/delay.h
 ..\..\output\btim.o: ..\..\User\gait.h
 ..\..\output\btim.o: ..\..\Middlewares\FreeRTOS\include\FreeRTOS.h

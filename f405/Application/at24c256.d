@@ -1,6 +1,6 @@
 ..\at24c256.o: ..\modules\eeprom\at24c256.c
 ..\at24c256.o: ..\modules\eeprom\at24c256.h
-..\at24c256.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\at24c256.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 ..\at24c256.o: ..\mcu\main.h
 ..\at24c256.o: ..\mcu\sysTick_if.h
 ..\at24c256.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
@@ -16,7 +16,7 @@
 ..\at24c256.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\at24c256.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\at24c256.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\at24c256.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\at24c256.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
 ..\at24c256.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\at24c256.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\at24c256.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h

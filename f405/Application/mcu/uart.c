@@ -136,7 +136,29 @@ void mprintf(const char * format, ...)
 HAL_StatusTypeDef uart1_rx_data_config_dma(uint8_t *pbuf, uint16_t size)
 {
     //暂停DMA接收
-    HAL_UART_DMAStop(&huart1);
+//    HAL_UART_DMAStop(&huart1);
+/* ***************Stop UART DMA Rx request if ongoing************** */
+	uint32_t dmarequest = 0x00U;
+  dmarequest = HAL_IS_BIT_SET(huart1.Instance->CR3, USART_CR3_DMAR);
+  if((huart1.RxState == HAL_UART_STATE_BUSY_RX) && dmarequest)
+  {
+    CLEAR_BIT(huart1.Instance->CR3, USART_CR3_DMAR);
+
+    /* Abort the UART DMA Rx channel */
+    if(huart1.hdmarx != NULL)
+    {
+      HAL_DMA_Abort(huart1.hdmarx);
+    }
+	  /* Disable RXNE, PE and ERR (Frame error, noise error, overrun error) interrupts */
+	  CLEAR_BIT(huart1.Instance->CR1, (USART_CR1_RXNEIE | USART_CR1_PEIE));
+	  CLEAR_BIT(huart1.Instance->CR3, USART_CR3_EIE);
+
+	  /* At end of Rx process, restore huart->RxState to Ready */
+	  huart1.RxState = HAL_UART_STATE_READY;
+  }
+/* *************************************************************** */
+
+
 
     //空闲中断打开/* 2018-8-7 */
     __HAL_UART_CLEAR_IDLEFLAG(&huart1);

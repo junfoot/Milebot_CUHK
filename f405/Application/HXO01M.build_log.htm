@@ -3,29 +3,29 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Tool Versions:</h2>
-IDE-Version: ¦ÌVision V5.37.0.0
+IDE-Version: ¦ÌVision V5.38.0.0
 Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: 1 11, 1, LIC=9WSKC-7U5DC-GK3BG-V3YDB-YWSZW-JJ224
+License Information: jun foot, zju, LIC=IK1BF-6X79I-565Q2-9IUWL-NZ0P7-EZWRF
  
 Tool Versions:
-Toolchain:       MDK-ARM Plus  Version: 5.37.0.0
-Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+Toolchain:       MDK-ARM Plus  Version: 5.38.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin
 C Compiler:      Armcc.exe V5.06 update 7 (build 960)
 Assembler:       Armasm.exe V5.06 update 7 (build 960)
 Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
 Library Manager: ArmAr.exe V5.06 update 7 (build 960)
 Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
-CPU DLL:         SARMCM3.DLL V5.37.0.0
+CPU DLL:         SARMCM3.DLL V5.38.0.0
 Dialog DLL:      DCM.DLL V1.17.5.0
 Target DLL:      Segger\JL2CM3.dll V2.99.42.0
-Dialog DLL:      TCM.DLL V1.56.1.0
+Dialog DLL:      TCM.DLL V1.56.4.0
  
 <h2>Project:</h2>
-D:\ZHZ\MilebotExo\Milebot_CUHK\f405\Application\MDK-ARM\HXO01M.uvprojx
+D:\PhD\Working\f405\Application\MDK-ARM\HXO01M.uvprojx
 Project File Date:  09/12/2025
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin'
 *** Note: Rebuilding project, since 'Options->Output->Create Batch File' is selected.
 Rebuild Project 'HXO01M' - Target 'HXO01M'
 compiling adc.c...
@@ -47,18 +47,18 @@ compiling i2c.c...
 compiling iap.c...
 compiling power_drv.c...
 compiling power_mana.c...
-D:\ZHZ\MilebotExo\Milebot_CUHK\f405\Application\walk\walk.h(340): warning:  #1295-D: Deprecated declaration walk_detect_left_lift_state - give arg types
+D:\PhD\Working\f405\Application\walk\walk.h(340): warning:  #1295-D: Deprecated declaration walk_detect_left_lift_state - give arg types
   uint8_t walk_detect_left_lift_state();
-D:\ZHZ\MilebotExo\Milebot_CUHK\f405\Application\walk\walk.h(341): warning:  #1295-D: Deprecated declaration walk_detect_right_lift_state - give arg types
+D:\PhD\Working\f405\Application\walk\walk.h(341): warning:  #1295-D: Deprecated declaration walk_detect_right_lift_state - give arg types
   uint8_t walk_detect_right_lift_state();
 ..\power\power_mana.c: 2 warnings, 0 errors
 compiling adc_app.c...
 compiling sys_task.c...
 compiling timer.c...
 compiling task.c...
-D:\ZHZ\MilebotExo\Milebot_CUHK\f405\Application\walk\walk.h(340): warning:  #1295-D: Deprecated declaration walk_detect_left_lift_state - give arg types
+D:\PhD\Working\f405\Application\walk\walk.h(340): warning:  #1295-D: Deprecated declaration walk_detect_left_lift_state - give arg types
   uint8_t walk_detect_left_lift_state();
-D:\ZHZ\MilebotExo\Milebot_CUHK\f405\Application\walk\walk.h(341): warning:  #1295-D: Deprecated declaration walk_detect_right_lift_state - give arg types
+D:\PhD\Working\f405\Application\walk\walk.h(341): warning:  #1295-D: Deprecated declaration walk_detect_right_lift_state - give arg types
   uint8_t walk_detect_right_lift_state();
 ..\os\task.c: 2 warnings, 0 errors
 compiling stm32f4xx_hal.c...
@@ -96,20 +96,20 @@ compiling stm32f4xx_hal_sd.c...
 compiling comm.c...
 compiling bat.c...
 compiling MitApp.c...
-D:\ZHZ\MilebotExo\Milebot_CUHK\f405\Application\modules\MitJoint\MitApp.c(218): warning:  #223-D: function "walk_detect_left_lift_state" declared implicitly
+D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(218): warning:  #223-D: function "walk_detect_left_lift_state" declared implicitly
           left_lift_sate = walk_detect_left_lift_state(&actuator_info);
-D:\ZHZ\MilebotExo\Milebot_CUHK\f405\Application\modules\MitJoint\MitApp.c(219): warning:  #223-D: function "walk_detect_right_lift_state" declared implicitly
+D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(219): warning:  #223-D: function "walk_detect_right_lift_state" declared implicitly
           right_lift_sate = walk_detect_right_lift_state(&actuator_info);
-D:\ZHZ\MilebotExo\Milebot_CUHK\f405\Application\modules\MitJoint\MitApp.c(141): warning:  #177-D: variable "Torque_limit"  was declared but never referenced
+D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(141): warning:  #177-D: variable "Torque_limit"  was declared but never referenced
                 float Torque_limit,Torque_limit_init = 1;
-D:\ZHZ\MilebotExo\Milebot_CUHK\f405\Application\modules\MitJoint\MitApp.c(141): warning:  #177-D: variable "Torque_limit_init"  was declared but never referenced
+D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(141): warning:  #177-D: variable "Torque_limit_init"  was declared but never referenced
                 float Torque_limit,Torque_limit_init = 1;
 ..\modules\MitJoint\MitApp.c: 4 warnings, 0 errors
 compiling syn6658.c...
 compiling ble.c...
-D:\ZHZ\MilebotExo\Milebot_CUHK\f405\Application\walk\walk.h(340): warning:  #1295-D: Deprecated declaration walk_detect_left_lift_state - give arg types
+D:\PhD\Working\f405\Application\walk\walk.h(340): warning:  #1295-D: Deprecated declaration walk_detect_left_lift_state - give arg types
   uint8_t walk_detect_left_lift_state();
-D:\ZHZ\MilebotExo\Milebot_CUHK\f405\Application\walk\walk.h(341): warning:  #1295-D: Deprecated declaration walk_detect_right_lift_state - give arg types
+D:\PhD\Working\f405\Application\walk\walk.h(341): warning:  #1295-D: Deprecated declaration walk_detect_right_lift_state - give arg types
   uint8_t walk_detect_right_lift_state();
 ..\modules\ble\ble.c: 2 warnings, 0 errors
 compiling lsm6ds.c...
@@ -121,7 +121,7 @@ compiling rtx_lib.c...
 compiling RTX_Config.c...
 linking...
 ..\HXO01M.axf: Warning: L6304W: Duplicate input file ..\HXO01M.lib ignored.
-Program Size: Code=92878 RO-data=4394 RW-data=7448 ZI-data=47136  
+Program Size: Code=92966 RO-data=4394 RW-data=7448 ZI-data=47136  
 Finished: 0 information, 1 warning and 0 error messages.
 FromELF: creating hex file...
 After Build - User command #1: fromelf.exe --bin -o "..\HXO01M.bin" "..\HXO01M.axf"
@@ -138,16 +138,17 @@ Package Vendor: ARM
    * Component: Keil RTX5 Variant: Library Version: 5.3.0
 
 Package Vendor: Keil
-                https://www.keil.com/pack/Keil.STM32F4xx_DFP.3.1.1.pack
-                Keil.STM32F4xx_DFP.3.1.1
-                STMicroelectronics STM32F4 Series Device Support
+                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.16.0.pack
+                Keil.STM32F4xx_DFP.2.16.0
+                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
 
 <h2>Collection of Component include folders:</h2>
   ./RTE/CMSIS
   ./RTE/_HXO01M
-  C:/Keil_v5/Local/Arm/Packs/ARM/CMSIS/5.3.0/CMSIS/Include
-  C:/Keil_v5/Local/Arm/Packs/ARM/CMSIS/5.3.0/CMSIS/RTOS2/Include
-  C:/Keil_v5/Local/Arm/Packs/ARM/CMSIS/5.3.0/CMSIS/RTOS2/RTX/Include
+  C:/Users/13416/AppData/Local/Arm/Packs/ARM/CMSIS/5.3.0/CMSIS/Include
+  C:/Users/13416/AppData/Local/Arm/Packs/ARM/CMSIS/5.3.0/CMSIS/RTOS2/Include
+  C:/Users/13416/AppData/Local/Arm/Packs/ARM/CMSIS/5.3.0/CMSIS/RTOS2/RTX/Include
+  C:/Users/13416/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include
 
 <h2>Collection of Component Files used:</h2>
 
@@ -157,21 +158,21 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.1.1
 
    * Component: ARM::CMSIS:RTOS2:Keil RTX5:Library:5.3.0
-      Source file:   CMSIS/RTOS2/RTX/Template/Timer.c
-      Include file:  CMSIS/RTOS2/RTX/Config/RTX_Config.h
-      Include file:  CMSIS/RTOS2/RTX/Include/rtx_os.h
       Source file:   CMSIS/RTOS2/RTX/Config/RTX_Config.c
-      Source file:   CMSIS/RTOS2/RTX/Template/Events.c
+      Include file:  CMSIS/RTOS2/RTX/Include/rtx_os.h
+      Include file:  CMSIS/RTOS2/RTX/Config/RTX_Config.h
       Source file:   CMSIS/RTOS2/RTX/Template/main.c
-      Source file:   CMSIS/RTOS2/RTX/Template/Mutex.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Events.c
       Source file:   CMSIS/RTOS2/RTX/Template/MsgQueue.c
-      Source file:   CMSIS/RTOS2/RTX/Template/Semaphore.c
-      Source file:   CMSIS/RTOS2/RTX/Template/Thread.c
-      Source file:   CMSIS/RTOS2/RTX/Template/svc_user.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Mutex.c
       Source file:   CMSIS/RTOS2/RTX/Template/MemPool.c
       Source file:   CMSIS/RTOS2/RTX/Source/rtx_lib.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Semaphore.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Timer.c
       Library file:  CMSIS/RTOS2/RTX/Library/ARM/RTX_CM4F.lib
-Build Time Elapsed:  00:00:13
+      Source file:   CMSIS/RTOS2/RTX/Template/svc_user.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Thread.c
+Build Time Elapsed:  00:00:20
 </pre>
 </body>
 </html>

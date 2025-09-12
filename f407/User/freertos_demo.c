@@ -226,8 +226,7 @@ void task3(void *pvParameters)
 {
 	uint8_t i;
 	uint8_t data, high, low;
-	
-	char uart_buf[512];  // 根据CH_NUM和每个浮点数长度适当增大
+
 	int len;
 	
 	init_all_channels();

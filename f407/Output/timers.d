@@ -1,8 +1,8 @@
 ..\..\output\timers.o: ..\..\Middlewares\FreeRTOS\timers.c
-..\..\output\timers.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\timers.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
 ..\..\output\timers.o: ..\..\Middlewares\FreeRTOS\include\FreeRTOS.h
-..\..\output\timers.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-..\..\output\timers.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\..\output\timers.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
+..\..\output\timers.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 ..\..\output\timers.o: ..\..\User\FreeRTOSConfig.h
 ..\..\output\timers.o: ..\..\Drivers\./SYSTEM/sys/sys.h
 ..\..\output\timers.o: ..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
@@ -71,7 +71,7 @@
 ..\..\output\timers.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_hcd.h
 ..\..\output\timers.o: ..\..\Drivers\CMSIS\Include\core_cm4.h
 ..\..\output\timers.o: ..\..\Drivers\./SYSTEM/usart/usart.h
-..\..\output\timers.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\..\output\timers.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
 ..\..\output\timers.o: ..\..\Middlewares\FreeRTOS\include\projdefs.h
 ..\..\output\timers.o: ..\..\Middlewares\FreeRTOS\include\portable.h
 ..\..\output\timers.o: ..\..\Middlewares\FreeRTOS\include\deprecated_definitions.h

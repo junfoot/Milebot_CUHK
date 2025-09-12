@@ -224,7 +224,7 @@ void mit_task(void *argument)
         {
             
             count_num++;
-            if (count_num >= 10)
+            if (count_num >= 5)
             {
                 count_num = 0;
 

@@ -1,7 +1,7 @@
 ..\sys_task.o: ..\system\sys_task.c
-..\sys_task.o: C:\Keil_v5\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h
-..\sys_task.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\sys_task.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\sys_task.o: C:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h
+..\sys_task.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+..\sys_task.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 ..\sys_task.o: ..\system\adc_app_if.h
 ..\sys_task.o: ..\mcu\tim_if.h
 ..\sys_task.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
@@ -17,7 +17,7 @@
 ..\sys_task.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\sys_task.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\sys_task.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\sys_task.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\sys_task.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
 ..\sys_task.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\sys_task.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\sys_task.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h
@@ -49,7 +49,7 @@
 ..\sys_task.o: ..\modules\imu\lsm6ds.h
 ..\sys_task.o: ..\mcu\mcu_if.h
 ..\sys_task.o: ..\mcu\..\system\std.h
-..\sys_task.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
-..\sys_task.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\sys_task.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\inttypes.h
+..\sys_task.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
 ..\sys_task.o: ..\mcu\..\system\msg_pragmas.h
 ..\sys_task.o: ..\walk\algorithm.h
