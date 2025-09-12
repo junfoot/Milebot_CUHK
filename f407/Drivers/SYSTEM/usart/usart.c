@@ -38,6 +38,8 @@ extern uint8_t mode;
 extern float tor_origin[4];
 extern short tor_o[4];
 
+extern uint8_t pc_o[20];
+
 /* 如果使用os,则包括下面的头文件即可 */
 //#if SYS_SUPPORT_OS
 //#include "includes.h"                               /* os 使用 */
@@ -111,7 +113,7 @@ uint16_t g_usart_rx_sta = 0;
 
 uint8_t g_rx_buffer[RXBUFFERSIZE];                  /* HAL库使用的串口接收缓冲 */
 
-UART_HandleTypeDef g_uart1_handle;                  /* UART句柄 */
+UART_HandleTypeDef g_usart1_handler;                  /* UART句柄 */
 
 
 /**
@@ -139,25 +141,25 @@ void usart_init(uint32_t baudrate)
     gpio_init_struct.Alternate = USART_RX_GPIO_AF;          /* 复用为USART1 */
     HAL_GPIO_Init(USART_RX_GPIO_PORT, &gpio_init_struct);   /* 初始化接收引脚 */
 
-    g_uart1_handle.Instance = USART_UX;                         /* USART1 */
-    g_uart1_handle.Init.BaudRate = baudrate;                    /* 波特率 */
-    g_uart1_handle.Init.WordLength = UART_WORDLENGTH_8B;        /* 字长为8位数据格式 */
-    g_uart1_handle.Init.StopBits = UART_STOPBITS_1;             /* 一个停止位 */
-    g_uart1_handle.Init.Parity = UART_PARITY_NONE;              /* 无奇偶校验位 */
-    g_uart1_handle.Init.HwFlowCtl = UART_HWCONTROL_NONE;        /* 无硬件流控 */
-    g_uart1_handle.Init.Mode = UART_MODE_TX_RX;                 /* 收发模式 */
-    HAL_UART_Init(&g_uart1_handle);                             /* HAL_UART_Init()会使能UART1 */
-    __HAL_UART_DISABLE_IT(&g_uart1_handle, UART_IT_TC);
+    g_usart1_handler.Instance = USART_UX;                         /* USART1 */
+    g_usart1_handler.Init.BaudRate = baudrate;                    /* 波特率 */
+    g_usart1_handler.Init.WordLength = UART_WORDLENGTH_8B;        /* 字长为8位数据格式 */
+    g_usart1_handler.Init.StopBits = UART_STOPBITS_1;             /* 一个停止位 */
+    g_usart1_handler.Init.Parity = UART_PARITY_NONE;              /* 无奇偶校验位 */
+    g_usart1_handler.Init.HwFlowCtl = UART_HWCONTROL_NONE;        /* 无硬件流控 */
+    g_usart1_handler.Init.Mode = UART_MODE_TX_RX;                 /* 收发模式 */
+    HAL_UART_Init(&g_usart1_handler);                             /* HAL_UART_Init()会使能UART1 */
+    __HAL_UART_DISABLE_IT(&g_usart1_handler, UART_IT_TC);
     
     #if USART_EN_RX
-//        __HAL_UART_ENABLE_IT(&g_uart1_handle, UART_IT_RXNE);
-        __HAL_UART_ENABLE_IT(&g_uart1_handle, UART_IT_IDLE);  // 使能串口空闲中断
+//        __HAL_UART_ENABLE_IT(&g_usart1_handler, UART_IT_RXNE);
+        __HAL_UART_ENABLE_IT(&g_usart1_handler, UART_IT_IDLE);  // 使能串口空闲中断
         HAL_NVIC_EnableIRQ(USART_UX_IRQn);                      /* 使能USART1中断通道 */
-        HAL_NVIC_SetPriority(USART_UX_IRQn, 5, 0);              /* 抢占优先级3，子优先级3 */
+        HAL_NVIC_SetPriority(USART_UX_IRQn, 7, 0);              /* 抢占优先级3，子优先级3 */
     #endif
     
 //    /* 该函数会开启接收中断：标志位UART_IT_RXNE，并且设置接收缓冲以及接收缓冲接收最大数据量 */
-//    HAL_UART_Receive_IT(&g_uart1_handle, (uint8_t *)g_rx_buffer, RXBUFFERSIZE);
+//    HAL_UART_Receive_IT(&g_usart1_handler, (uint8_t *)g_rx_buffer, RXBUFFERSIZE);
     
 }
 
@@ -165,66 +167,52 @@ void USART_UX_IRQHandler(void)
 { 
     uint8_t res;
     
-    if ((__HAL_UART_GET_FLAG(&g_uart1_handle, UART_FLAG_IDLE) != RESET))
+    if ((__HAL_UART_GET_FLAG(&g_usart1_handler, UART_FLAG_IDLE) != RESET))
     {
-        __HAL_UART_CLEAR_IDLEFLAG(&g_uart1_handle);
-        HAL_UART_DMAStop(&g_uart1_handle);
+        __HAL_UART_CLEAR_IDLEFLAG(&g_usart1_handler);
+        
+//				HAL_UART_DMAStop(&g_usart1_handler);
+				/* ***************Stop UART DMA Rx request if ongoing************** */
+				uint32_t dmarequest = 0x00U;
+				dmarequest = HAL_IS_BIT_SET(USART_UX->CR3, USART_CR3_DMAR);
+				if ((g_usart1_handler.RxState == HAL_UART_STATE_BUSY_RX) && dmarequest)
+				{
+					CLEAR_BIT(USART_UX->CR3, USART_CR3_DMAR);
+
+					/* Abort the UART DMA Rx stream */
+					if (g_usart1_handler.hdmarx != NULL)
+					{
+						HAL_DMA_Abort(g_usart1_handler.hdmarx);
+					}
+//					UART_EndRxTransfer(g_usart2_handler);
+					/* Disable RXNE, PE and ERR (Frame error, noise error, overrun error) interrupts */
+					CLEAR_BIT(USART_UX->CR1, (USART_CR1_RXNEIE | USART_CR1_PEIE));
+					CLEAR_BIT(USART_UX->CR3, USART_CR3_EIE);
+
+					/* In case of reception waiting for IDLE event, disable also the IDLE IE interrupt source */
+					if (g_usart1_handler.ReceptionType == HAL_UART_RECEPTION_TOIDLE)
+					{
+						CLEAR_BIT(USART_UX->CR1, USART_CR1_IDLEIE);
+					}
+
+					/* At end of Rx process, restore huart->RxState to Ready */
+					g_usart1_handler.RxState = HAL_UART_STATE_READY;
+					g_usart1_handler.ReceptionType = HAL_UART_RECEPTION_STANDARD;
+				}			
+				/* *************************************************************** */
         
         // 收完了
-        g_usart_rx_sta = USART_REC_LEN - __HAL_DMA_GET_COUNTER(&g_dma_handle);
+        g_usart_rx_sta = USART_REC_LEN - __HAL_DMA_GET_COUNTER(&g_dma_handle_usart1_rx);
         if(g_usart_rx_buf[g_usart_rx_sta - 1] == 0x0a)
         {
             g_usart_rx_sta |= 0x8000;
-            usmart_dev.scan();
+            usmart_scan();
         }
         
         memset(g_usart_rx_buf, 0, sizeof(g_usart_rx_buf)); 
 
-        HAL_UART_Receive_DMA(&g_uart1_handle, g_usart_rx_buf, USART_REC_LEN);
+        HAL_UART_Receive_DMA(&g_usart1_handler, g_usart_rx_buf, USART_REC_LEN);
     }
-    
-//    if ((__HAL_UART_GET_FLAG(&g_uart1_handle, UART_FLAG_RXNE) != RESET)) /* 接收到数据 */
-//    {
-//        
-////        HAL_UART_Receive(&g_uart1_handle, &res, 1, 1000);
-////        HAL_UART_Receive_DMA(&g_uart1_handle, &res, 1);
-//        
-//        g_rx_buffer[0] = res;
-//        
-//        if((g_usart_rx_sta & 0x8000) == 0)      /* 接收未完成 */
-//        {
-//            if(g_usart_rx_sta & 0x4000)         /* 接收到了0x0d */
-//            {
-//                if(g_rx_buffer[0] != 0x0a) 
-//                {
-//                    g_usart_rx_sta = 0;         /* 接收错误,重新开始 */
-//                }
-//                else 
-//                {
-//                    g_usart_rx_sta |= 0x8000;   /* 接收完成了 */
-//                    
-//                    usmart_dev.scan();
-//                }
-//            }
-//            else                                /* 还没收到0X0D */
-//            {
-//                if(g_rx_buffer[0] == 0x0d)
-//                {
-//                    g_usart_rx_sta |= 0x4000;
-//                }
-//                else
-//                {
-//                    g_usart_rx_buf[g_usart_rx_sta & 0X3FFF] = g_rx_buffer[0] ;
-//                    g_usart_rx_sta++;
-//                    if(g_usart_rx_sta > (USART_REC_LEN - 1))
-//                    {
-//                        g_usart_rx_sta = 0;     /* 接收数据错误,重新开始接收 */
-//                    }
-//                }
-//            }
-//        }
-//    }
-
 }
 
 #endif

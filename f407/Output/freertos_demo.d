@@ -97,6 +97,7 @@
 ..\..\output\freertos_demo.o: ..\..\User\utils.h
 ..\..\output\freertos_demo.o: ..\..\Drivers\./BSP/DMA/dma.h
 ..\..\output\freertos_demo.o: ..\..\Drivers\./BSP/WDG/wdg.h
+..\..\output\freertos_demo.o: ..\..\Drivers\./BSP/TIMER/btim.h
 ..\..\output\freertos_demo.o: ..\..\Middlewares\FreeRTOS\include\queue.h
 ..\..\output\freertos_demo.o: ..\..\Middlewares\FreeRTOS\include\semphr.h
 ..\..\output\freertos_demo.o: ..\..\Middlewares\./USMART/usmart.h

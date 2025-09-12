@@ -6,9 +6,12 @@
 #include "queue.h"
 #include "semphr.h"
 
+#include "./SYSTEM/delay/delay.h"
+#include "stdio.h"
 
+extern TaskHandle_t Task3Task_Handler;
 
-extern QueueHandle_t sem2;
+//extern QueueHandle_t sem2;
 
 /**
   * @brief  初始化AD7606 GPIO和SPI总线
@@ -111,6 +114,8 @@ void AD7606_Init(void)
 	/* CONVST脚设置为高电平 */
 	AD_CONVST_HIGH_1();         
 	
+	delay_ms(10);
+	
 }
 
 
@@ -121,15 +126,15 @@ void AD7606_Init(void)
   */
 void EXTI0_IRQHandler(void)
 {
-//	delay_us(1);
-	
-	BaseType_t err;
-	if(sem2 != NULL)
-	{
-		err = xSemaphoreGiveFromISR(sem2, NULL);
-	}
-        
     __HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_0);         // EXTI_ClearITPendingBit(EXTI_Line0); //清除LINE0上的中断标志位
+	
+		BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+		// 通知任务
+		vTaskNotifyGiveFromISR(Task3Task_Handler, &xHigherPriorityTaskWoken);
+		// 如果任务优先级更高，立即切换
+		portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        
+
 }
 
 

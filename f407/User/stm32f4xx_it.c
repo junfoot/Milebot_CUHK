@@ -187,56 +187,101 @@ void SysTick_Handler(void)
 
 //}
 
+void DMA2_Stream7_IRQHandler(void)
+{
+    if (__HAL_DMA_GET_FLAG(&g_dma_handle_usart1_tx, DMA_FLAG_TCIF3_7))
+    {
+        __HAL_DMA_CLEAR_FLAG(&g_dma_handle_usart1_tx, DMA_FLAG_TCIF3_7);
+        __HAL_UART_CLEAR_FLAG(&g_usart1_handler, UART_FLAG_TC);
+//				HAL_UART_DMAStop(&g_usart1_handler);
+				/* *************************************************************** */
+				uint32_t dmarequest = 0x00U;
+				dmarequest = HAL_IS_BIT_SET(g_usart1_handler.Instance->CR3, USART_CR3_DMAT);
+				if ((g_usart1_handler.gState == HAL_UART_STATE_BUSY_TX) && dmarequest)
+				{
+					CLEAR_BIT(g_usart1_handler.Instance->CR3, USART_CR3_DMAT);
 
+					/* Abort the UART DMA Tx stream */
+					if (g_usart1_handler.hdmatx != NULL)
+					{
+						HAL_DMA_Abort(g_usart1_handler.hdmatx);
+					}
+					/* Disable TXEIE and TCIE interrupts */
+					CLEAR_BIT(g_usart1_handler.Instance->CR1, (USART_CR1_TXEIE | USART_CR1_TCIE));
+					/* At end of Tx process, restore huart->gState to Ready */
+					g_usart1_handler.gState = HAL_UART_STATE_READY;
+				}
+				/* *************************************************************** */
+			
+    }
+}
 
 void DMA1_Stream6_IRQHandler(void)
 {
-    if (__HAL_DMA_GET_FLAG(&g_dma_handle_usart2, DMA_FLAG_TCIF2_6))
+    if (__HAL_DMA_GET_FLAG(&g_dma_handle_usart2_tx, DMA_FLAG_TCIF2_6))
     {
-        __HAL_DMA_CLEAR_FLAG(&g_dma_handle_usart2, DMA_FLAG_TCIF2_6);
+        __HAL_DMA_CLEAR_FLAG(&g_dma_handle_usart2_tx, DMA_FLAG_TCIF2_6);
         __HAL_UART_CLEAR_FLAG(&g_usart2_handler, UART_FLAG_TC);
-//        HAL_UART_DMAStop(&g_usart2_handler);      /* 关闭串口DMA */  
+//        HAL_UART_DMAStop(&g_usart2_handler);      /* 关闭串口DMA */ 
+				/* *************************************************************** */
+				uint32_t dmarequest = 0x00U;
+				dmarequest = HAL_IS_BIT_SET(g_usart2_handler.Instance->CR3, USART_CR3_DMAT);
+				if ((g_usart2_handler.gState == HAL_UART_STATE_BUSY_TX) && dmarequest)
+				{
+					CLEAR_BIT(g_usart2_handler.Instance->CR3, USART_CR3_DMAT);
+
+					/* Abort the UART DMA Tx stream */
+					if (g_usart2_handler.hdmatx != NULL)
+					{
+						HAL_DMA_Abort(g_usart2_handler.hdmatx);
+					}
+					/* Disable TXEIE and TCIE interrupts */
+					CLEAR_BIT(g_usart2_handler.Instance->CR1, (USART_CR1_TXEIE | USART_CR1_TCIE));
+					/* At end of Tx process, restore huart->gState to Ready */
+					g_usart2_handler.gState = HAL_UART_STATE_READY;
+				}
+				/* *************************************************************** */			
     }
 }
 
-void DMA1_Stream3_IRQHandler(void)
-{
-    if (__HAL_DMA_GET_FLAG(&g_dma_handle_usart3, DMA_FLAG_TCIF3_7))
-    {
-        __HAL_DMA_CLEAR_FLAG(&g_dma_handle_usart3, DMA_FLAG_TCIF3_7);
-        __HAL_UART_CLEAR_FLAG(&g_usart3_handler, UART_FLAG_TC);
-        HAL_UART_DMAStop(&g_usart3_handler);      /* 关闭串口DMA */  
-    }
-}
+//void DMA1_Stream3_IRQHandler(void)
+//{
+//    if (__HAL_DMA_GET_FLAG(&g_dma_handle_usart3, DMA_FLAG_TCIF3_7))
+//    {
+//        __HAL_DMA_CLEAR_FLAG(&g_dma_handle_usart3, DMA_FLAG_TCIF3_7);
+//        __HAL_UART_CLEAR_FLAG(&g_usart3_handler, UART_FLAG_TC);
+//        HAL_UART_DMAStop(&g_usart3_handler);      /* 关闭串口DMA */  
+//    }
+//}
 
-void DMA1_Stream7_IRQHandler(void)
-{
-    if (__HAL_DMA_GET_FLAG(&g_dma_handle_uart5, DMA_FLAG_TCIF3_7))
-    {
-        __HAL_DMA_CLEAR_FLAG(&g_dma_handle_uart5, DMA_FLAG_TCIF3_7);
-        __HAL_UART_CLEAR_FLAG(&g_uart5_handler, UART_FLAG_TC);
-        HAL_UART_DMAStop(&g_uart5_handler);      /* 关闭串口DMA */  
-    }
-}
+//void DMA1_Stream7_IRQHandler(void)
+//{
+//    if (__HAL_DMA_GET_FLAG(&g_dma_handle_uart5, DMA_FLAG_TCIF3_7))
+//    {
+//        __HAL_DMA_CLEAR_FLAG(&g_dma_handle_uart5, DMA_FLAG_TCIF3_7);
+//        __HAL_UART_CLEAR_FLAG(&g_uart5_handler, UART_FLAG_TC);
+//        HAL_UART_DMAStop(&g_uart5_handler);      /* 关闭串口DMA */  
+//    }
+//}
 
-void DMA2_Stream7_IRQHandler(void)
-{
-    if (__HAL_DMA_GET_FLAG(&g_dma_handle_usart6, DMA_FLAG_TCIF3_7))
-    {
-        __HAL_DMA_CLEAR_FLAG(&g_dma_handle_usart6, DMA_FLAG_TCIF3_7);
-        __HAL_UART_CLEAR_FLAG(&g_usart6_handler, UART_FLAG_TC);
-        HAL_UART_DMAStop(&g_usart6_handler);      /* 关闭串口DMA */  
-    }
-}
+//void DMA2_Stream7_IRQHandler(void)
+//{
+//    if (__HAL_DMA_GET_FLAG(&g_dma_handle_usart6, DMA_FLAG_TCIF3_7))
+//    {
+//        __HAL_DMA_CLEAR_FLAG(&g_dma_handle_usart6, DMA_FLAG_TCIF3_7);
+//        __HAL_UART_CLEAR_FLAG(&g_usart6_handler, UART_FLAG_TC);
+//        HAL_UART_DMAStop(&g_usart6_handler);      /* 关闭串口DMA */  
+//    }
+//}
 //void DMA2_Stream2_IRQHandler(void)
 //{
 
 //    if (__HAL_DMA_GET_FLAG(&g_dma_handle, DMA_FLAG_TCIF2_6))        /* DMA2_Stream7传输完成 */
 //    {
 //        __HAL_DMA_CLEAR_FLAG(&g_dma_handle, DMA_FLAG_TCIF2_6);      /* 清除DMA2_Stream7传输完成标志 */
-//        __HAL_UART_CLEAR_FLAG(&g_uart1_handle, UART_FLAG_TC);
+//        __HAL_UART_CLEAR_FLAG(&g_usart1_handler, UART_FLAG_TC);
 //        
-//        HAL_UART_DMAStop(&g_uart1_handle);      /* 关闭串口DMA */  
+//        HAL_UART_DMAStop(&g_usart1_handler);      /* 关闭串口DMA */  
 //    }
 //}
 

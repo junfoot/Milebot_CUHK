@@ -30,6 +30,7 @@
 #include "./BSP/WDG/wdg.h"
 #include "math.h"
 #include "stdlib.h"
+#include "./BSP/TIMER/btim.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -56,8 +57,8 @@ TaskHandle_t            Task1Task_Handler;  /* 任务句柄 */
 void task1(void *pvParameters);             /* 任务函数 */
 
 /* TASK2 任务 配置  */
-#define TASK2_PRIO      4                   /* 任务优先级 */
-#define TASK2_STK_SIZE  512                 /* 任务堆栈大小 */
+#define TASK2_PRIO      6                   /* 任务优先级 */
+#define TASK2_STK_SIZE  1024                 /* 任务堆栈大小 */
 TaskHandle_t            Task2Task_Handler;  /* 任务句柄 */
 void task2(void *pvParameters);             /* 任务函数 */
 
@@ -68,17 +69,16 @@ TaskHandle_t            Task3Task_Handler;  /* 任务句柄 */
 void task3(void *pvParameters);             /* 任务函数 */
 
 /* TASK4 任务 配置  */
-#define TASK4_PRIO      6                   /* 任务优先级 */
-#define TASK4_STK_SIZE  512               /* 任务堆栈大小 */
+#define TASK4_PRIO      4                   /* 任务优先级 */
+#define TASK4_STK_SIZE  1024               /* 任务堆栈大小 */
 TaskHandle_t            Task4Task_Handler;  /* 任务句柄 */
 void task4(void *pvParameters);             /* 任务函数 */
 
 /* --------------------------变量-------------------------------------------- */
-QueueHandle_t sem1;
-QueueHandle_t sem2;
-QueueHandle_t sem3;
-QueueHandle_t sem4;     
-
+uint32_t notifyValueTask1;  
+uint32_t notifyValueTask2; 
+uint32_t notifyValueTask3; 
+uint32_t notifyValueTask4; 
 
 float exo_state[32];
 
@@ -92,6 +92,10 @@ uint8_t tcmd[10];
 static int16_t adc_data_raw[8];
 float adc_data_raw_f[8];
 
+int test_cnt = 0;
+
+
+
 /* --------------------------变量-------------------------------------------- */
 
 /**
@@ -101,28 +105,6 @@ float adc_data_raw_f[8];
  */
 void freertos_demo(void)
 {    
-    /* 创建信号量 */
-    sem1 = xSemaphoreCreateBinary();
-    if(sem1 != NULL)
-    {
-        printf("二值信号量sem1创建成功！！！\r\n");
-    }
-    sem2 = xSemaphoreCreateBinary();
-    if(sem2 != NULL)
-    {
-        printf("二值信号量sem2创建成功！！！\r\n");
-    }
-    sem3 = xSemaphoreCreateBinary();
-    if(sem3 != NULL)
-    {
-        printf("二值信号量sem3创建成功！！！\r\n");
-    }
-    sem4 = xSemaphoreCreateBinary();
-    if(sem4 != NULL)
-    {
-        printf("二值信号量sem4创建成功！！！\r\n");
-    }
-
     xTaskCreate((TaskFunction_t )start_task,            /* 任务函数 */
                 (const char*    )"start_task",          /* 任务名称 */
                 (uint16_t       )START_STK_SIZE,        /* 任务堆栈大小 */
@@ -168,6 +150,13 @@ void start_task(void *pvParameters)
                 (void*          )NULL,
                 (UBaseType_t    )TASK4_PRIO,
                 (TaskHandle_t*  )&Task4Task_Handler);
+								
+		
+		AD7606_Init();
+    btim_tim6_int_init(50 - 1, 8400 - 1); /* 84 000 000 / 84 00 = 10 000(10Khz的计数频率)，10000 / 50 = 200Hz */
+    btim_tim7_int_init(100 - 1, 8400 - 1); /* 84 000 000 / 84 00 / 100 = 100Hz */
+		btim_tim3_int_init(10 - 1, 8400 - 1);  /* 10000 / 10 = 1000Hz */ 	
+								
     vTaskDelete(StartTask_Handler); /* 删除开始任务 */
     taskEXIT_CRITICAL();            /* 退出临界区 */
 }
@@ -181,10 +170,8 @@ void task1(void *pvParameters)
 {
     while(1) 
     {   
-//		xSemaphoreTake(sem4,portMAX_DELAY); /* 获取信号量并死等 */		
         
-
-		vTaskDelay(1000);
+				vTaskDelay(1000);
     }
 }
 
@@ -194,23 +181,21 @@ void task1(void *pvParameters)
  */
 void task2(void *pvParameters)
 {   
+		char buf[20];
+	
     while(1) 
     {
-        xSemaphoreTake(sem1,portMAX_DELAY); /* 获取信号量并死等 */
-		
+				notifyValueTask2 = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
-        
-        
+     
         /* 数据处理与滤波 */
 				char *p = (char*)pc_o;		
 				if (*p == 't' && *(p+1) == ':') {p += 2;}
 				pc_t_l = strtof(p, &p); // 提取第一个数字
 				p++;
 				pc_t_r = strtof(p, &p); // 提取第二个数字
-				// test
-//				printf("%f %f\r\n", pc_t_l, pc_t_r);
+
 		
-				
 				// send command to low level
 				tcmd[0] = 0xAB;
 				memcpy(tcmd + 1, &pc_t_l, sizeof(float));
@@ -220,7 +205,7 @@ void task2(void *pvParameters)
 				
 		
         // 喂狗
-        iwdg_feed();
+				iwdg_feed();
     }
 }
 
@@ -233,38 +218,37 @@ void task2(void *pvParameters)
 void task3(void *pvParameters)
 {
 	uint8_t i;
-	uint8_t data;
+	uint8_t data, high, low;
+	
+	char uart_buf[512];  // 根据CH_NUM和每个浮点数长度适当增大
+	int len;
 	
     while(1)
-    {
-		xSemaphoreTake(sem2,portMAX_DELAY); /* 获取信号量并死等 */
-		
+    {		
+			notifyValueTask3 = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+
 		// adc data acquiring
-		if (BUSY_IS_LOW_1())      /* BUSY = 0 时.ad7606处于空闲状态ad转换结束 */
-		{
 			AD_CS_0_1(); /* SPI片选 = 0 */
 
 			for (i = 0; i < CH_NUM; i++)
-			{
-				data = bsp_spiRead1();
-				adc_data_raw[i] = data;
-				data = bsp_spiRead1();
-				adc_data_raw[i] = adc_data_raw[i] * 256 + data; /* 读数据 */
+			{			
+				high = bsp_spiRead1();
+				low  = bsp_spiRead1();
+				adc_data_raw[i] = ((uint16_t)high << 8) | low;
 			}
 			
 			AD_CS_1_1();   /* SPI片选 = 1 */
-		}
 		
-		//adc data processing
-		for (i = 0; i < CH_NUM; i++)
-        {
-            adc_data_raw_f[i] = (float)adc_data_raw[i] * VoltageRange / 32768;
-						printf("%.3f ", adc_data_raw_f[i]);
-        }
-				printf("\r\n");
-		
-		
-//        vTaskDelay(5);
+//		//adc data processing
+//		printf("a:");
+//		for (i = 0; i < CH_NUM; i++)
+//		{
+//				adc_data_raw_f[i] = (float)adc_data_raw[i] * VoltageRange / 32768;
+//				printf("%.3f,", adc_data_raw_f[i]);
+//		}
+//		printf("\r\n");
+
+
     }
 }
 
@@ -273,21 +257,41 @@ void task3(void *pvParameters)
 /**
  * @brief       task4 发送数据到PC
  */
+#define BUF_SIZE 512
+
 void task4(void *pvParameters)
 {
-	char buffer[200];  // 确保足够大
-	int offset = 0;
-	int i = 0;
+	char buf[BUF_SIZE];
+	int len = 0;
+	uint8_t i = 0;
 
 	while(1)
     {
-        xSemaphoreTake(sem3,portMAX_DELAY); /* 获取信号量并死等 */
-	 
-				printf("%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n", pc_t_l, pc_t_r
-																				, exo_state[0], exo_state[1], exo_state[2], exo_state[3]
-																				, exo_state[4], exo_state[5], exo_state[6], exo_state[7]);
+				notifyValueTask4 = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 			
-//				printf("test\r\n");
+//							// 阻塞通知数量
+//					printf("2：%d\r\n", notifyValueTask2);
+//					printf("3：%d\r\n", notifyValueTask3);
+//					printf("4：%d\r\n", notifyValueTask4);
+	 
+//				printf("%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n", pc_t_l, pc_t_r
+//																				, exo_state[0], exo_state[1], exo_state[2], exo_state[3]
+//																				, exo_state[4], exo_state[5], exo_state[6], exo_state[7]);
+				
+				len = snprintf(buf, sizeof(buf), "a:");
+				len += snprintf(buf + len, sizeof(buf) - len, "%d,%d,%d,", notifyValueTask2,notifyValueTask3,notifyValueTask4);
+				len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,%7.3f,", pc_t_l, pc_t_r);
+				for (i = 0; i < CH_NUM; i++)
+				{
+						adc_data_raw_f[i] = (float)adc_data_raw[i] * VoltageRange / 32768;
+						len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", adc_data_raw_f[i]);
+				}
+				for (i = 0; i < 8; i++)
+				{
+						len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", exo_state[i]);
+				}
+				len += snprintf(buf + len, sizeof(buf) - len, "\r\n");
+				HAL_UART_Transmit_DMA(&g_usart1_handler, (uint8_t*)buf, len);
     }
 }
 

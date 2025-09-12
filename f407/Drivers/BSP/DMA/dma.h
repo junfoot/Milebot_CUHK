@@ -28,12 +28,13 @@
 #include "./SYSTEM/sys/sys.h"
 
 
-extern DMA_HandleTypeDef g_dma_handle; 
+extern DMA_HandleTypeDef g_dma_handle_usart1_rx;
+extern DMA_HandleTypeDef g_dma_handle_usart1_tx; 
 extern DMA_HandleTypeDef g_dma_handle_usart2_rx;
-extern DMA_HandleTypeDef g_dma_handle_usart2; 
-extern DMA_HandleTypeDef g_dma_handle_usart3; 
-extern DMA_HandleTypeDef g_dma_handle_uart5; 
-extern DMA_HandleTypeDef g_dma_handle_usart6; 
+extern DMA_HandleTypeDef g_dma_handle_usart2_tx; 
+//extern DMA_HandleTypeDef g_dma_handle_usart3; 
+//extern DMA_HandleTypeDef g_dma_handle_uart5; 
+//extern DMA_HandleTypeDef g_dma_handle_usart6; 
 
 void dma_init(void);  /* ≈‰÷√DMAx_CHx */
 

@@ -10,6 +10,7 @@
 #include "./BSP/USART2/usart2.h"
 #include "./SYSTEM/delay/delay.h"
 #include "./BSP/DMA/dma.h"
+#include "./SYSTEM/sys/sys.h"
 
 #include "string.h"
 #include "stdio.h"
@@ -43,9 +44,37 @@ void USART2_UX_IRQHandler(void)
     {
         __HAL_UART_CLEAR_IDLEFLAG(&g_usart2_handler);
 		
-				HAL_UART_DMAStop(&g_usart2_handler);
-//				HAL_DMA_Abort(&g_dma_handle_usart2_rx);
-		
+//				HAL_UART_DMAStop(&g_usart2_handler);
+				/* ***************Stop UART DMA Rx request if ongoing************** */
+				uint32_t dmarequest = 0x00U;
+				dmarequest = HAL_IS_BIT_SET(g_usart2_handler.Instance->CR3, USART_CR3_DMAR);
+				if ((g_usart2_handler.RxState == HAL_UART_STATE_BUSY_RX) && dmarequest)
+				{
+					CLEAR_BIT(g_usart2_handler.Instance->CR3, USART_CR3_DMAR);
+
+					/* Abort the UART DMA Rx stream */
+					if (g_usart2_handler.hdmarx != NULL)
+					{
+						HAL_DMA_Abort(g_usart2_handler.hdmarx);
+					}
+//					UART_EndRxTransfer(g_usart2_handler);
+					/* Disable RXNE, PE and ERR (Frame error, noise error, overrun error) interrupts */
+					CLEAR_BIT(g_usart2_handler.Instance->CR1, (USART_CR1_RXNEIE | USART_CR1_PEIE));
+					CLEAR_BIT(g_usart2_handler.Instance->CR3, USART_CR3_EIE);
+
+					/* In case of reception waiting for IDLE event, disable also the IDLE IE interrupt source */
+					if (g_usart2_handler.ReceptionType == HAL_UART_RECEPTION_TOIDLE)
+					{
+						CLEAR_BIT(g_usart2_handler.Instance->CR1, USART_CR1_IDLEIE);
+					}
+
+					/* At end of Rx process, restore huart->RxState to Ready */
+					g_usart2_handler.RxState = HAL_UART_STATE_READY;
+					g_usart2_handler.ReceptionType = HAL_UART_RECEPTION_STANDARD;
+				}			
+				/* *************************************************************** */
+			
+			
 				// receive length
         rx_len = USART2_REC_LEN - __HAL_DMA_GET_COUNTER(&g_dma_handle_usart2_rx);
 			
@@ -75,83 +104,6 @@ void USART2_UX_IRQHandler(void)
         // reopen dma
         HAL_UART_Receive_DMA(&g_usart2_handler, g_USART2_rx_buf, USART2_REC_LEN);
     }
-
-  		
-//		static uint16_t rx_index = 0;
-//    static uint8_t expected_len = 0;
-//    static uint8_t checksum = 0;
-//		static RxState state = RX_STATE_WAIT_HEAD1;
-//    uint8_t data;  
-//    if ((__HAL_UART_GET_FLAG(&g_usart2_handler, UART_FLAG_RXNE) != RESET)) /* ????? */
-//    {
-//        HAL_UART_Receive(&g_usart2_handler, &data, 1, 1000);
-
-//				// ------------------ check data received -------------------------
-//				switch(state)
-//        {
-//        case RX_STATE_WAIT_HEAD1:
-//            if(data == 0xAA)
-//            {
-//                state = RX_STATE_WAIT_HEAD2;
-//                checksum = data;
-//            }
-//            break;
-//            
-//        case RX_STATE_WAIT_HEAD2:
-//            if(data == 0x55)
-//            {
-//                state = RX_STATE_WAIT_LENGTH;
-//                checksum += data;
-//            }
-//            else
-//            {
-//                state = RX_STATE_WAIT_HEAD1;
-//            }
-//            break;
-//            
-//        case RX_STATE_WAIT_LENGTH:
-////						printf("e:%d\r\n",expected_len);
-//            expected_len = data;
-//            checksum += data;
-//            
-//            if(expected_len <= USART2_REC_LEN)
-//            {
-//                state = RX_STATE_RECEIVING_DATA;
-//                rx_index = 0;
-//            }
-//            else
-//            {
-//                state = RX_STATE_WAIT_HEAD1;
-//            }
-//            break;
-//            
-//        case RX_STATE_RECEIVING_DATA:
-//            g_USART2_rx_buf[rx_index++] = data;
-////            checksum += 1;
-//						checksum += data;
-//            
-//            if(rx_index >= (expected_len - 4))  // ?????
-//            {
-//                state = RX_STATE_CHECK_SUM;
-//            }
-//            break;
-//            
-//        case RX_STATE_CHECK_SUM:
-////						printf("%x %x\r\n", checksum, data);
-//            if(checksum == data)
-////						if(1)
-//            {
-//                // ????,????
-//                if(expected_len == 36)  // 8?float + ??2 + ??1 + ??1
-//                {
-//                    memcpy(&exo_state, g_USART2_rx_buf, 32);
-//                }
-//            }
-//            state = RX_STATE_WAIT_HEAD1;
-//            break;
-//        }
-//		}
-						
 }
 
 #endif
@@ -204,7 +156,7 @@ void usart2_init(uint32_t baudrate)
 		HAL_UART_Receive_DMA(&g_usart2_handler, g_USART2_rx_buf, USART2_REC_LEN);
 		__HAL_UART_ENABLE_IT(&g_usart2_handler, UART_IT_IDLE);  // 使能串口空闲中断
     HAL_NVIC_EnableIRQ(USART2_UX_IRQn);                      /* 使能USART2中断 */
-    HAL_NVIC_SetPriority(USART2_UX_IRQn, 5, 0);              /* 抢占优先级3，子优先级3 */
+    HAL_NVIC_SetPriority(USART2_UX_IRQn, 7, 0);              /* 抢占优先级3，子优先级3 */
     
 //    HAL_UART_Receive_IT( &g_usart2_handler, g_USART2_rx_buf, 2);
 #endif

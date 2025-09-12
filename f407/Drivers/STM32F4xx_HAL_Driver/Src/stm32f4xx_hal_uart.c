@@ -1600,6 +1600,7 @@ HAL_StatusTypeDef HAL_UART_DMAStop(UART_HandleTypeDef *huart)
   return HAL_OK;
 }
 
+
 /**
   * @brief Receive an amount of data in blocking mode till either the expected number of data is received or an IDLE event occurs.
   * @note   HAL_OK is returned if reception is completed (expected number of data has been received)

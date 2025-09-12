@@ -89,3 +89,4 @@
 ..\..\output\btim.o: ..\..\Middlewares\FreeRTOS\include\list.h
 ..\..\output\btim.o: ..\..\Middlewares\FreeRTOS\include\queue.h
 ..\..\output\btim.o: ..\..\Middlewares\FreeRTOS\include\semphr.h
+..\..\output\btim.o: ..\..\User\ad7606.h

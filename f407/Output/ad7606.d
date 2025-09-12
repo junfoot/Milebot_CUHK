@@ -81,3 +81,4 @@
 ..\..\output\ad7606.o: ..\..\Middlewares\FreeRTOS\include\list.h
 ..\..\output\ad7606.o: ..\..\Middlewares\FreeRTOS\include\queue.h
 ..\..\output\ad7606.o: ..\..\Middlewares\FreeRTOS\include\semphr.h
+..\..\output\ad7606.o: ..\..\Drivers\./SYSTEM/delay/delay.h
