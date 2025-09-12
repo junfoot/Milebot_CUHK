@@ -188,7 +188,7 @@ void task2(void *pvParameters)
 				notifyValueTask2 = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
      
-        /* 数据处理与滤波 */
+				/* 数据处理与滤波 */
 				char *p = (char*)pc_o;		
 				if (*p == 't' && *(p+1) == ':') {p += 2;}
 				pc_t_l = strtof(p, &p); // 提取第一个数字
@@ -216,6 +216,9 @@ void task2(void *pvParameters)
 /*--------------------------------------------------------------------主程序---------------------------------------------------------------------------------------------*/
 
 
+
+float32_t emg_output_samples[NUM_CHANNELS];
+
 /**
  * @brief       task3    ADC related
  */
@@ -226,6 +229,10 @@ void task3(void *pvParameters)
 	
 	char uart_buf[512];  // 根据CH_NUM和每个浮点数长度适当增大
 	int len;
+	
+	init_all_channels();
+	float32_t input_samples[NUM_CHANNELS];
+
 	
     while(1)
     {		
@@ -244,7 +251,14 @@ void task3(void *pvParameters)
 			
 			AD_CS_1_1();   /* SPI片选 = 1 */
 		
+			
 			// emg data processing
+			for (int ch = 0; ch < NUM_CHANNELS; ch++) {
+				input_samples[ch] = adc_data_raw_f[ch];
+				emg_output_samples[ch] = process_channel_sample(ch, input_samples[ch]);
+			}
+			
+			
 
     }
 }
@@ -278,13 +292,16 @@ void task4(void *pvParameters)
 				len = snprintf(buf, sizeof(buf), "a:");
 				len += snprintf(buf + len, sizeof(buf) - len, "%d,%d,%d,", notifyValueTask2,notifyValueTask3,notifyValueTask4);
 				len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,%7.3f,", pc_t_l, pc_t_r);
+				for (i = 0; i < NUM_CHANNELS; i++) {
+					len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", emg_output_samples[i]);
+				}
 				for (i = 0; i < CH_NUM; i++)
 				{
-						len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", adc_data_raw_f[i]);
+					len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", adc_data_raw_f[i]);
 				}
 				for (i = 0; i < 8; i++)
 				{
-						len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", exo_state[i]);
+					len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", exo_state[i]);
 				}
 				len += snprintf(buf + len, sizeof(buf) - len, "\r\n");
 				

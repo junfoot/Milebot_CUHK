@@ -170,11 +170,11 @@ void BTIM_TIM3_INT_IRQHandler(void)
     {
         __HAL_TIM_CLEAR_IT(&g_tim3_handler, TIM_IT_UPDATE);  // 先清标志
 			
-				/* 上升沿开始转换，低电平持续时间至少25ns  */
-				AD_CONVST_LOW_1();
-				AD_CONVST_LOW_1();
-				AD_CONVST_LOW_1();  /* 连续执行2次，低电平约50ns */
-				AD_CONVST_HIGH_1();
+		/* 上升沿开始转换，低电平持续时间至少25ns  */
+		AD_CONVST_LOW_1();
+		AD_CONVST_LOW_1();
+		AD_CONVST_LOW_1();  /* 连续执行2次，低电平约50ns */
+		AD_CONVST_HIGH_1();
 			
     }
 //    HAL_TIM_IRQHandler(&g_timx_handler);  /* 定时器回调函数 */

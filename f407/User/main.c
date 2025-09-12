@@ -43,19 +43,19 @@ int main(void)
     HAL_Init();                             /* 初始化HAL库 */
     sys_stm32_clock_init(336, 8, 2, 7);     /* 设置时钟,168Mhz */
     delay_init(168);                        /* 延时初始化 */
-    dma_init();  														/* 初始化DMA */
+    dma_init();  							/* 初始化DMA */
     usmart_dev.init(84);                    /* 初始化USMART */
     usart_init(1000000);                    /* 串口初始化 */
-		usart2_init(BAUD);
-		iwdg_init(IWDG_PRESCALER_64, 50);   // 64 * 50 / 32 = 100ms (10Hz)   
+	usart2_init(BAUD);
+	iwdg_init(IWDG_PRESCALER_64, 50);   // 64 * 50 / 32 = 100ms (10Hz)   
     
     printf("\r\n HELLO! \r\n\r\n");
-		// 啊这，启用rtos之前执行这个，不然snprintf打不了float
-		char dummy[20];
-		snprintf(dummy, sizeof(dummy), "%g", 3.14159);
+	// 啊这，启用rtos之前执行这个，不然snprintf打不了float
+	char dummy[20];
+	snprintf(dummy, sizeof(dummy), "%g", 3.14159);
 
     freertos_demo();
-		
+
 
 //    led_init();                             /* 初始化LED */
 //    lcd_init();                             /* 初始化LCD */
