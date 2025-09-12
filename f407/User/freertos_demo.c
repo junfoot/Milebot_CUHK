@@ -299,7 +299,7 @@ void task4(void *pvParameters)
 				{
 					len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", adc_data_raw_f[i]);
 				}
-				for (i = 0; i < 8; i++)
+				for (i = 0; i < 14; i++)
 				{
 					len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", exo_state[i]);
 				}

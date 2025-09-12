@@ -9,14 +9,14 @@
 ..\i2c.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\i2c.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h
 ..\i2c.o: ..\lib\CMSIS\Include\core_cm4.h
-..\i2c.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+..\i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\i2c.o: ..\lib\CMSIS\Include\core_cmInstr.h
 ..\i2c.o: ..\lib\CMSIS\Include\cmsis_armcc.h
 ..\i2c.o: ..\lib\CMSIS\Include\core_cmFunc.h
 ..\i2c.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\i2c.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\i2c.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\i2c.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+..\i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\i2c.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\i2c.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\i2c.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h
@@ -42,8 +42,8 @@
 ..\i2c.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h
 ..\i2c.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_wwdg.h
 ..\i2c.o: ..\mcu\..\system\std.h
-..\i2c.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\inttypes.h
-..\i2c.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
+..\i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+..\i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\i2c.o: ..\mcu\..\system\msg_pragmas.h
 ..\i2c.o: ..\modules\imu\lsm6ds.h
 ..\i2c.o: ..\walk\algorithm.h

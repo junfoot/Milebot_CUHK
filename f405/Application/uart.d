@@ -1,7 +1,7 @@
 ..\uart.o: ..\mcu\uart.c
-..\uart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
-..\uart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdarg.h
-..\uart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
+..\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+..\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\uart.o: ..\mcu\mcu_if.h
 ..\uart.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 ..\uart.o: ..\mcu\stm32f4xx_hal_conf.h
@@ -10,7 +10,7 @@
 ..\uart.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\uart.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h
 ..\uart.o: ..\lib\CMSIS\Include\core_cm4.h
-..\uart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+..\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\uart.o: ..\lib\CMSIS\Include\core_cmInstr.h
 ..\uart.o: ..\lib\CMSIS\Include\cmsis_armcc.h
 ..\uart.o: ..\lib\CMSIS\Include\core_cmFunc.h
@@ -42,8 +42,8 @@
 ..\uart.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h
 ..\uart.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_wwdg.h
 ..\uart.o: ..\mcu\..\system\std.h
-..\uart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\inttypes.h
-..\uart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
+..\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+..\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\uart.o: ..\mcu\..\system\msg_pragmas.h
 ..\uart.o: ..\mcu\..\mcu\main.h
 ..\uart.o: ..\mcu\uart.h

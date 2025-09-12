@@ -96,7 +96,7 @@ void USART2_UX_IRQHandler(void)
 
                 if(checksum == g_USART2_rx_buf[expected_len-1])
                 {
-										memcpy(&exo_state, &g_USART2_rx_buf[3], expected_len - 4);
+					memcpy(&exo_state, &g_USART2_rx_buf[3], expected_len - 4);
                 }
             }
         }

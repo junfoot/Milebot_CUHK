@@ -1,10 +1,10 @@
 ..\ble.o: ..\modules\ble\ble.c
-..\ble.o: C:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h
-..\ble.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
-..\ble.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
-..\ble.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
-..\ble.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
-..\ble.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+..\ble.o: C:\Keil_v5\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h
+..\ble.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\ble.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\ble.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\ble.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\ble.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\ble.o: ..\mcu\main.h
 ..\ble.o: ..\mcu\uart_if.h
 ..\ble.o: ..\mcu\mcu_if.h
@@ -46,8 +46,8 @@
 ..\ble.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h
 ..\ble.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_wwdg.h
 ..\ble.o: ..\mcu\..\system\std.h
-..\ble.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\inttypes.h
-..\ble.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
+..\ble.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+..\ble.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\ble.o: ..\mcu\..\system\msg_pragmas.h
 ..\ble.o: ..\mcu\..\power\power_mana_if.h
 ..\ble.o: ..\mcu\internal_flash.h

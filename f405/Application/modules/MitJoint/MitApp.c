@@ -112,7 +112,7 @@ unsigned int PackingData(uint8_t* packing_buf, const uint8_t* buf, uint8_t len)
 
 // --------------------------------------------- 2025 ZHZ add -------------------------------------------
 #define FLOAT_SIZE 4
-#define NUM_FLOATS 8
+#define NUM_FLOATS 14
 #define RAW_DATA_LEN (NUM_FLOATS * FLOAT_SIZE)
 
 #define SIGN(x)  ((x) >= 0 ? 1 : -1)
@@ -246,6 +246,8 @@ void mit_task(void *argument)
 				
 									// 按顺序填充float数据
 									index = 0;
+									float_data[index++] = (float)left_lift_sate;
+									float_data[index++] = (float)right_lift_sate;
 									float_data[index++] = actuator_info[LEFT_HIP].output_angle * 180.0f / 3.14f;
 									float_data[index++] = actuator_info[LEFT_HIP].output_velocity * 180.0f / 3.14f;
 									float_data[index++] = actuator_info[LEFT_HIP].output_torque;
@@ -253,7 +255,11 @@ void mit_task(void *argument)
 									float_data[index++] = actuator_info[RIGHT_HIP].output_velocity * 180.0f / 3.14f;
 									float_data[index++] = actuator_info[RIGHT_HIP].output_torque;
 									float_data[index++] = imu_data.gyro_data_filter.x;
+									float_data[index++] = imu_data.gyro_data_filter.y;
+									float_data[index++] = imu_data.gyro_data_filter.z;
 									float_data[index++] = imu_data.accel_data_filter.x;
+									float_data[index++] = imu_data.accel_data_filter.y;
+									float_data[index++] = imu_data.accel_data_filter.z;
 									// 将float数组转换为字节数组
 									memcpy(buff, float_data, RAW_DATA_LEN);
 									// 打包数据
