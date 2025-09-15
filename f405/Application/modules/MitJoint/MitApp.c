@@ -25,6 +25,8 @@
 #include "string.h"
 #include "lsm6ds.h"
 
+#include <arm_math.h>
+
 #define SWITCH_ON 1
 #define SWITCH_OFF 0
 
@@ -296,6 +298,10 @@ void mit_task(void *argument)
                         if (fabs(RightError) > 0.05 && TorqueRightHip_PID != 0){
                             TorqueRightHip = TorqueRightHip_PID + 0.1 * SIGN(TorqueRightHip_PID);
                         }
+                        
+                        // gravity feedback
+                        TorqueLeftHip += 0.05 * arm_sin_f32(actuator_info[LEFT_HIP].output_angle);
+                        TorqueRightHip += 0.05 * arm_sin_f32(actuator_info[RIGHT_HIP].output_angle);
                         
                         // torque limit
                         TorqueLimit = 1;
