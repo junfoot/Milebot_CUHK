@@ -446,7 +446,6 @@ void usmart_scan(void)
     pbuf = usmart_get_input_string();   /* 获取数据数据流 */
     if (pbuf == 0) return ; /* 数据流空, 直接返回 */
     
-    
 
     if (g_usart_rx_buf[0] == 0xEE)
     {
@@ -454,28 +453,19 @@ void usmart_scan(void)
 //        pc_test = (float)((g_usart_rx_buf[1]<<24)+(g_usart_rx_buf[2]<<16)+(g_usart_rx_buf[3]<<8)+g_usart_rx_buf[4]) * 1e-5f;
         
     }
-    else if (g_usart_rx_buf[0] == 0x74)     // "t:"
-    {
-        if (g_usart_rx_buf[1] == 0x3A)
-        {
-						memcpy(pc_o, g_usart_rx_buf, sizeof(pc_o));
-//						pc_o[sizeof(pc_o)-1] = '\0';
-        }
-    }
+	else if (g_usart_rx_buf[1] == 0x3A)
+	{
+		memcpy(pc_o, g_usart_rx_buf, sizeof(pc_o));
+	}
 	else
     {
         sta = usmart_dev.cmd_rec(pbuf);     /* 得到函数各个信息 */
-
         if (sta == 0)
         {
             usmart_dev.exe();  /* 执行函数 */
         }
-
     }
-
     // 如果要改，记得调一调缓冲区大小
-    
-    
 }
 
 #if USMART_USE_WRFUNS == 1  /* 如果使能了读写操作 */

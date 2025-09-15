@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\HXO01M.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\HXO01M.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Sep 12 19:47:47 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon Sep 15 15:53:02 2025
 <BR><P>
 <H3>Maximum Stack Usage =        584 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -3781,8 +3781,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[89]"></a>mit_task</STRONG> (Thumb, 1454 bytes, Stack size 224 bytes, mitapp.o(i.mit_task))
-<BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = mit_task &rArr; actuator_init &rArr; PDO_mapping &rArr; SDO_master_send &rArr; CAN2_Send_Msg &rArr; HAL_CAN_Transmit_IT
+<P><STRONG><a name="[89]"></a>mit_task</STRONG> (Thumb, 1924 bytes, Stack size 232 bytes, mitapp.o(i.mit_task))
+<BR><BR>[Stack]<UL><LI>Max Depth = 328<LI>Call Chain = mit_task &rArr; actuator_init &rArr; PDO_mapping &rArr; SDO_master_send &rArr; CAN2_Send_Msg &rArr; HAL_CAN_Transmit_IT
 </UL>
 <BR>[Calls]<UL><LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart1_send_data
 <LI><a href="#[1d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
@@ -3795,10 +3795,7 @@ Global Symbols
 <LI><a href="#[271]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_fabs
 <LI><a href="#[1cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[1e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
-<LI><a href="#[1c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[20b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmple
-<LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[1e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> task.o(i.task_create_all)
@@ -4522,8 +4519,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[1e0]"></a>__aeabi_dneg</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, basic.o(x$fpl$basic))
-<BR><BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mit_task
-<LI><a href="#[1dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
+<BR><BR>[Called By]<UL><LI><a href="#[1dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 </UL>
 
 <P><STRONG><a name="[311]"></a>_dneg</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, basic.o(x$fpl$basic), UNUSED)
@@ -4613,8 +4609,7 @@ Global Symbols
 <P><STRONG><a name="[1cd]"></a>__aeabi_ddiv</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, ddiv_clz.o(x$fpl$ddiv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_ddiv
 </UL>
-<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mit_task
-<LI><a href="#[298]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sys_time_init
+<BR>[Called By]<UL><LI><a href="#[298]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sys_time_init
 <LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_get_angle
 <LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_init_1th_filter
 <LI><a href="#[274]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
@@ -4710,7 +4705,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dmul
 </UL>
 <BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_task
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mit_task
 <LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_get_angle
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_data_set_scale
 <LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_init_1th_filter

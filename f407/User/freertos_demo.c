@@ -87,7 +87,10 @@ uint8_t pc_o[20];
 float pc_t_l = 0;
 float pc_t_r = 0;
 
+float pc_1 = 0, pc_2 = 0, pc_3 = 0;
+
 uint8_t tcmd[10];
+uint8_t tcmd_pid[14];
 
 static int16_t adc_data_raw[8];
 float adc_data_raw_f[8];
@@ -190,22 +193,56 @@ void task2(void *pvParameters)
      
 				/* 数据处理与滤波 */
 				char *p = (char*)pc_o;		
-				if (*p == 't' && *(p+1) == ':') {p += 2;}
-				pc_t_l = strtof(p, &p); // 提取第一个数字
-				p++;
-				pc_t_r = strtof(p, &p); // 提取第二个数字
-
-				
+				if ( *(p+1) == ':') {
+                    p += 2;
+                }
+                if ( *(p-2) == 'q')
+                {
+                    pc_1 = strtof(p, &p);
+                    p++;
+                    pc_2 = strtof(p, &p);
+                    p++;
+                    pc_3 = strtof(p, &p);
+                }
+                else
+                {
+                    pc_t_l = strtof(p, &p); // 提取第一个数字
+                    p++;
+                    pc_t_r = strtof(p, &p); // 提取第二个数字
+                }
 				
 				// MAIN CONTROL
 				
 		
 				// send command to low level
-				tcmd[0] = 0xAB;
-				memcpy(tcmd + 1, &pc_t_l, sizeof(float));
-				memcpy(tcmd + 1 + sizeof(float), &pc_t_r, sizeof(float));
-				tcmd[sizeof(tcmd)-1] = 0xCD;
-				usart2_send_data(tcmd, sizeof(tcmd));
+				if (pc_o[0] == 0x71){              // 'q'
+                    
+                    tcmd_pid[0] = 0x12;
+                    tcmd_pid[sizeof(tcmd_pid)-1] = 0x34;
+                    memcpy(tcmd_pid + 1, &pc_1, sizeof(float));
+                    memcpy(tcmd_pid + 1 + sizeof(float), &pc_2, sizeof(float));
+                    memcpy(tcmd_pid + 1 + 2 * sizeof(float), &pc_3, sizeof(float));
+                    usart2_send_data(tcmd_pid, sizeof(tcmd_pid));
+                    
+                }
+                else{
+                    
+                    if (pc_o[0] == 0x74){   // 't' 
+                        tcmd[0] = 0xAB;
+                        tcmd[sizeof(tcmd)-1] = 0xCD;
+                    }
+                    else if (pc_o[0] == 0x70){   // 'p'
+                        tcmd[0] = 0xDC;
+                        tcmd[sizeof(tcmd)-1] = 0xBA;
+                    }
+                    memcpy(tcmd + 1, &pc_t_l, sizeof(float));
+                    memcpy(tcmd + 1 + sizeof(float), &pc_t_r, sizeof(float));
+                    
+                    usart2_send_data(tcmd, sizeof(tcmd));
+                    
+                }
+                
+
 				
 		
         // 喂狗
@@ -298,7 +335,7 @@ void task4(void *pvParameters)
 				{
 					len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", adc_data_raw_f[i]);
 				}
-				for (i = 0; i < 14; i++)
+				for (i = 0; i < 10; i++)
 				{
 					len += snprintf(buf + len, sizeof(buf) - len, "%7.3f,", exo_state[i]);
 				}

@@ -118,9 +118,11 @@ unsigned int PackingData(uint8_t* packing_buf, const uint8_t* buf, uint8_t len)
 #define SIGN(x)  ((x) >= 0 ? 1 : -1)
 
 #define PI_F 3.1415927f
-#define P 0
-#define I 0
-#define D 0
+//#define P 0
+//#define I 0
+//#define D 0
+
+float P = 0, I = 0, D = 0;
 
 uint8_t *data_buf = 0;
 int8_t data_lenght = 0;
@@ -147,6 +149,8 @@ void mit_task(void *argument)
 	float TorqueLeftRaw = 0, TorqueRightRaw = 0;
 	float PosLeftCmd = 0, PosRightCmd = 0;
 	float PosLeftRaw = 0, PosRightRaw = 0;
+    
+    float TorqueLimit;
 	
 	// PID pos control
 	float LeftError, LeftPrevError1, LeftPrevError2;
@@ -170,7 +174,163 @@ void mit_task(void *argument)
 			//loop while(1)
 			while(1)
 			{
-				// get current info
+                // get PID
+                if(uart1_dma_rx_buf_raw[0] == 0x12 && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0x34)
+				{
+					uart1_dma_rx_buf_len = 0;
+                    
+                    memcpy(&P, uart1_dma_rx_buf_raw + 1, sizeof(float));
+                    memcpy(&I, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
+                    memcpy(&D, uart1_dma_rx_buf_raw + 1 + 2 * sizeof(float), sizeof(float));
+					
+                }
+                
+				// get torque command
+				if(uart1_dma_rx_buf_raw[0] == 0xAB && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xCD)
+				{
+					uart1_dma_rx_buf_len = 0;
+                    if (mode != 1){
+						switch_mode = 1;
+						mode = 1;
+					}
+					else{
+						switch_mode = 0;
+					}
+					
+                }
+                else if(uart1_dma_rx_buf_raw[0] == 0xDC && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xBA)  // position control
+				{
+                    uart1_dma_rx_buf_len = 0;
+					if (mode != 2){
+						switch_mode = 1;
+						mode = 2;
+                        
+                        TorqueLeftHip = 0;
+						TorqueRightHip = 0;
+						PosLeftRaw = 0;
+						PosRightRaw = 0;
+					}
+					else{
+						switch_mode = 0;
+					}
+					
+                }
+                else if (uart1_dma_rx_buf_raw[0] == 0x66)
+                {
+                    uart1_dma_rx_buf_len = 0;
+                    mode = 0;
+                }
+					
+					
+				switch (mode)
+				{
+					case 0:
+						
+						TorqueLeftHip = 0;
+						TorqueRightHip = 0;
+						
+						break;
+					case 1:     // torque command
+                        
+                        memcpy(&TorqueLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
+                        memcpy(&TorqueRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
+                    
+                        // torque limit
+                        TorqueLimit = 1;
+                        if (fabs(TorqueLeftRaw) < TorqueLimit){
+                            TorqueLeftHip = TorqueLeftRaw;
+                        }
+                        else{
+                            TorqueLeftHip = SIGN(TorqueLeftRaw) * TorqueLimit;
+                        }
+                        if (fabs(TorqueRightRaw) < TorqueLimit){
+                            TorqueRightHip = TorqueRightRaw;
+                        }
+                        else{
+                            TorqueRightHip = SIGN(TorqueRightRaw) * TorqueLimit;
+                        }
+                        
+						break;
+					case 2:     // position command
+						
+                        memcpy(&PosLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
+                        memcpy(&PosRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
+                    
+                        // degree to rad
+                        PosLeftCmd = PosLeftRaw * PI_F / 180.0f;
+                        PosRightCmd = PosRightRaw * PI_F / 180.0f;
+                        
+                        // pos limit
+                        if (PosLeftCmd > 1.571){
+                            PosLeftCmd = 1.571;
+                        }
+                        else if (PosLeftCmd < -0.436){
+                            PosLeftCmd = -0.436;
+                        }
+                        if (PosRightCmd > 1.571){
+                            PosRightCmd = 1.571;
+                        }
+                        else if (PosRightCmd < -0.436){
+                            PosRightCmd = -0.436;
+                        }
+                        
+                        // PID control ( Increment )
+                        LeftError = PosLeftCmd - actuator_info[LEFT_HIP].output_angle;
+                        LeftProportional = LeftError - LeftPrevError1;
+                        LeftIntegral = LeftError;
+                        LeftDerivative = LeftError - 2 * LeftPrevError1 + LeftPrevError2;
+                        TorqueLeftHip += P * LeftProportional + I * LeftIntegral + D * LeftDerivative;
+                        LeftPrevError2 = LeftPrevError1;
+                        LeftPrevError1 = LeftError;
+                        
+                        RightError = PosRightCmd - actuator_info[RIGHT_HIP].output_angle;
+                        RightProportional = RightError - RightPrevError1;
+                        RightIntegral = RightError;
+                        RightDerivative = RightError - 2 * RightPrevError1 + RightPrevError2;
+                        TorqueRightHip += P * RightProportional + I * RightIntegral + D * RightDerivative;
+                        RightPrevError2 = RightPrevError1;
+                        RightPrevError1 = RightError;
+                        
+                        // torque limit
+                        TorqueLimit = 1;
+                        if (fabs(TorqueLeftHip) < TorqueLimit){
+                            TorqueLeftHip = TorqueLeftHip;
+                        }
+                        else{
+                            TorqueLeftHip = SIGN(TorqueLeftHip) * TorqueLimit;
+                        }
+                        if (fabs(TorqueRightHip) < TorqueLimit){
+                            TorqueRightHip = TorqueRightHip;
+                        }
+                        else{
+                            TorqueRightHip = SIGN(TorqueRightHip) * TorqueLimit;
+                        }
+                    
+                        TorqueLeftHip = 0;  // q:1.24,0.002,1.1
+//						TorqueRightHip = 0;
+                    
+						break;
+					default:
+						break;
+				}
+					
+					
+				
+				// angle limit
+				if ((actuator_info[LEFT_HIP].output_angle > 1.571)||(actuator_info[LEFT_HIP].output_angle < -0.436))    //  -25~90 degree
+				{
+					TorqueLeftHip = 0;
+				}
+				if ((actuator_info[RIGHT_HIP].output_angle > 1.571)||(actuator_info[RIGHT_HIP].output_angle < -0.436))  //  -25~90 degree
+				{ 
+					TorqueRightHip = 0;
+				}
+				
+				actuator_state[LEFT_HIP].actuator_cmd.set_torque = TorqueLeftHip;
+				actuator_state[RIGHT_HIP].actuator_cmd.set_torque = -TorqueRightHip;   // right is reverse
+				
+				
+				
 				//Circular send command to and get state from actuators
 				for(i = FIRST_JOINT; i < ALL_JOINTS; i++)
 				{
@@ -183,120 +343,12 @@ void mit_task(void *argument)
 				right_lift_sate = walk_detect_right_lift_state(&actuator_info);
 				
 				AbiSendMsgACTUATOR_STATE(ACTUATOR_STATE_ID, actuator_info);
-				
-				
-				// get torque command
-				if(uart1_dma_rx_buf_raw[0] == 0xAB && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xCD)
-				{
-					if (mode != 1){
-						switch_mode = 1;
-						mode = 1;
-					}
-					else{
-						switch_mode = 0;
-					}
-					
-					memcpy(&TorqueLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
-					memcpy(&TorqueRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
-					// alter right direction
-					TorqueRightRaw = -TorqueRightRaw;
-				
-					uart1_dma_rx_buf_len = 0;
-				
-					// torque limit
-					float TorqueLimit = 1;
-					if (fabs(TorqueLeftRaw) < TorqueLimit){
-						TorqueLeftHip = TorqueLeftRaw;
-					}
-					else{
-						TorqueLeftHip = SIGN(TorqueLeftRaw) * TorqueLimit;
-					}
-					if (fabs(TorqueRightRaw) < TorqueLimit){
-						TorqueRightHip = TorqueRightRaw;
-					}
-					else{
-						TorqueRightHip = SIGN(TorqueRightRaw) * TorqueLimit;
-					}
-				}
-				else if(uart1_dma_rx_buf_raw[0] == 0xDC && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xBA)  // position control
-				{
-					if (mode != 2){
-						switch_mode = 1;
-						mode = 2;
-					}
-					else{
-						switch_mode = 0;
-					}
-					
-					if (switch_mode){
-						TorqueLeftHip = 0;
-						TorqueRightHip = 0;
-					}
-					
-					memcpy(&PosLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
-					memcpy(&PosRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
-					uart1_dma_rx_buf_len = 0;
-					
-					// degree to rad
-					PosLeftCmd = PosLeftRaw * PI_F /180.0f;
-					PosRightCmd = PosRightRaw * PI_F /180.0f;
-					
-					// pos limit
-					if (PosLeftCmd > 1.571){
-						PosLeftCmd = 1.571;
-					}
-					else if (PosLeftCmd < -0.436){
-						PosLeftCmd = -0.436;
-					}
-					if (PosRightCmd > 1.571){
-						PosRightCmd = 1.571;
-					}
-					else if (PosRightCmd < -0.436){
-						PosRightCmd = -0.436;
-					}
-					
-					// PID control ( Increment )
-					LeftError = PosLeftCmd - actuator_info[LEFT_HIP].output_angle;
-					LeftProportional = LeftError - LeftPrevError1;
-					LeftIntegral = LeftError;
-					LeftDerivative = LeftError - 2 * LeftPrevError1 + LeftPrevError2;
-					TorqueLeftHip += P * LeftProportional + I * LeftIntegral + D * LeftDerivative;
-					LeftPrevError2 = LeftPrevError1;
-					LeftPrevError1 = LeftError;
-					
-					RightError = PosRightCmd - actuator_info[RIGHT_HIP].output_angle;
-					RightProportional = RightError - RightPrevError1;
-					RightIntegral = RightError;
-					RightDerivative = RightError - 2 * RightPrevError1 + RightPrevError2;
-					TorqueRightHip += P * RightProportional + I * RightIntegral + D * RightDerivative;
-					RightPrevError2 = RightPrevError1;
-					RightPrevError1 = RightError;
-				}
-				else{
-					mode = 0;
-					
-					TorqueLeftHip = 0;
-					TorqueRightHip = 0;
-				}
-				
-				// angle limit
-				if ((actuator_info[LEFT_HIP].output_angle > 1.571)||(actuator_info[LEFT_HIP].output_angle < -0.436))    //  -25~90 degree
-				{
-					TorqueLeftHip = 0;
-				}
-				if ((actuator_info[RIGHT_HIP].output_angle > 1.571)&&(actuator_info[RIGHT_HIP].output_angle < -0.436))  //  -25~90 degree
-				{ 
-					TorqueRightHip = 0;
-				}
-				
-				actuator_state[LEFT_HIP].actuator_cmd.set_torque = TorqueLeftHip;
-				actuator_state[RIGHT_HIP].actuator_cmd.set_torque = TorqueRightHip;
         
         if(advanced_mode_switch)
         {
             
             count_num++;
-            if (count_num >= 5)
+            if (count_num >= 10)
             {
                 count_num = 0;
 
@@ -318,16 +370,20 @@ void mit_task(void *argument)
 				
 				// °´Ë³ÐòÌî³äfloatÊý¾Ý
 				index = 0;
-				float_data[index++] = (float)left_lift_sate;
-				float_data[index++] = (float)right_lift_sate;
+//				float_data[index++] = (float)left_lift_sate;
+//				float_data[index++] = (float)right_lift_sate;
+				float_data[index++] = TorqueLeftHip;
+				float_data[index++] = (float)mode;
 				float_data[index++] = actuator_info[LEFT_HIP].output_angle * 180.0f / PI_F;
 				float_data[index++] = actuator_info[LEFT_HIP].output_velocity * 180.0f / PI_F;
 				float_data[index++] = actuator_info[LEFT_HIP].output_torque;
 				float_data[index++] = actuator_info[RIGHT_HIP].output_angle * 180.0f / PI_F;
 				float_data[index++] = actuator_info[RIGHT_HIP].output_velocity * 180.0f / PI_F;
 				float_data[index++] = actuator_info[RIGHT_HIP].output_torque;
-				float_data[index++] = imu_data.eulerf_Mayhony.phi;
-				float_data[index++] = imu_data.eulerf_Mayhony.theta;
+//				float_data[index++] = imu_data.eulerf_Mayhony.phi;
+//				float_data[index++] = imu_data.eulerf_Mayhony.theta;
+                float_data[index++] = P;
+                float_data[index++] = I;
 //									float_data[index++] = imu_data.gyro_data_filter.x;
 //									float_data[index++] = imu_data.gyro_data_filter.y;
 //									float_data[index++] = imu_data.gyro_data_filter.z;
