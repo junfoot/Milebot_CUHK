@@ -262,7 +262,7 @@ void sys_task(void *argument)
                 //坐标系变换TF
                 transform_frame();
 
-                #if 1
+                #if 0
                 //姿态解算, 得到实时的角度
                 IMU_get_angle();
                 #else

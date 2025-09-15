@@ -1,6 +1,6 @@
 ..\adc_app.o: ..\system\adc_app.c
 ..\adc_app.o: ..\system\..\mcu\adc_if.h
-..\adc_app.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+..\adc_app.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\adc_app.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 ..\adc_app.o: ..\mcu\stm32f4xx_hal_conf.h
 ..\adc_app.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h
@@ -14,7 +14,7 @@
 ..\adc_app.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\adc_app.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\adc_app.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\adc_app.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+..\adc_app.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\adc_app.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\adc_app.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\adc_app.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h

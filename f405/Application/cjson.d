@@ -1,9 +1,9 @@
 ..\cjson.o: ..\modules\wireless\cJSON.c
-..\cjson.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
-..\cjson.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
-..\cjson.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
-..\cjson.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
-..\cjson.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\float.h
-..\cjson.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\limits.h
-..\cjson.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\ctype.h
+..\cjson.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\cjson.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\cjson.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\cjson.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\cjson.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
+..\cjson.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+..\cjson.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
 ..\cjson.o: ..\modules\wireless\cJSON.h

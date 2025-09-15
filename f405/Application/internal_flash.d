@@ -8,14 +8,14 @@
 ..\internal_flash.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\internal_flash.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h
 ..\internal_flash.o: ..\lib\CMSIS\Include\core_cm4.h
-..\internal_flash.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+..\internal_flash.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\internal_flash.o: ..\lib\CMSIS\Include\core_cmInstr.h
 ..\internal_flash.o: ..\lib\CMSIS\Include\cmsis_armcc.h
 ..\internal_flash.o: ..\lib\CMSIS\Include\core_cmFunc.h
 ..\internal_flash.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\internal_flash.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\internal_flash.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\internal_flash.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+..\internal_flash.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\internal_flash.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\internal_flash.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\internal_flash.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h
@@ -41,7 +41,7 @@
 ..\internal_flash.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h
 ..\internal_flash.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_wwdg.h
 ..\internal_flash.o: ..\mcu\..\system\std.h
-..\internal_flash.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\inttypes.h
-..\internal_flash.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
+..\internal_flash.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+..\internal_flash.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\internal_flash.o: ..\mcu\..\system\msg_pragmas.h
 ..\internal_flash.o: ..\mcu\internal_flash.h

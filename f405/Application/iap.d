@@ -7,14 +7,14 @@
 ..\iap.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\iap.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h
 ..\iap.o: ..\lib\CMSIS\Include\core_cm4.h
-..\iap.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+..\iap.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\iap.o: ..\lib\CMSIS\Include\core_cmInstr.h
 ..\iap.o: ..\lib\CMSIS\Include\cmsis_armcc.h
 ..\iap.o: ..\lib\CMSIS\Include\core_cmFunc.h
 ..\iap.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\iap.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\iap.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\iap.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+..\iap.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\iap.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\iap.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\iap.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h
