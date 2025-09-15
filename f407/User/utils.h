@@ -9,8 +9,8 @@
 #define SAMPLE_RATE_HZ 1000
 
 // ÂË²¨Æ÷²ÎÊý
-#define NUM_TAPS_1 41
-#define NUM_TAPS_2 41
+#define NUM_TAPS_1 201
+#define NUM_TAPS_2 151
 
 void init_all_channels(void);
 float32_t full_wave_rectify(float32_t value);

@@ -112,19 +112,20 @@ unsigned int PackingData(uint8_t* packing_buf, const uint8_t* buf, uint8_t len)
 
 // --------------------------------------------- 2025 ZHZ add -------------------------------------------
 #define FLOAT_SIZE 4
-#define NUM_FLOATS 14
+#define NUM_FLOATS 10
 #define RAW_DATA_LEN (NUM_FLOATS * FLOAT_SIZE)
 
 #define SIGN(x)  ((x) >= 0 ? 1 : -1)
 
+#define PI_F 3.1415927f
+#define P 0
+#define I 0
+#define D 0
 
-float TorqueLeftHip,TorqueRightHip = 0;
-int TorqueLeftHip_dir,TorqueRightHip_dir = 0; // +1:flexion assist; 0:no assist; -1:extension assist
 uint8_t *data_buf = 0;
 int8_t data_lenght = 0;
 uint8_t * data_buf_torque;
 
-float TorqueLeftRaw = 0, TorqueRightRaw = 0;
 
 void mit_task(void *argument)
 {
@@ -133,15 +134,28 @@ void mit_task(void *argument)
     uint8_t left_lift_sate = 0;
     uint8_t right_lift_sate = 0;
 	
-		uint8_t index = 0;
-		float float_data[NUM_FLOATS];
-		uint8_t buff[RAW_DATA_LEN];
-		unsigned int packed_len;
-		uint8_t packed_data[RAW_DATA_LEN + 4];
-		float Torque_limit,Torque_limit_init = 1;
-		
-		int count_num = 0;
-		
+	uint8_t index = 0;
+	float float_data[NUM_FLOATS];
+	uint8_t buff[RAW_DATA_LEN];
+	unsigned int packed_len;
+	uint8_t packed_data[RAW_DATA_LEN + 4];
+	float Torque_limit,Torque_limit_init = 1;
+	
+	int count_num = 0;
+	
+	float TorqueLeftHip = 0,TorqueRightHip = 0;
+	float TorqueLeftRaw = 0, TorqueRightRaw = 0;
+	float PosLeftCmd = 0, PosRightCmd = 0;
+	float PosLeftRaw = 0, PosRightRaw = 0;
+	
+	// PID pos control
+	float LeftError, LeftPrevError1, LeftPrevError2;
+	float LeftProportional, LeftIntegral, LeftDerivative;
+	float RightError, RightPrevError1, RightPrevError2;
+	float RightProportional, RightIntegral, RightDerivative;
+	
+	uint8_t mode = 0;
+	uint8_t switch_mode = 0;
 			
 			// Wait for the actuators to power up
 			osDelay(2000);
@@ -156,69 +170,127 @@ void mit_task(void *argument)
 			//loop while(1)
 			while(1)
 			{
+				// get current info
+				//Circular send command to and get state from actuators
+				for(i = FIRST_JOINT; i < ALL_JOINTS; i++)
+				{
+					send_cmd_to_actuator(&actuator_state[i]);
+					get_state_from_actuator(&actuator_info[i], &actuator_state[i]);
+				}
+				
+				/*检测抬腿：1-检测到抬腿，0-未检测到抬腿*/
+				left_lift_sate = walk_detect_left_lift_state(&actuator_info);
+				right_lift_sate = walk_detect_right_lift_state(&actuator_info);
+				
+				AbiSendMsgACTUATOR_STATE(ACTUATOR_STATE_ID, actuator_info);
+				
+				
 				// get torque command
 				if(uart1_dma_rx_buf_raw[0] == 0xAB && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xCD)
 				{
-						memcpy(&TorqueLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
-						memcpy(&TorqueRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
+					if (mode != 1){
+						switch_mode = 1;
+						mode = 1;
+					}
+					else{
+						switch_mode = 0;
+					}
 					
-						uart1_dma_rx_buf_len = 0;
-				}
-
-				// torque limit
-				float TorqueLimit = 0.2;
-				if (fabs(TorqueLeftRaw) < TorqueLimit){
-					TorqueLeftHip = TorqueLeftRaw;
-				}
-				else{
-					TorqueLeftHip = SIGN(TorqueLeftRaw) * TorqueLimit;
-				}
-				if (fabs(TorqueRightRaw) < TorqueLimit){
-					TorqueRightHip = TorqueRightRaw;
-				}
-				else{
-					TorqueRightHip = SIGN(TorqueRightRaw) * TorqueLimit;
-				}
+					memcpy(&TorqueLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
+					memcpy(&TorqueRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
+					// alter right direction
+					TorqueRightRaw = -TorqueRightRaw;
 				
+					uart1_dma_rx_buf_len = 0;
+				
+					// torque limit
+					float TorqueLimit = 1;
+					if (fabs(TorqueLeftRaw) < TorqueLimit){
+						TorqueLeftHip = TorqueLeftRaw;
+					}
+					else{
+						TorqueLeftHip = SIGN(TorqueLeftRaw) * TorqueLimit;
+					}
+					if (fabs(TorqueRightRaw) < TorqueLimit){
+						TorqueRightHip = TorqueRightRaw;
+					}
+					else{
+						TorqueRightHip = SIGN(TorqueRightRaw) * TorqueLimit;
+					}
+				}
+				else if(uart1_dma_rx_buf_raw[0] == 0xDC && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xBA)  // position control
+				{
+					if (mode != 2){
+						switch_mode = 1;
+						mode = 2;
+					}
+					else{
+						switch_mode = 0;
+					}
+					
+					if (switch_mode){
+						TorqueLeftHip = 0;
+						TorqueRightHip = 0;
+					}
+					
+					memcpy(&PosLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
+					memcpy(&PosRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
+					uart1_dma_rx_buf_len = 0;
+					
+					// degree to rad
+					PosLeftCmd = PosLeftRaw * PI_F /180.0f;
+					PosRightCmd = PosRightRaw * PI_F /180.0f;
+					
+					// pos limit
+					if (PosLeftCmd > 1.571){
+						PosLeftCmd = 1.571;
+					}
+					else if (PosLeftCmd < -0.436){
+						PosLeftCmd = -0.436;
+					}
+					if (PosRightCmd > 1.571){
+						PosRightCmd = 1.571;
+					}
+					else if (PosRightCmd < -0.436){
+						PosRightCmd = -0.436;
+					}
+					
+					// PID control ( Increment )
+					LeftError = PosLeftCmd - actuator_info[LEFT_HIP].output_angle;
+					LeftProportional = LeftError - LeftPrevError1;
+					LeftIntegral = LeftError;
+					LeftDerivative = LeftError - 2 * LeftPrevError1 + LeftPrevError2;
+					TorqueLeftHip += P * LeftProportional + I * LeftIntegral + D * LeftDerivative;
+					LeftPrevError2 = LeftPrevError1;
+					LeftPrevError1 = LeftError;
+					
+					RightError = PosRightCmd - actuator_info[RIGHT_HIP].output_angle;
+					RightProportional = RightError - RightPrevError1;
+					RightIntegral = RightError;
+					RightDerivative = RightError - 2 * RightPrevError1 + RightPrevError2;
+					TorqueRightHip += P * RightProportional + I * RightIntegral + D * RightDerivative;
+					RightPrevError2 = RightPrevError1;
+					RightPrevError1 = RightError;
+				}
+				else{
+					mode = 0;
+					
+					TorqueLeftHip = 0;
+					TorqueRightHip = 0;
+				}
 				
 				// angle limit
-				if (((actuator_info[LEFT_HIP].output_angle * 180.0 / 3.14) > 90)&&(actuator_info[LEFT_HIP].output_angle * TorqueLeftHip_dir > 0))
+				if ((actuator_info[LEFT_HIP].output_angle > 1.571)||(actuator_info[LEFT_HIP].output_angle < -0.436))    //  -25~90 degree
 				{
-						TorqueLeftHip = 0;
+					TorqueLeftHip = 0;
 				}
-				if ((-(actuator_info[LEFT_HIP].output_angle * 180.0 / 3.14) > 25)&&(actuator_info[LEFT_HIP].output_angle * TorqueLeftHip_dir > 0))
-				{
-						TorqueLeftHip = 0;
+				if ((actuator_info[RIGHT_HIP].output_angle > 1.571)&&(actuator_info[RIGHT_HIP].output_angle < -0.436))  //  -25~90 degree
+				{ 
+					TorqueRightHip = 0;
 				}
-				if (((actuator_info[RIGHT_HIP].output_angle * 180.0 / 3.14) > 90)&&(actuator_info[RIGHT_HIP].output_angle * TorqueRightHip_dir > 0))
-				{
-						TorqueRightHip = 0;
-				}
-				if ((-(actuator_info[RIGHT_HIP].output_angle * 180.0 / 3.14) > 25)&&(actuator_info[RIGHT_HIP].output_angle * TorqueRightHip_dir > 0))
-				{
-						TorqueRightHip = 0;
-				}
-				
-				
-//				TorqueLeftHip = 0;
-//				TorqueRightHip = 0;
 				
 				actuator_state[LEFT_HIP].actuator_cmd.set_torque = TorqueLeftHip;
 				actuator_state[RIGHT_HIP].actuator_cmd.set_torque = TorqueRightHip;
-					
-        //Circular send command to and get state from actuators
-        for(i = FIRST_JOINT; i < ALL_JOINTS; i++)
-        {
-            send_cmd_to_actuator(&actuator_state[i]);
-            get_state_from_actuator(&actuator_info[i], &actuator_state[i]);
-
-        }
-        
-        /*检测抬腿：1-检测到抬腿，0-未检测到抬腿*/
-        left_lift_sate = walk_detect_left_lift_state(&actuator_info);
-        right_lift_sate = walk_detect_right_lift_state(&actuator_info);
-        
-        AbiSendMsgACTUATOR_STATE(ACTUATOR_STATE_ID, actuator_info);
         
         if(advanced_mode_switch)
         {
@@ -244,28 +316,30 @@ void mit_task(void *argument)
 				
 //					actuator_state[LEFT_HIP].dir
 				
-									// 按顺序填充float数据
-									index = 0;
-									float_data[index++] = (float)left_lift_sate;
-									float_data[index++] = (float)right_lift_sate;
-									float_data[index++] = actuator_info[LEFT_HIP].output_angle * 180.0f / 3.14f;
-									float_data[index++] = actuator_info[LEFT_HIP].output_velocity * 180.0f / 3.14f;
-									float_data[index++] = actuator_info[LEFT_HIP].output_torque;
-									float_data[index++] = actuator_info[RIGHT_HIP].output_angle * 180.0f / 3.14f;
-									float_data[index++] = actuator_info[RIGHT_HIP].output_velocity * 180.0f / 3.14f;
-									float_data[index++] = actuator_info[RIGHT_HIP].output_torque;
-									float_data[index++] = imu_data.gyro_data_filter.x;
-									float_data[index++] = imu_data.gyro_data_filter.y;
-									float_data[index++] = imu_data.gyro_data_filter.z;
-									float_data[index++] = imu_data.accel_data_filter.x;
-									float_data[index++] = imu_data.accel_data_filter.y;
-									float_data[index++] = imu_data.accel_data_filter.z;
-									// 将float数组转换为字节数组
-									memcpy(buff, float_data, RAW_DATA_LEN);
-									// 打包数据
-									packed_len = PackingData(packed_data, buff, RAW_DATA_LEN);
-									// 通过USART1发送数据
-									uart1_send_data(packed_data, packed_len);	
+				// 按顺序填充float数据
+				index = 0;
+				float_data[index++] = (float)left_lift_sate;
+				float_data[index++] = (float)right_lift_sate;
+				float_data[index++] = actuator_info[LEFT_HIP].output_angle * 180.0f / PI_F;
+				float_data[index++] = actuator_info[LEFT_HIP].output_velocity * 180.0f / PI_F;
+				float_data[index++] = actuator_info[LEFT_HIP].output_torque;
+				float_data[index++] = actuator_info[RIGHT_HIP].output_angle * 180.0f / PI_F;
+				float_data[index++] = actuator_info[RIGHT_HIP].output_velocity * 180.0f / PI_F;
+				float_data[index++] = actuator_info[RIGHT_HIP].output_torque;
+				float_data[index++] = imu_data.eulerf_Mayhony.phi;
+				float_data[index++] = imu_data.eulerf_Mayhony.theta;
+//									float_data[index++] = imu_data.gyro_data_filter.x;
+//									float_data[index++] = imu_data.gyro_data_filter.y;
+//									float_data[index++] = imu_data.gyro_data_filter.z;
+//									float_data[index++] = imu_data.accel_data_filter.x;
+//									float_data[index++] = imu_data.accel_data_filter.y;
+//									float_data[index++] = imu_data.accel_data_filter.z;
+				// 将float数组转换为字节数组
+				memcpy(buff, float_data, RAW_DATA_LEN);
+				// 打包数据
+				packed_len = PackingData(packed_data, buff, RAW_DATA_LEN);
+				// 通过USART1发送数据
+				uart1_send_data(packed_data, packed_len);	
             }
         }
 					
