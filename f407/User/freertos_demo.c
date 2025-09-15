@@ -75,6 +75,8 @@ TaskHandle_t            Task4Task_Handler;  /* 任务句柄 */
 void task4(void *pvParameters);             /* 任务函数 */
 
 /* --------------------------变量-------------------------------------------- */
+#define SIGN(x)  ((x) >= 0 ? 1 : -1)
+
 uint32_t notifyValueTask1;  
 uint32_t notifyValueTask2; 
 uint32_t notifyValueTask3; 
@@ -84,8 +86,8 @@ float exo_state[32];
 
 /* PC */
 uint8_t pc_o[20];
-float pc_t_l = 0;
-float pc_t_r = 0;
+float pc_t_l = 0,pc_t_r = 0;
+float pc_t_l_prev = 0, pc_t_r_prev = 0;
 
 float pc_1 = 0, pc_2 = 0, pc_3 = 0;
 
@@ -184,7 +186,11 @@ void task1(void *pvParameters)
  */
 void task2(void *pvParameters)
 {   
-		char buf[20];
+    char buf[20];
+    int left_lift_state = 0, right_lift_state = 0;
+    float left_pos = 0, right_pos = 0;
+    
+    float smooth_alpha = 0.01;
 	
     while(1) 
     {
@@ -196,7 +202,7 @@ void task2(void *pvParameters)
 				if ( *(p+1) == ':') {
                     p += 2;
                 }
-                if ( *(p-2) == 'q')
+                if ( *(p-2) == 'q')     // for tune PID
                 {
                     pc_1 = strtof(p, &p);
                     p++;
@@ -204,18 +210,41 @@ void task2(void *pvParameters)
                     p++;
                     pc_3 = strtof(p, &p);
                 }
-                else
+                else                   // command form PC
                 {
                     pc_t_l = strtof(p, &p); // 提取第一个数字
                     p++;
                     pc_t_r = strtof(p, &p); // 提取第二个数字
                 }
 				
-				// MAIN CONTROL
-				
+				// MAIN CONTROL               // PC端输入样式（要换行）  "t:0.2,0.2"
+                left_lift_state = (int)exo_state[0];
+                right_lift_state = (int)exo_state[1];
+                left_pos = exo_state[2];
+                right_pos = exo_state[5];
+                
+                if (left_lift_state)
+                {
+                    pc_t_l = SIGN(left_pos) * pc_t_l;
+                    pc_t_r = SIGN(right_pos) * -pc_t_r;
+                }
+                else if (right_lift_state)
+                {
+                    pc_t_l = SIGN(left_pos) * -pc_t_l;
+                    pc_t_r = SIGN(right_pos) * pc_t_r;
+                }
+                else
+                {
+                    pc_t_l = smooth_torque(0, pc_t_l_prev, smooth_alpha);
+                    pc_t_r = smooth_torque(0, pc_t_r_prev, smooth_alpha);
+                }
+                pc_t_l_prev = pc_t_l;
+                pc_t_r_prev = pc_t_r;
+                
+                
 		
-				// send command to low level
-				if (pc_o[0] == 0x71){              // 'q'
+
+				if (pc_o[0] == 0x71){              // 'q'  for PID tuning
                     
                     tcmd_pid[0] = 0x12;
                     tcmd_pid[sizeof(tcmd_pid)-1] = 0x34;
@@ -225,13 +254,14 @@ void task2(void *pvParameters)
                     usart2_send_data(tcmd_pid, sizeof(tcmd_pid));
                     
                 }
+                // send command to low level
                 else{
                     
                     if (pc_o[0] == 0x74){   // 't' 
                         tcmd[0] = 0xAB;
                         tcmd[sizeof(tcmd)-1] = 0xCD;
                     }
-                    else if (pc_o[0] == 0x70){   // 'p'
+                    else if (pc_o[0] == 0x70){   // 'p'   pos control, not OK yet
                         tcmd[0] = 0xDC;
                         tcmd[sizeof(tcmd)-1] = 0xBA;
                     }
@@ -346,5 +376,11 @@ void task4(void *pvParameters)
 						HAL_UART_Transmit_DMA(&g_usart1_handler, (uint8_t*)buf, len);
 				}		
     }
+}
+
+
+float smooth_torque(float new_torque, float previous_torque, float alpha)
+{
+    return alpha * new_torque + (1 - alpha) * previous_torque;
 }
 

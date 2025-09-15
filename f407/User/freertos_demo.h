@@ -23,4 +23,6 @@
 
 void freertos_demo(void);
 
+float smooth_torque(float new_torque, float previous_torque, float alpha);
+
 #endif

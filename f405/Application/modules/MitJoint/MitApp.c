@@ -318,8 +318,8 @@ void mit_task(void *argument)
                             TorqueRightHip = SIGN(TorqueRightHip) * TorqueLimit;
                         }
                         
-                        TorqueLeftHip = 0;  // q:1.24,0.002,1.1
-//						TorqueRightHip = 0;
+                        TorqueLeftHip = 0;
+						TorqueRightHip = 0;
                     
                         break;
                     default:
