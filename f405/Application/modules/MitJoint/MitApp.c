@@ -112,7 +112,7 @@ unsigned int PackingData(uint8_t* packing_buf, const uint8_t* buf, uint8_t len)
 
 // --------------------------------------------- 2025 ZHZ add -------------------------------------------
 #define FLOAT_SIZE 4
-#define NUM_FLOATS 10
+#define NUM_FLOATS 14
 #define RAW_DATA_LEN (NUM_FLOATS * FLOAT_SIZE)
 
 #define SIGN(x)  ((x) >= 0 ? 1 : -1)
@@ -145,6 +145,7 @@ void mit_task(void *argument)
 	
 	int count_num = 0;
 	
+    float TorqueLeftHip_PID = 0,TorqueRightHip_PID = 0;
 	float TorqueLeftHip = 0,TorqueRightHip = 0;
 	float TorqueLeftRaw = 0, TorqueRightRaw = 0;
 	float PosLeftCmd = 0, PosRightCmd = 0;
@@ -174,7 +175,6 @@ void mit_task(void *argument)
             //loop while(1)
             while(1)
             {
-
                 
                 // get torque command
                 if(uart1_dma_rx_buf_raw[0] == 0xAB && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xCD)
@@ -215,6 +215,7 @@ void mit_task(void *argument)
                     memcpy(&D, uart1_dma_rx_buf_raw + 1 + 2 * sizeof(float), sizeof(float));
                     
                 }
+
                     
                     
                 switch (mode)
@@ -276,7 +277,7 @@ void mit_task(void *argument)
                         LeftProportional = LeftError - LeftPrevError1;
                         LeftIntegral = LeftError;
                         LeftDerivative = LeftError - 2 * LeftPrevError1 + LeftPrevError2;
-                        TorqueLeftHip += P * LeftProportional + I * LeftIntegral + D * LeftDerivative;
+                        TorqueLeftHip_PID += P * LeftProportional + I * LeftIntegral + D * LeftDerivative;
                         LeftPrevError2 = LeftPrevError1;
                         LeftPrevError1 = LeftError;
                         
@@ -284,9 +285,17 @@ void mit_task(void *argument)
                         RightProportional = RightError - RightPrevError1;
                         RightIntegral = RightError;
                         RightDerivative = RightError - 2 * RightPrevError1 + RightPrevError2;
-                        TorqueRightHip += P * RightProportional + I * RightIntegral + D * RightDerivative;
+                        TorqueRightHip_PID += P * RightProportional + I * RightIntegral + D * RightDerivative;
                         RightPrevError2 = RightPrevError1;
                         RightPrevError1 = RightError;
+                        
+                        // froward feedback
+                        if (fabs(LeftError) > 0.05 && TorqueLeftHip_PID != 0){
+                            TorqueLeftHip = TorqueLeftHip_PID + 0.1 * SIGN(TorqueLeftHip_PID);
+                        }
+                        if (fabs(RightError) > 0.05 && TorqueRightHip_PID != 0){
+                            TorqueRightHip = TorqueRightHip_PID + 0.1 * SIGN(TorqueRightHip_PID);
+                        }
                         
                         // torque limit
                         TorqueLimit = 1;
@@ -301,14 +310,6 @@ void mit_task(void *argument)
                         }
                         else{
                             TorqueRightHip = SIGN(TorqueRightHip) * TorqueLimit;
-                        }
-                        
-                        // froward feedback
-                        if (fabs(LeftError) > 0.05 && TorqueLeftHip != 0){
-                            TorqueLeftHip += 0.1 * SIGN(TorqueLeftHip);
-                        }
-                        if (fabs(RightError) > 0.05 && TorqueRightHip != 0){
-                            TorqueRightHip += 0.1 * SIGN(TorqueRightHip);
                         }
                         
                         TorqueLeftHip = 0;  // q:1.24,0.002,1.1

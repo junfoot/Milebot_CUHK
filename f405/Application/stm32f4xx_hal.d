@@ -6,14 +6,14 @@
 ..\stm32f4xx_hal.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\stm32f4xx_hal.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h
 ..\stm32f4xx_hal.o: ..\lib\CMSIS\Include\core_cm4.h
-..\stm32f4xx_hal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\stm32f4xx_hal.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 ..\stm32f4xx_hal.o: ..\lib\CMSIS\Include\core_cmInstr.h
 ..\stm32f4xx_hal.o: ..\lib\CMSIS\Include\cmsis_armcc.h
 ..\stm32f4xx_hal.o: ..\lib\CMSIS\Include\core_cmFunc.h
 ..\stm32f4xx_hal.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\stm32f4xx_hal.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\stm32f4xx_hal.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\stm32f4xx_hal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\stm32f4xx_hal.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
 ..\stm32f4xx_hal.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\stm32f4xx_hal.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\stm32f4xx_hal.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h
@@ -38,6 +38,6 @@
 ..\stm32f4xx_hal.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h
 ..\stm32f4xx_hal.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h
 ..\stm32f4xx_hal.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_wwdg.h
-..\stm32f4xx_hal.o: C:\Keil_v5\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\RTX\Include\rtx_os.h
-..\stm32f4xx_hal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-..\stm32f4xx_hal.o: C:\Keil_v5\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h
+..\stm32f4xx_hal.o: C:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\RTX\Include\rtx_os.h
+..\stm32f4xx_hal.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
+..\stm32f4xx_hal.o: C:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h

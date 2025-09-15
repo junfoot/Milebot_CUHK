@@ -1,5 +1,5 @@
 ..\systick.o: ..\mcu\sysTick.c
-..\systick.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\systick.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
 ..\systick.o: ..\mcu\mcu_if.h
 ..\systick.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 ..\systick.o: ..\mcu\stm32f4xx_hal_conf.h
@@ -8,7 +8,7 @@
 ..\systick.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\systick.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h
 ..\systick.o: ..\lib\CMSIS\Include\core_cm4.h
-..\systick.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\systick.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 ..\systick.o: ..\lib\CMSIS\Include\core_cmInstr.h
 ..\systick.o: ..\lib\CMSIS\Include\cmsis_armcc.h
 ..\systick.o: ..\lib\CMSIS\Include\core_cmFunc.h
@@ -40,8 +40,8 @@
 ..\systick.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h
 ..\systick.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_wwdg.h
 ..\systick.o: ..\mcu\..\system\std.h
-..\systick.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
-..\systick.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\systick.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\inttypes.h
+..\systick.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
 ..\systick.o: ..\mcu\..\system\msg_pragmas.h
 ..\systick.o: ..\mcu\sysTick.h
 ..\systick.o: ..\mcu\sysTick_if.h
