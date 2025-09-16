@@ -28,4 +28,6 @@ float bpnn(float input[4]);
 float bpnn_G(float input[2]);
 float Hex2Float(uint8_t *pMem1);
 
+float clamp(float x, float lo, float hi);
+
 #endif

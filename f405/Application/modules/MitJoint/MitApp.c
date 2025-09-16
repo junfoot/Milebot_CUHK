@@ -62,8 +62,8 @@ static ACTUATOR_STATE actuator_state[ALL_JOINTS] =
 
 
 /* Global functions ----------------------------------------------------------*/
-uint8_t advanced_mode_switch = SWITCH_ON;
-//uint8_t advanced_mode_switch = SWITCH_OFF;
+//uint8_t advanced_mode_switch = SWITCH_ON;
+uint8_t advanced_mode_switch = SWITCH_OFF;
 /**
   * @brief  task to handle all mit application function.
   * @param  None
@@ -202,6 +202,20 @@ void mit_task(void *argument)
                         TorqueRightHip = 0;
                         PosLeftRaw = 0;
                         PosRightRaw = 0;
+                        TorqueRightHip_PID = 0;
+                        TorqueRightHip_PID = 0;
+                    }
+                    else{
+                        switch_mode = 0;
+                    }
+                    
+                }
+                else if(uart1_dma_rx_buf_raw[0] == 0x45 && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0x67)  // vel control
+                {
+                    uart1_dma_rx_buf_len = 0;
+                    if (mode != 3){
+                        switch_mode = 1;
+                        mode = 3;
                     }
                     else{
                         switch_mode = 0;
@@ -274,11 +288,17 @@ void mit_task(void *argument)
                             PosRightCmd = -0.436;
                         }
                         
+                        /*****************************************************************************/
+                        // gravity feedback
+                        TorqueLeftHip = 0.05 * arm_sin_f32(actuator_info[LEFT_HIP].output_angle);
+                        TorqueRightHip = 0.05 * arm_sin_f32(actuator_info[RIGHT_HIP].output_angle);
+                        
                         // PID control ( Increment )
                         LeftError = PosLeftCmd - actuator_info[LEFT_HIP].output_angle;
                         LeftProportional = LeftError - LeftPrevError1;
                         LeftIntegral = LeftError;
                         LeftDerivative = LeftError - 2 * LeftPrevError1 + LeftPrevError2;
+                        
                         TorqueLeftHip_PID += P * LeftProportional + I * LeftIntegral + D * LeftDerivative;
                         LeftPrevError2 = LeftPrevError1;
                         LeftPrevError1 = LeftError;
@@ -287,24 +307,41 @@ void mit_task(void *argument)
                         RightProportional = RightError - RightPrevError1;
                         RightIntegral = RightError;
                         RightDerivative = RightError - 2 * RightPrevError1 + RightPrevError2;
+                        
                         TorqueRightHip_PID += P * RightProportional + I * RightIntegral + D * RightDerivative;
                         RightPrevError2 = RightPrevError1;
                         RightPrevError1 = RightError;
                         
+//                        // PID control ( position )
+//                        LeftError = PosLeftCmd - actuator_info[LEFT_HIP].output_angle;
+//                        LeftProportional = LeftError;
+//                        LeftIntegral += LeftError;
+//                        LeftDerivative = LeftError - LeftPrevError1;
+//                        
+//                        TorqueLeftHip_PID = P * LeftProportional + I * LeftIntegral + D * LeftDerivative;
+//                        LeftPrevError2 = LeftPrevError1;
+//                        LeftPrevError1 = LeftError;
+//                        
+//                        RightError = PosRightCmd - actuator_info[RIGHT_HIP].output_angle;
+//                        RightProportional = RightError;
+//                        RightIntegral += RightError;
+//                        RightDerivative = RightError - RightPrevError1;
+//                        
+//                        TorqueRightHip_PID = P * RightProportional + I * RightIntegral + D * RightDerivative;
+//                        RightPrevError1 = RightError;
+
                         // froward feedback
                         if (fabs(LeftError) > 0.05 && TorqueLeftHip_PID != 0){
-                            TorqueLeftHip = TorqueLeftHip_PID + 0.1 * SIGN(TorqueLeftHip_PID);
+                            TorqueLeftHip += TorqueLeftHip_PID + 0 * SIGN(TorqueLeftHip_PID);
                         }
                         if (fabs(RightError) > 0.05 && TorqueRightHip_PID != 0){
-                            TorqueRightHip = TorqueRightHip_PID + 0.1 * SIGN(TorqueRightHip_PID);
+                            TorqueRightHip += TorqueRightHip_PID + 0 * SIGN(TorqueRightHip_PID);
                         }
                         
-                        // gravity feedback
-                        TorqueLeftHip += 0.05 * arm_sin_f32(actuator_info[LEFT_HIP].output_angle);
-                        TorqueRightHip += 0.05 * arm_sin_f32(actuator_info[RIGHT_HIP].output_angle);
+                        /*****************************************************************************/
                         
                         // torque limit
-                        TorqueLimit = 1;
+                        TorqueLimit = 3;
                         if (fabs(TorqueLeftHip) < TorqueLimit){
                             TorqueLeftHip = TorqueLeftHip;
                         }
@@ -318,10 +355,33 @@ void mit_task(void *argument)
                             TorqueRightHip = SIGN(TorqueRightHip) * TorqueLimit;
                         }
                         
-                        TorqueLeftHip = 0;  // q:1.24,0.002,1.1
-//						TorqueRightHip = 0;
-                    
+//                        TorqueLeftHip = 0; 
+                        TorqueRightHip = 0;    // q:8,0,650
+                        
                         break;
+                        
+                    case 3:            // velocity ?
+                        
+                        memcpy(&TorqueLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
+                        memcpy(&TorqueRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
+                    
+                        // torque limit
+                        TorqueLimit = 10;
+                        if (fabs(TorqueLeftRaw) < TorqueLimit){
+                            TorqueLeftHip = TorqueLeftRaw;
+                        }
+                        else{
+                            TorqueLeftHip = SIGN(TorqueLeftRaw) * TorqueLimit;
+                        }
+                        if (fabs(TorqueRightRaw) < TorqueLimit){
+                            TorqueRightHip = TorqueRightRaw;
+                        }
+                        else{
+                            TorqueRightHip = SIGN(TorqueRightRaw) * TorqueLimit;
+                        }
+                        
+                        break;
+                        
                     default:
                         break;
                 }
@@ -338,9 +398,19 @@ void mit_task(void *argument)
                     TorqueRightHip = 0;
                 }
                 
+                
+                if (mode == 3)
+                {
+                actuator_state[LEFT_HIP].actuator_cmd.out_vel = TorqueLeftHip;
+                actuator_state[RIGHT_HIP].actuator_cmd.out_vel = TorqueRightHip;
+//                actuator_state[LEFT_HIP].actuator_cmd.set_torque = TorqueLeftHip;
+//                actuator_state[RIGHT_HIP].actuator_cmd.set_torque = -TorqueRightHip;   // right is reverse
+                }
+                else
+                {
                 actuator_state[LEFT_HIP].actuator_cmd.set_torque = TorqueLeftHip;
                 actuator_state[RIGHT_HIP].actuator_cmd.set_torque = -TorqueRightHip;   // right is reverse
-                
+                }
                 
                 
                 //Circular send command to and get state from actuators
@@ -356,7 +426,8 @@ void mit_task(void *argument)
                 
                 AbiSendMsgACTUATOR_STATE(ACTUATOR_STATE_ID, actuator_info);
         
-        if(advanced_mode_switch)
+//        if(advanced_mode_switch)
+        if(1)
         {
             
             count_num++;

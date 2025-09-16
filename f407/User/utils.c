@@ -358,5 +358,9 @@ float Hex2Float(uint8_t *pMem1)
     return sign * mantissa * pow(2, exponent);
 }
 
-
+float clamp(float x, float lo, float hi) {
+    if (x > hi) return hi;
+    if (x < lo) return lo;
+    return x;
+}
 

@@ -22,7 +22,7 @@ Dialog DLL:      TCM.DLL V1.56.4.0
  
 <h2>Project:</h2>
 D:\PhD\Working\f405\Application\MDK-ARM\HXO01M.uvprojx
-Project File Date:  09/15/2025
+Project File Date:  09/16/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin'
@@ -96,15 +96,15 @@ compiling stm32f4xx_hal_sd.c...
 compiling comm.c...
 compiling bat.c...
 compiling MitApp.c...
-D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(348): warning:  #223-D: function "walk_detect_left_lift_state" declared implicitly
+D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(424): warning:  #223-D: function "walk_detect_left_lift_state" declared implicitly
                   left_lift_sate = walk_detect_left_lift_state(&actuator_info);
-D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(349): warning:  #223-D: function "walk_detect_right_lift_state" declared implicitly
+D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(425): warning:  #223-D: function "walk_detect_right_lift_state" declared implicitly
                   right_lift_sate = walk_detect_right_lift_state(&actuator_info);
-D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(144): warning:  #177-D: variable "Torque_limit"  was declared but never referenced
+D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(146): warning:  #177-D: variable "Torque_limit"  was declared but never referenced
         float Torque_limit,Torque_limit_init = 1;
-D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(144): warning:  #177-D: variable "Torque_limit_init"  was declared but never referenced
+D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(146): warning:  #177-D: variable "Torque_limit_init"  was declared but never referenced
         float Torque_limit,Torque_limit_init = 1;
-D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(163): warning:  #550-D: variable "switch_mode"  was set but never used
+D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(165): warning:  #550-D: variable "switch_mode"  was set but never used
         uint8_t switch_mode = 0;
 ..\modules\MitJoint\MitApp.c: 5 warnings, 0 errors
 compiling syn6658.c...
@@ -123,7 +123,7 @@ compiling rtx_lib.c...
 compiling RTX_Config.c...
 linking...
 ..\HXO01M.axf: Warning: L6304W: Duplicate input file ..\HXO01M.lib ignored.
-Program Size: Code=96378 RO-data=4622 RW-data=7468 ZI-data=47140  
+Program Size: Code=96694 RO-data=4626 RW-data=7468 ZI-data=47140  
 Finished: 0 information, 1 warning and 0 error messages.
 FromELF: creating hex file...
 After Build - User command #1: fromelf.exe --bin -o "..\HXO01M.bin" "..\HXO01M.axf"
@@ -160,20 +160,20 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.1.1
 
    * Component: ARM::CMSIS:RTOS2:Keil RTX5:Library:5.3.0
+      Library file:  CMSIS/RTOS2/RTX/Library/ARM/RTX_CM4F.lib
+      Include file:  CMSIS/RTOS2/RTX/Include/rtx_os.h
+      Source file:   CMSIS/RTOS2/RTX/Config/RTX_Config.c
+      Source file:   CMSIS/RTOS2/RTX/Template/MemPool.c
       Source file:   CMSIS/RTOS2/RTX/Template/MsgQueue.c
       Source file:   CMSIS/RTOS2/RTX/Template/Mutex.c
       Source file:   CMSIS/RTOS2/RTX/Template/main.c
-      Include file:  CMSIS/RTOS2/RTX/Include/rtx_os.h
-      Source file:   CMSIS/RTOS2/RTX/Config/RTX_Config.c
       Source file:   CMSIS/RTOS2/RTX/Template/Events.c
-      Source file:   CMSIS/RTOS2/RTX/Template/MemPool.c
       Include file:  CMSIS/RTOS2/RTX/Config/RTX_Config.h
-      Source file:   CMSIS/RTOS2/RTX/Template/Semaphore.c
-      Library file:  CMSIS/RTOS2/RTX/Library/ARM/RTX_CM4F.lib
       Source file:   CMSIS/RTOS2/RTX/Template/Timer.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Semaphore.c
       Source file:   CMSIS/RTOS2/RTX/Template/Thread.c
-      Source file:   CMSIS/RTOS2/RTX/Source/rtx_lib.c
       Source file:   CMSIS/RTOS2/RTX/Template/svc_user.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_lib.c
 Build Time Elapsed:  00:00:21
 </pre>
 </body>

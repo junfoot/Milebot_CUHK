@@ -446,18 +446,16 @@ void usmart_scan(void)
     pbuf = usmart_get_input_string();   /* 获取数据数据流 */
     if (pbuf == 0) return ; /* 数据流空, 直接返回 */
     
-
+    
     if (g_usart_rx_buf[0] == 0xEE)
     {
-//        memcpy(pc_o, g_usart_rx_buf, sizeof(pc_o));
-//        pc_test = (float)((g_usart_rx_buf[1]<<24)+(g_usart_rx_buf[2]<<16)+(g_usart_rx_buf[3]<<8)+g_usart_rx_buf[4]) * 1e-5f;
-        
+
     }
-	else if (g_usart_rx_buf[1] == 0x3A)
-	{
-		memcpy(pc_o, g_usart_rx_buf, sizeof(pc_o));
-	}
-	else
+    else if (g_usart_rx_buf[1] == 0x3A)
+    {
+        memcpy(pc_o, g_usart_rx_buf, sizeof(pc_o));
+    }
+    else
     {
         sta = usmart_dev.cmd_rec(pbuf);     /* 得到函数各个信息 */
         if (sta == 0)

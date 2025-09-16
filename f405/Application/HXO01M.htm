@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\HXO01M.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\HXO01M.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon Sep 15 17:05:46 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue Sep 16 16:01:01 2025
 <BR><P>
 <H3>Maximum Stack Usage =        584 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -20,8 +20,8 @@ Functions with no stack information
 Mutually Recursive functions
 </H3> <LI><a href="#[2a]">CAN1_SCE_IRQHandler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[2a]">CAN1_SCE_IRQHandler</a><BR>
  <LI><a href="#[221]">cJSON_Delete</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[221]">cJSON_Delete</a><BR>
- <LI><a href="#[27c]">parse_object</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[228]">parse_value</a><BR>
- <LI><a href="#[279]">parse_array</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[228]">parse_value</a><BR>
+ <LI><a href="#[27d]">parse_object</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[228]">parse_value</a><BR>
+ <LI><a href="#[27a]">parse_array</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[228]">parse_value</a><BR>
  <LI><a href="#[144]">delay_us</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[144]">delay_us</a><BR>
 </UL>
 <P>
@@ -662,6 +662,12 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__user_setup_stackheap
 </UL>
 
+<P><STRONG><a name="[274]"></a>arm_sin_f32</STRONG> (Thumb, 118 bytes, Stack size 0 bytes, arm_sin_f32.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mit_task
+<LI><a href="#[29d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;test_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+</UL>
+
 <P><STRONG><a name="[10]"></a>SVC_Handler</STRONG> (Thumb, 152 bytes, Stack size 0 bytes, irq_cm4f.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f405xx.o(RESET)
 </UL>
@@ -680,11 +686,6 @@ Global Symbols
 <BR>[Address Reference Count : 2]<UL><LI> startup_stm32f405xx.o(RESET)
 <LI> rtx_kernel.o(.text.svcRtxKernelStart)
 </UL>
-<P><STRONG><a name="[282]"></a>arm_sin_f32</STRONG> (Thumb, 118 bytes, Stack size 0 bytes, arm_sin_f32.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[29d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;test_control
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
-</UL>
-
 <P><STRONG><a name="[d4]"></a>_malloc_internal</STRONG> (Thumb, 130 bytes, Stack size 24 bytes, h1_alloc_mt.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = _malloc_internal &rArr; __Heap_Full &rArr; __Heap_ProvideMemory &rArr; _free_internal &rArr; _mutex_release &rArr; os_kernel_is_active
 </UL>
@@ -853,7 +854,7 @@ Global Symbols
 <LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_JSON_value_via_key
 </UL>
 
-<P><STRONG><a name="[27f]"></a>strncmp</STRONG> (Thumb, 150 bytes, Stack size 16 bytes, strncmp.o(.text))
+<P><STRONG><a name="[280]"></a>strncmp</STRONG> (Thumb, 150 bytes, Stack size 16 bytes, strncmp.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = strncmp
 </UL>
 <BR>[Called By]<UL><LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_value
@@ -1423,7 +1424,7 @@ Global Symbols
 <LI><a href="#[1d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PDO_mapping
 </UL>
 
-<P><STRONG><a name="[278]"></a>osKernelGetState</STRONG> (Thumb, 52 bytes, Stack size 0 bytes, rtx_kernel.o(.text.osKernelGetState))
+<P><STRONG><a name="[279]"></a>osKernelGetState</STRONG> (Thumb, 52 bytes, Stack size 0 bytes, rtx_kernel.o(.text.osKernelGetState))
 <BR><BR>[Called By]<UL><LI><a href="#[1ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;os_kernel_is_active
 </UL>
 
@@ -2890,7 +2891,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;actuator_init
 </UL>
 
-<P><STRONG><a name="[277]"></a>PackingData</STRONG> (Thumb, 96 bytes, Stack size 20 bytes, mitapp.o(i.PackingData))
+<P><STRONG><a name="[278]"></a>PackingData</STRONG> (Thumb, 96 bytes, Stack size 20 bytes, mitapp.o(i.PackingData))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = PackingData
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mit_task
@@ -2903,7 +2904,7 @@ Global Symbols
 <LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_Send_Msg
 <LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_us
 </UL>
-<BR>[Called By]<UL><LI><a href="#[274]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send_cmd_to_actuator
+<BR>[Called By]<UL><LI><a href="#[275]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send_cmd_to_actuator
 <LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;actuator_init
 </UL>
 
@@ -3087,7 +3088,7 @@ Global Symbols
 <LI><a href="#[1cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
 </UL>
-<BR>[Called By]<UL><LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
+<BR>[Called By]<UL><LI><a href="#[27b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
 </UL>
 
 <P><STRONG><a name="[1ed]"></a>__hardfp_sqrt</STRONG> (Thumb, 122 bytes, Stack size 32 bytes, sqrt_full.o(i.__hardfp_sqrt))
@@ -3410,7 +3411,7 @@ Global Symbols
 <LI><a href="#[14c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AT24CXX_Read_Byte
 <LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AT24CXX_NAck
 <LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AT24CXX_Ack
-<LI><a href="#[274]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send_cmd_to_actuator
+<LI><a href="#[275]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send_cmd_to_actuator
 <LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RPDO1_send
 </UL>
 
@@ -3733,7 +3734,7 @@ Global Symbols
 
 <P><STRONG><a name="[1fc]"></a>mcl_parabola_poly_intpol_3</STRONG> (Thumb, 144 bytes, Stack size 0 bytes, mcl_interpolation.o(i.mcl_parabola_poly_intpol_3))
 <BR><BR>[Called By]<UL><LI><a href="#[2a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;torq_smooth_control
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 <LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hemiplegia_control
 <LI><a href="#[287]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_sit_down
 <LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_plan_assist_down
@@ -3764,7 +3765,7 @@ Global Symbols
 
 <P><STRONG><a name="[24d]"></a>mcl_parabola_poly_intpol_updata_3</STRONG> (Thumb, 122 bytes, Stack size 0 bytes, mcl_interpolation.o(i.mcl_parabola_poly_intpol_updata_3))
 <BR><BR>[Called By]<UL><LI><a href="#[2a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;torq_smooth_control
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 <LI><a href="#[2a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_assist_update
 <LI><a href="#[24c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hemiplegia_assist_update
 </UL>
@@ -3842,24 +3843,23 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[89]"></a>mit_task</STRONG> (Thumb, 2416 bytes, Stack size 304 bytes, mitapp.o(i.mit_task))
-<BR><BR>[Stack]<UL><LI>Max Depth = 400<LI>Call Chain = mit_task &rArr; actuator_init &rArr; PDO_mapping &rArr; SDO_master_send &rArr; CAN2_Send_Msg &rArr; HAL_CAN_Transmit_IT
+<P><STRONG><a name="[89]"></a>mit_task</STRONG> (Thumb, 2716 bytes, Stack size 296 bytes, mitapp.o(i.mit_task))
+<BR><BR>[Stack]<UL><LI>Max Depth = 392<LI>Call Chain = mit_task &rArr; actuator_init &rArr; PDO_mapping &rArr; SDO_master_send &rArr; CAN2_Send_Msg &rArr; HAL_CAN_Transmit_IT
 </UL>
 <BR>[Calls]<UL><LI><a href="#[209]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart1_send_data
 <LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
-<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
-<LI><a href="#[275]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
-<LI><a href="#[274]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send_cmd_to_actuator
+<LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
+<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
+<LI><a href="#[275]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send_cmd_to_actuator
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_state_from_actuator
+<LI><a href="#[274]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_sin_f32
 <LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;actuator_init
-<LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PackingData
+<LI><a href="#[278]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PackingData
 <LI><a href="#[273]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_fabs
 <LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[1eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
 <LI><a href="#[1c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[20d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmple
-<LI><a href="#[1c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
-<LI><a href="#[1cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[1c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
@@ -4004,7 +4004,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[21b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispose_upgrade_package
 </UL>
 
-<P><STRONG><a name="[274]"></a>send_cmd_to_actuator</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, mitprotocol.o(i.send_cmd_to_actuator))
+<P><STRONG><a name="[275]"></a>send_cmd_to_actuator</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, mitprotocol.o(i.send_cmd_to_actuator))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = send_cmd_to_actuator &rArr; RPDO1_send &rArr; CAN2_Send_Msg &rArr; HAL_CAN_Transmit_IT
 </UL>
 <BR>[Calls]<UL><LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_us
@@ -4297,7 +4297,7 @@ Global Symbols
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;actuator_state_walk_cb
 </UL>
 
-<P><STRONG><a name="[281]"></a>update_phase</STRONG> (Thumb, 118 bytes, Stack size 48 bytes, algorithm.o(i.update_phase))
+<P><STRONG><a name="[282]"></a>update_phase</STRONG> (Thumb, 118 bytes, Stack size 48 bytes, algorithm.o(i.update_phase))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = update_phase &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
@@ -4305,7 +4305,7 @@ Global Symbols
 <LI><a href="#[1cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[1c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
-<BR>[Called By]<UL><LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<BR>[Called By]<UL><LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 </UL>
 
 <P><STRONG><a name="[204]"></a>user_play_sound</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, syn6658.o(i.user_play_sound))
@@ -4354,7 +4354,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_status_detect
 </UL>
 
-<P><STRONG><a name="[275]"></a>walk_detect_left_lift_state</STRONG> (Thumb, 300 bytes, Stack size 56 bytes, mitprotocol.o(i.walk_detect_left_lift_state))
+<P><STRONG><a name="[276]"></a>walk_detect_left_lift_state</STRONG> (Thumb, 300 bytes, Stack size 56 bytes, mitprotocol.o(i.walk_detect_left_lift_state))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = walk_detect_left_lift_state &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
@@ -4417,7 +4417,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_status_detect
 </UL>
 
-<P><STRONG><a name="[276]"></a>walk_detect_right_lift_state</STRONG> (Thumb, 300 bytes, Stack size 56 bytes, mitprotocol.o(i.walk_detect_right_lift_state))
+<P><STRONG><a name="[277]"></a>walk_detect_right_lift_state</STRONG> (Thumb, 300 bytes, Stack size 56 bytes, mitprotocol.o(i.walk_detect_right_lift_state))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = walk_detect_right_lift_state &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
@@ -4532,7 +4532,7 @@ Global Symbols
 <LI><a href="#[291]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resistance_control
 <LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_flash_data
 <LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pre_walk_control
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 <LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hemiplegia_control
 <LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_walk_state
 <LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_test_state
@@ -4610,15 +4610,15 @@ Global Symbols
 <LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMUupdate
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_data_set_scale
 <LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_init_1th_filter
-<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
-<LI><a href="#[275]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
+<LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
+<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_state_from_actuator
 <LI><a href="#[29d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;test_control
 <LI><a href="#[291]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resistance_control
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 <LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;assessment_control
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;actuator_state_walk_cb
-<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_phase
+<LI><a href="#[282]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_phase
 <LI><a href="#[203]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_1th_filter
 <LI><a href="#[2a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift
 <LI><a href="#[22e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gait_cycle_data_record
@@ -4641,17 +4641,16 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_dadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_task
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mit_task
 <LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_init_1th_filter
-<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
-<LI><a href="#[275]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
-<LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
+<LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
+<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[27b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
 <LI><a href="#[1de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[1e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_infnan2
 <LI><a href="#[1db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_infnan
 <LI><a href="#[1e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_phase
+<LI><a href="#[282]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_phase
 <LI><a href="#[203]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_1th_filter
 <LI><a href="#[2a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gait_assessment_cal
@@ -4686,11 +4685,11 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[29a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sys_time_init
 <LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_init_1th_filter
-<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
-<LI><a href="#[275]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
+<LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
+<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_state_from_actuator
 <LI><a href="#[29d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;test_control
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 <LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;assessment_control
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;actuator_state_walk_cb
 <LI><a href="#[1dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_invalid
@@ -4722,10 +4721,10 @@ Global Symbols
 <LI><a href="#[2c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dcmp_Inf
 </UL>
 
-<P><STRONG><a name="[27b]"></a>__aeabi_d2iz</STRONG> (Thumb, 0 bytes, Stack size 40 bytes, dfix.o(x$fpl$dfix))
+<P><STRONG><a name="[27c]"></a>__aeabi_d2iz</STRONG> (Thumb, 0 bytes, Stack size 40 bytes, dfix.o(x$fpl$dfix))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = __aeabi_d2iz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
+<BR>[Called By]<UL><LI><a href="#[27b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
 </UL>
 
 <P><STRONG><a name="[2c9]"></a>_dfix</STRONG> (Thumb, 192 bytes, Stack size 40 bytes, dfix.o(x$fpl$dfix), UNUSED)
@@ -4734,11 +4733,10 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[1c5]"></a>__aeabi_i2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt))
-<BR><BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mit_task
-<LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_data_set_scale
+<BR><BR>[Called By]<UL><LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_data_set_scale
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_state_from_actuator
 <LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;assessment_control
-<LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
+<LI><a href="#[27b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gait_assessment_cal
 <LI><a href="#[1e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 </UL>
@@ -4751,7 +4749,7 @@ Global Symbols
 
 <P><STRONG><a name="[243]"></a>__aeabi_ui2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dfltu))
 <BR><BR>[Called By]<UL><LI><a href="#[29a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sys_time_init
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gait_assessment_cal
 </UL>
 
@@ -4763,11 +4761,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mit_task
 <LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ble_task
 <LI><a href="#[20c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ble_evaluation_data_send
-<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
-<LI><a href="#[275]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
+<LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
+<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
 <LI><a href="#[2a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_control
 <LI><a href="#[29d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;test_control
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 <LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hemiplegia_control
 <LI><a href="#[2b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_stand_up
 <LI><a href="#[287]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_sit_down
@@ -4798,20 +4796,20 @@ Global Symbols
 <LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMUupdate
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_data_set_scale
 <LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_init_1th_filter
-<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
-<LI><a href="#[275]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
+<LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
+<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_state_from_actuator
 <LI><a href="#[29d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;test_control
 <LI><a href="#[291]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resistance_control
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 <LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;assessment_control
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;actuator_state_walk_cb
-<LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
+<LI><a href="#[27b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
 <LI><a href="#[1de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[1dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[1ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_overflow
 <LI><a href="#[1e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_phase
+<LI><a href="#[282]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_phase
 <LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift
 <LI><a href="#[2a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift
 <LI><a href="#[286]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pre_walk_detect_lift
@@ -4873,11 +4871,11 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mit_task
 <LI><a href="#[21c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispose_evaluation_package
-<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
-<LI><a href="#[275]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
+<LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
+<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
 <LI><a href="#[2a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_control
 <LI><a href="#[29d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;test_control
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 <LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hemiplegia_control
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gait_assessment_cal
 <LI><a href="#[22a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detect_extension_max
@@ -4920,7 +4918,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dsub
 </UL>
 <BR>[Called By]<UL><LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;assessment_control
-<LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
+<LI><a href="#[27b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
 <LI><a href="#[1e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gait_assessment_cal
 <LI><a href="#[1e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
@@ -4989,16 +4987,16 @@ Global Symbols
 <LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_init_1th_filter
 <LI><a href="#[21c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dispose_evaluation_package
 <LI><a href="#[20c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ble_evaluation_data_send
-<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
-<LI><a href="#[275]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
+<LI><a href="#[277]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_right_lift_state
+<LI><a href="#[276]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_left_lift_state
 <LI><a href="#[2a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_control
 <LI><a href="#[29d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;test_control
 <LI><a href="#[291]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resistance_control
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 <LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hemiplegia_control
 <LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;assessment_control
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;actuator_state_walk_cb
-<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_phase
+<LI><a href="#[282]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_phase
 <LI><a href="#[203]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_1th_filter
 <LI><a href="#[2b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_stand_up
 <LI><a href="#[287]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_detect_sit_down
@@ -5665,8 +5663,8 @@ Local Symbols
 <BR>[Calls]<UL><LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_ParseWithOpts
-<LI><a href="#[27c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_object
-<LI><a href="#[279]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_array
+<LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_object
+<LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_array
 </UL>
 
 <P><STRONG><a name="[223]"></a>cJSON_strcasecmp</STRONG> (Thumb, 76 bytes, Stack size 16 bytes, cjson.o(i.cJSON_strcasecmp))
@@ -5677,7 +5675,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[222]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_GetObjectItem
 </UL>
 
-<P><STRONG><a name="[279]"></a>parse_array</STRONG> (Thumb, 168 bytes, Stack size 32 bytes, cjson.o(i.parse_array))
+<P><STRONG><a name="[27a]"></a>parse_array</STRONG> (Thumb, 168 bytes, Stack size 32 bytes, cjson.o(i.parse_array))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44 + In Cycle
 <LI>Call Chain = parse_array &rArr;  parse_value (Cycle)
 </UL>
@@ -5688,62 +5686,62 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_value
 </UL>
 
-<P><STRONG><a name="[27e]"></a>parse_hex4</STRONG> (Thumb, 276 bytes, Stack size 0 bytes, cjson.o(i.parse_hex4))
-<BR><BR>[Called By]<UL><LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_string
+<P><STRONG><a name="[27f]"></a>parse_hex4</STRONG> (Thumb, 276 bytes, Stack size 0 bytes, cjson.o(i.parse_hex4))
+<BR><BR>[Called By]<UL><LI><a href="#[27e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_string
 </UL>
 
-<P><STRONG><a name="[27a]"></a>parse_number</STRONG> (Thumb, 424 bytes, Stack size 80 bytes, cjson.o(i.parse_number))
+<P><STRONG><a name="[27b]"></a>parse_number</STRONG> (Thumb, 424 bytes, Stack size 80 bytes, cjson.o(i.parse_number))
 <BR><BR>[Stack]<UL><LI>Max Depth = 464<LI>Call Chain = parse_number &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf &rArr; __dunder_d &rArr; _fp_trapveneer &rArr; _fp_trap &rArr; __rt_SIGFPE &rArr; __rt_SIGFPE_inner &rArr; __default_signal_display &rArr; _ttywrch
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 <LI><a href="#[1c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[1c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
-<LI><a href="#[27b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
+<LI><a href="#[27c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
 <LI><a href="#[1e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 <LI><a href="#[1cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_value
 </UL>
 
-<P><STRONG><a name="[27c]"></a>parse_object</STRONG> (Thumb, 272 bytes, Stack size 32 bytes, cjson.o(i.parse_object))
+<P><STRONG><a name="[27d]"></a>parse_object</STRONG> (Thumb, 272 bytes, Stack size 32 bytes, cjson.o(i.parse_object))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72 + In Cycle
 <LI>Call Chain = parse_object &rArr;  parse_value (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;skip
 <LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_value
-<LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_string
+<LI><a href="#[27e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_string
 <LI><a href="#[224]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_New_Item
 </UL>
 <BR>[Called By]<UL><LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_value
 </UL>
 
-<P><STRONG><a name="[27d]"></a>parse_string</STRONG> (Thumb, 448 bytes, Stack size 40 bytes, cjson.o(i.parse_string))
+<P><STRONG><a name="[27e]"></a>parse_string</STRONG> (Thumb, 448 bytes, Stack size 40 bytes, cjson.o(i.parse_string))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = parse_string
 </UL>
-<BR>[Calls]<UL><LI><a href="#[27e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_hex4
+<BR>[Calls]<UL><LI><a href="#[27f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_hex4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_value
-<LI><a href="#[27c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_object
+<LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_object
 </UL>
 
 <P><STRONG><a name="[228]"></a>parse_value</STRONG> (Thumb, 158 bytes, Stack size 16 bytes, cjson.o(i.parse_value))
 <BR><BR>[Stack]<UL><LI>Max Depth = 480<LI>Call Chain = parse_value &rArr; parse_number &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf &rArr; __dunder_d &rArr; _fp_trapveneer &rArr; _fp_trap &rArr; __rt_SIGFPE &rArr; __rt_SIGFPE_inner &rArr; __default_signal_display &rArr; _ttywrch
 </UL>
-<BR>[Calls]<UL><LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_string
-<LI><a href="#[27c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_object
-<LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
-<LI><a href="#[279]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_array
-<LI><a href="#[27f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncmp
+<BR>[Calls]<UL><LI><a href="#[27e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_string
+<LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_object
+<LI><a href="#[27b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_number
+<LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_array
+<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncmp
 </UL>
 <BR>[Called By]<UL><LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_ParseWithOpts
-<LI><a href="#[27c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_object
-<LI><a href="#[279]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_array
+<LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_object
+<LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_array
 </UL>
 
 <P><STRONG><a name="[227]"></a>skip</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, cjson.o(i.skip))
 <BR><BR>[Called By]<UL><LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cJSON_ParseWithOpts
-<LI><a href="#[27c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_object
-<LI><a href="#[279]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_array
+<LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_object
+<LI><a href="#[27a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_array
 </UL>
 
 <P><STRONG><a name="[201]"></a>get_JSON_value_via_key</STRONG> (Thumb, 152 bytes, Stack size 24 bytes, json_app.o(i.get_JSON_value_via_key))
@@ -5761,7 +5759,7 @@ Local Symbols
 <P><STRONG><a name="[1ef]"></a>os_kernel_is_active</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, rtx_lib.o(i.os_kernel_is_active))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = os_kernel_is_active
 </UL>
-<BR>[Calls]<UL><LI><a href="#[278]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelGetState
+<BR>[Calls]<UL><LI><a href="#[279]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelGetState
 </UL>
 <BR>[Called By]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_mutex_release
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_mutex_acquire
@@ -5776,7 +5774,7 @@ Local Symbols
 <LI><a href="#[2a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;torq_smooth_control
 <LI><a href="#[29d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;test_control
 <LI><a href="#[291]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resistance_control
-<LI><a href="#[280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
+<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;passive_control
 <LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;hemiplegia_control
 <LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_motor
 </UL>
@@ -5929,14 +5927,14 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;walk_task
 </UL>
 
-<P><STRONG><a name="[280]"></a>passive_control</STRONG> (Thumb, 1626 bytes, Stack size 32 bytes, walk.o(i.passive_control))
+<P><STRONG><a name="[281]"></a>passive_control</STRONG> (Thumb, 1626 bytes, Stack size 32 bytes, walk.o(i.passive_control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = passive_control &rArr; update_phase &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[231]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AbiSendMsgACTUATOR_CMD
-<LI><a href="#[281]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_phase
+<BR>[Calls]<UL><LI><a href="#[274]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_sin_f32
+<LI><a href="#[231]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AbiSendMsgACTUATOR_CMD
+<LI><a href="#[282]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_phase
 <LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mcl_parabola_poly_intpol_updata_3
 <LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mcl_parabola_poly_intpol_3
-<LI><a href="#[282]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_sin_f32
 <LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[1eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
 <LI><a href="#[1c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
@@ -5973,8 +5971,8 @@ Local Symbols
 <P><STRONG><a name="[29d]"></a>test_control</STRONG> (Thumb, 606 bytes, Stack size 40 bytes, walk.o(i.test_control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = test_control &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[231]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AbiSendMsgACTUATOR_CMD
-<LI><a href="#[282]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_sin_f32
+<BR>[Calls]<UL><LI><a href="#[274]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_sin_f32
+<LI><a href="#[231]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AbiSendMsgACTUATOR_CMD
 <LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fft_data_init
 <LI><a href="#[29e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fft_data_in
 <LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
