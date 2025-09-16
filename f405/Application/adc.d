@@ -1,6 +1,6 @@
 ..\adc.o: ..\mcu\adc.c
 ..\adc.o: ..\mcu\..\system\timer_if.h
-..\adc.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+..\adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\adc.o: ..\mcu\..\system\..\mcu\tim_if.h
 ..\adc.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 ..\adc.o: ..\mcu\stm32f4xx_hal_conf.h
@@ -15,7 +15,7 @@
 ..\adc.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\adc.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\adc.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\adc.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+..\adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\adc.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\adc.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\adc.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h
@@ -44,6 +44,6 @@
 ..\adc.o: ..\mcu\adc_if.h
 ..\adc.o: ..\mcu\mcu_if.h
 ..\adc.o: ..\mcu\..\system\std.h
-..\adc.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\inttypes.h
-..\adc.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
+..\adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+..\adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\adc.o: ..\mcu\..\system\msg_pragmas.h

@@ -1,6 +1,6 @@
 ..\timer.o: ..\system\timer.c
 ..\timer.o: ..\system\timer_if.h
-..\timer.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+..\timer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\timer.o: ..\system\..\mcu\tim_if.h
 ..\timer.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 ..\timer.o: ..\mcu\stm32f4xx_hal_conf.h
@@ -15,7 +15,7 @@
 ..\timer.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\timer.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\timer.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\timer.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+..\timer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\timer.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\timer.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\timer.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h

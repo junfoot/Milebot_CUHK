@@ -119,12 +119,11 @@ unsigned int PackingData(uint8_t* packing_buf, const uint8_t* buf, uint8_t len)
 
 #define SIGN(x)  ((x) >= 0 ? 1 : -1)
 
-#define PI_F 3.1415927f
 //#define P 0
 //#define I 0
 //#define D 0
 
-float P = 0, I = 0, D = 0;
+float P = 8, I = 0, D = 650;   // 初始值，粗调
 
 uint8_t *data_buf = 0;
 int8_t data_lenght = 0;
@@ -168,8 +167,8 @@ void mit_task(void *argument)
             osDelay(2000);
 
             // Receive actuator commands from control task
-            if(!advanced_mode_switch)
-                    AbiBindMsgACTUATOR_CMD(ACTUATOR_CMD_ID, &actuator_cmd_ev, actuator_cmd_cb);
+//            if(!advanced_mode_switch)
+//                AbiBindMsgACTUATOR_CMD(ACTUATOR_CMD_ID, &actuator_cmd_ev, actuator_cmd_cb);  // 订阅cmd
 
             actuator_init(&actuator_state[LEFT_HIP]);
             actuator_init(&actuator_state[RIGHT_HIP]);
@@ -179,16 +178,22 @@ void mit_task(void *argument)
             {
                 
                 // get torque command
-                if(uart1_dma_rx_buf_raw[0] == 0xAB && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xCD)
+                if(uart1_dma_rx_buf_raw[0] == 0xAB && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xCD)     // torque control
                 {
                     uart1_dma_rx_buf_len = 0;
                     if (mode != 1){
                         switch_mode = 1;
                         mode = 1;
+                        
+                        TorqueLeftHip = 0;
+                        TorqueRightHip = 0;
                     }
                     else{
                         switch_mode = 0;
                     }
+                    
+                    memcpy(&TorqueLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
+                    memcpy(&TorqueRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
                     
                 }
                 else if(uart1_dma_rx_buf_raw[0] == 0xDC && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xBA)  // position control
@@ -209,17 +214,8 @@ void mit_task(void *argument)
                         switch_mode = 0;
                     }
                     
-                }
-                else if(uart1_dma_rx_buf_raw[0] == 0x45 && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0x67)  // vel control
-                {
-                    uart1_dma_rx_buf_len = 0;
-                    if (mode != 3){
-                        switch_mode = 1;
-                        mode = 3;
-                    }
-                    else{
-                        switch_mode = 0;
-                    }
+                    memcpy(&PosLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
+                    memcpy(&PosRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
                     
                 }
                 else if(uart1_dma_rx_buf_raw[0] == 0x12 && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0x34)     // get PID
@@ -244,10 +240,7 @@ void mit_task(void *argument)
                         break;
                     
                     case 1:     // torque command
-                        
-                        memcpy(&TorqueLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
-                        memcpy(&TorqueRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
-                    
+
                         // torque limit
                         TorqueLimit = 1;
                         if (fabs(TorqueLeftRaw) < TorqueLimit){
@@ -266,13 +259,10 @@ void mit_task(void *argument)
                         break;
                         
                     case 2:     // position command
-                        
-                        memcpy(&PosLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
-                        memcpy(&PosRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
                     
                         // degree to rad
-                        PosLeftCmd = PosLeftRaw * PI_F / 180.0f;
-                        PosRightCmd = PosRightRaw * PI_F / 180.0f;
+                        PosLeftCmd = PosLeftRaw * PI / 180.0f;
+                        PosRightCmd = PosRightRaw * PI / 180.0f;
                         
                         // pos limit
                         if (PosLeftCmd > 1.571){
@@ -311,24 +301,6 @@ void mit_task(void *argument)
                         TorqueRightHip_PID += P * RightProportional + I * RightIntegral + D * RightDerivative;
                         RightPrevError2 = RightPrevError1;
                         RightPrevError1 = RightError;
-                        
-//                        // PID control ( position )
-//                        LeftError = PosLeftCmd - actuator_info[LEFT_HIP].output_angle;
-//                        LeftProportional = LeftError;
-//                        LeftIntegral += LeftError;
-//                        LeftDerivative = LeftError - LeftPrevError1;
-//                        
-//                        TorqueLeftHip_PID = P * LeftProportional + I * LeftIntegral + D * LeftDerivative;
-//                        LeftPrevError2 = LeftPrevError1;
-//                        LeftPrevError1 = LeftError;
-//                        
-//                        RightError = PosRightCmd - actuator_info[RIGHT_HIP].output_angle;
-//                        RightProportional = RightError;
-//                        RightIntegral += RightError;
-//                        RightDerivative = RightError - RightPrevError1;
-//                        
-//                        TorqueRightHip_PID = P * RightProportional + I * RightIntegral + D * RightDerivative;
-//                        RightPrevError1 = RightError;
 
                         // froward feedback
                         if (fabs(LeftError) > 0.05 && TorqueLeftHip_PID != 0){
@@ -356,29 +328,11 @@ void mit_task(void *argument)
                         }
                         
 //                        TorqueLeftHip = 0; 
-                        TorqueRightHip = 0;    // q:8,0,650
+//                        TorqueRightHip = 0;    // q:8,0,650
                         
                         break;
                         
-                    case 3:            // velocity ?
-                        
-                        memcpy(&TorqueLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
-                        memcpy(&TorqueRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
-                    
-                        // torque limit
-                        TorqueLimit = 10;
-                        if (fabs(TorqueLeftRaw) < TorqueLimit){
-                            TorqueLeftHip = TorqueLeftRaw;
-                        }
-                        else{
-                            TorqueLeftHip = SIGN(TorqueLeftRaw) * TorqueLimit;
-                        }
-                        if (fabs(TorqueRightRaw) < TorqueLimit){
-                            TorqueRightHip = TorqueRightRaw;
-                        }
-                        else{
-                            TorqueRightHip = SIGN(TorqueRightRaw) * TorqueLimit;
-                        }
+                    case 3:            // 
                         
                         break;
                         
@@ -399,19 +353,9 @@ void mit_task(void *argument)
                 }
                 
                 
-                if (mode == 3)
-                {
-                actuator_state[LEFT_HIP].actuator_cmd.out_vel = TorqueLeftHip;
-                actuator_state[RIGHT_HIP].actuator_cmd.out_vel = TorqueRightHip;
-//                actuator_state[LEFT_HIP].actuator_cmd.set_torque = TorqueLeftHip;
-//                actuator_state[RIGHT_HIP].actuator_cmd.set_torque = -TorqueRightHip;   // right is reverse
-                }
-                else
-                {
                 actuator_state[LEFT_HIP].actuator_cmd.set_torque = TorqueLeftHip;
                 actuator_state[RIGHT_HIP].actuator_cmd.set_torque = -TorqueRightHip;   // right is reverse
-                }
-                
+
                 
                 //Circular send command to and get state from actuators
                 for(i = FIRST_JOINT; i < ALL_JOINTS; i++)
@@ -455,30 +399,25 @@ void mit_task(void *argument)
 				index = 0;
 				float_data[index++] = (float)left_lift_sate;
 				float_data[index++] = (float)right_lift_sate;
-				float_data[index++] = actuator_info[LEFT_HIP].output_angle * 180.0f / PI_F;
-				float_data[index++] = actuator_info[LEFT_HIP].output_velocity * 180.0f / PI_F;
+				float_data[index++] = actuator_info[LEFT_HIP].output_angle * 180.0f / PI;
+				float_data[index++] = actuator_info[LEFT_HIP].output_velocity * 180.0f / PI;
 				float_data[index++] = actuator_info[LEFT_HIP].output_torque;
-				float_data[index++] = actuator_info[RIGHT_HIP].output_angle * 180.0f / PI_F;
-				float_data[index++] = actuator_info[RIGHT_HIP].output_velocity * 180.0f / PI_F;
+				float_data[index++] = actuator_info[RIGHT_HIP].output_angle * 180.0f / PI;
+				float_data[index++] = actuator_info[RIGHT_HIP].output_velocity * 180.0f / PI;
 				float_data[index++] = actuator_info[RIGHT_HIP].output_torque;
 				float_data[index++] = imu_data.eulerf_Mayhony.phi;
 				float_data[index++] = imu_data.eulerf_Mayhony.theta;
-				float_data[index++] = TorqueRightHip;
+				// changeable, for tuing
+                float_data[index++] = TorqueRightHip;
 				float_data[index++] = (float)mode;
 				float_data[index++] = P;
                 float_data[index++] = I;
-//									float_data[index++] = imu_data.gyro_data_filter.x;
-//									float_data[index++] = imu_data.gyro_data_filter.y;
-//									float_data[index++] = imu_data.gyro_data_filter.z;
-//									float_data[index++] = imu_data.accel_data_filter.x;
-//									float_data[index++] = imu_data.accel_data_filter.y;
-//									float_data[index++] = imu_data.accel_data_filter.z;
 				// 将float数组转换为字节数组
 				memcpy(buff, float_data, RAW_DATA_LEN);
 				// 打包数据
 				packed_len = PackingData(packed_data, buff, RAW_DATA_LEN);
 				// 通过USART1发送数据
-				uart1_send_data(packed_data, packed_len);	
+				uart1_send_data(packed_data, packed_len);
             }
         }
 					
