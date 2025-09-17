@@ -37,8 +37,9 @@ typedef enum
     SYS_TASK_PRIORITY  = osPriorityHigh2,
     BLE_TASK_PRIORITY  = osPriorityHigh5,
     
-    SCA_TASK_PRIORITY   = osPriorityRealtime,
-    WALK_TASK_PRIORITY  = osPriorityRealtime1,
+    SCA_TASK_PRIORITY   = osPriorityRealtime1,
+//    WALK_TASK_PRIORITY  = osPriorityRealtime,
+    WALK_TASK_PRIORITY  = osPriorityNormal,
     POWER_TASK_PRIORITY = osPriorityRealtime2,     
 }TYPE_TASK_PRIORITY;
 

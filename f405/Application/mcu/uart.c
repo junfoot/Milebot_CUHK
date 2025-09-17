@@ -100,7 +100,11 @@ void uart1_init(void)
   }
 
   //串口初始化完成后，马上进入接收状态
-  uart1_rx_data_config_dma(uart1_dma_rx_buf, UART1_DMA_BUF_LEN);
+  HAL_UART_DMAStop(&huart1);
+  __HAL_UART_CLEAR_IDLEFLAG(&huart1);
+  __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+//  uart1_rx_data_config_dma(uart1_dma_rx_buf, UART1_DMA_BUF_LEN);
+   HAL_UART_Receive_DMA(&huart1, uart1_dma_rx_buf, UART1_DMA_BUF_LEN);
 }
 
 void uart1_send_data(uint8_t *buf, uint16_t len)
@@ -157,8 +161,6 @@ HAL_StatusTypeDef uart1_rx_data_config_dma(uint8_t *pbuf, uint16_t size)
 	  huart1.RxState = HAL_UART_STATE_READY;
   }
 /* *************************************************************** */
-
-
 
     //空闲中断打开/* 2018-8-7 */
     __HAL_UART_CLEAR_IDLEFLAG(&huart1);
@@ -388,20 +390,18 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 //		}
 //        else
 //          uart1_rx_data_config_dma(pDMA_buf, UART1_DMA_BUF_LEN); 
-		
-			
-		//取出串口接收到的数据
-        buf_len = (UART1_DMA_BUF_LEN - (huart->hdmarx->Instance->NDTR));    
-        if(buf_len > 0)
-        {
-            memcpy(uart1_dma_rx_buf_raw, uart1_dma_rx_buf, buf_len);
-            uart1_dma_rx_buf_len = buf_len;
-        }
-
-        //重新进入接收数据的状态
-        uart1_rx_data_config_dma(uart1_dma_rx_buf, UART1_DMA_BUF_LEN);
+        
             
-		
+//        //取出串口接收到的数据
+//        buf_len = (UART1_DMA_BUF_LEN - (huart->hdmarx->Instance->NDTR));    
+//        if(buf_len > 0)
+//        {
+//            memcpy(uart1_dma_rx_buf_raw, uart1_dma_rx_buf, buf_len);
+//            uart1_dma_rx_buf_len = buf_len;
+//        }
+
+//        //重新进入接收数据的状态
+//        uart1_rx_data_config_dma(uart1_dma_rx_buf, UART1_DMA_BUF_LEN);
         
     }
     else if (huart == &huart2)
@@ -458,7 +458,51 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   */
 void USART1_IRQHandler(void)
 {
-  HAL_UART_IRQHandler(&huart1);
+    // 接收空闲中断触发
+    uint8_t res;
+    uint16_t buf_len = 0;
+    
+    if ((__HAL_UART_GET_FLAG(&huart1, UART_FLAG_IDLE) != RESET))
+    {
+        __HAL_UART_CLEAR_IDLEFLAG(&huart1);
+          
+        //    HAL_UART_DMAStop(&huart1);
+          /* ***************Stop UART DMA Rx request if ongoing************** */
+          uint32_t dmarequest = 0x00U;
+          dmarequest = HAL_IS_BIT_SET(huart1.Instance->CR3, USART_CR3_DMAR);
+          if((huart1.RxState == HAL_UART_STATE_BUSY_RX) && dmarequest)
+          {
+            CLEAR_BIT(huart1.Instance->CR3, USART_CR3_DMAR);
+
+            /* Abort the UART DMA Rx channel */
+            if(huart1.hdmarx != NULL)
+            {
+              HAL_DMA_Abort(huart1.hdmarx);
+            }
+              /* Disable RXNE, PE and ERR (Frame error, noise error, overrun error) interrupts */
+              CLEAR_BIT(huart1.Instance->CR1, (USART_CR1_RXNEIE | USART_CR1_PEIE));
+              CLEAR_BIT(huart1.Instance->CR3, USART_CR3_EIE);
+
+              /* At end of Rx process, restore huart->RxState to Ready */
+              huart1.RxState = HAL_UART_STATE_READY;
+           }
+        /* *************************************************************** */
+        
+          
+        //取出串口接收到的数据
+        buf_len = (UART1_DMA_BUF_LEN - (huart1.hdmarx->Instance->NDTR));    
+        if(buf_len > 0)
+        {
+            memcpy(uart1_dma_rx_buf_raw, uart1_dma_rx_buf, buf_len);
+            uart1_dma_rx_buf_len = buf_len;
+        }
+
+        //重新进入接收数据的状态
+        HAL_UART_Receive_DMA(&huart1, uart1_dma_rx_buf, UART1_DMA_BUF_LEN);
+
+//  HAL_UART_IRQHandler(&huart1);
+
+    }
 }
 
 /**
@@ -491,7 +535,33 @@ void USART6_IRQHandler(void)
   */
 void DMA2_Stream7_IRQHandler(void)
 {
-  HAL_DMA_IRQHandler(&hdma_usart1_tx);
+//  HAL_DMA_IRQHandler(&hdma_usart1_tx);
+    if (__HAL_DMA_GET_FLAG(&hdma_usart1_tx, DMA_FLAG_TCIF3_7))
+    {
+        __HAL_DMA_CLEAR_FLAG(&hdma_usart1_tx, DMA_FLAG_TCIF3_7);
+        __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_TC);
+//		HAL_UART_DMAStop(&g_usart1_handler);
+        /* *************************************************************** */
+          uint32_t dmarequest = 0x00U;
+          dmarequest = HAL_IS_BIT_SET(huart1.Instance->CR3, USART_CR3_DMAT);
+          if((huart1.gState == HAL_UART_STATE_BUSY_TX) && dmarequest)
+          {
+            CLEAR_BIT(huart1.Instance->CR3, USART_CR3_DMAT);
+
+            /* Abort the UART DMA Tx channel */
+            if(huart1.hdmatx != NULL)
+            {
+              HAL_DMA_Abort(huart1.hdmatx);
+            }
+          /* Disable TXEIE and TCIE interrupts */
+          CLEAR_BIT(huart1.Instance->CR1, (USART_CR1_TXEIE | USART_CR1_TCIE));
+
+          /* At end of Tx process, restore huart->gState to Ready */
+          huart1.gState = HAL_UART_STATE_READY;
+          }
+        /* *************************************************************** */
+    
+    }
 }
 
 /**
@@ -499,7 +569,7 @@ void DMA2_Stream7_IRQHandler(void)
   */
 void DMA2_Stream2_IRQHandler(void)
 {
-  HAL_DMA_IRQHandler(&hdma_usart1_rx);
+//  HAL_DMA_IRQHandler(&hdma_usart1_rx);
 }
 
 /**

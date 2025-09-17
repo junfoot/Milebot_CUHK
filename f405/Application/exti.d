@@ -7,14 +7,14 @@
 ..\exti.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\exti.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h
 ..\exti.o: ..\lib\CMSIS\Include\core_cm4.h
-..\exti.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\exti.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 ..\exti.o: ..\lib\CMSIS\Include\core_cmInstr.h
 ..\exti.o: ..\lib\CMSIS\Include\cmsis_armcc.h
 ..\exti.o: ..\lib\CMSIS\Include\core_cmFunc.h
 ..\exti.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\exti.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\exti.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\exti.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\exti.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
 ..\exti.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\exti.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\exti.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h
@@ -40,8 +40,8 @@
 ..\exti.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h
 ..\exti.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_wwdg.h
 ..\exti.o: ..\mcu\..\system\std.h
-..\exti.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
-..\exti.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\exti.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\inttypes.h
+..\exti.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
 ..\exti.o: ..\mcu\..\system\msg_pragmas.h
 ..\exti.o: ..\mcu\exti.h
 ..\exti.o: ..\mcu\exti_if.h

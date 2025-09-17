@@ -157,7 +157,7 @@ void start_task(void *pvParameters)
                 
                 
     AD7606_Init();
-    btim_tim6_int_init(50 - 1, 8400 - 1); /* 84 000 000 / 84 00 = 10 000(10Khz的计数频率)，10000 / 50 = 200Hz */
+    btim_tim6_int_init(100 - 1, 8400 - 1); /* 84 000 000 / 84 00 = 10 000(10Khz的计数频率)，10000 / 50 = 200Hz */
     btim_tim7_int_init(100 - 1, 8400 - 1); /* 84 000 000 / 84 00 / 100 = 100Hz */
     btim_tim3_int_init(10 - 1, 8400 - 1);  /* 10000 / 10 = 1000Hz */ 
                 
@@ -253,15 +253,15 @@ void task2(void *pvParameters)
             pc_2 = strtof(p, &p); // 提取第二个数字
             
             // limit 
-            pc_1 = clamp(pc_1, 0, 0.5);
+            pc_1 = clamp(pc_1, 0, 20);
             pc_2 = clamp(pc_2, 0.1, 1);
             
             LeftTorque = pc_1 * arm_sin_f32( 2 * PI_F * pc_2 * t);
             RightTorque = -LeftTorque;
-            t += 0.001;
+            t += 0.01;
             
-            tcmd[0] = 0xAB;
-            tcmd[sizeof(tcmd)-1] = 0xCD;
+            tcmd[0] = 0xDC;
+            tcmd[sizeof(tcmd)-1] = 0xBA;
             memcpy(tcmd + 1, &LeftTorque, sizeof(float));
             memcpy(tcmd + 1 + sizeof(float), &RightTorque, sizeof(float));
             

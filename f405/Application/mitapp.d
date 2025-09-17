@@ -1,7 +1,7 @@
 ..\mitapp.o: ..\modules\MitJoint\MitApp.c
-..\mitapp.o: C:\Keil_v5\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h
-..\mitapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\mitapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\mitapp.o: C:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h
+..\mitapp.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+..\mitapp.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 ..\mitapp.o: ..\mcu\systick_if.h
 ..\mitapp.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 ..\mitapp.o: ..\mcu\stm32f4xx_hal_conf.h
@@ -16,7 +16,7 @@
 ..\mitapp.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\mitapp.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\mitapp.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\mitapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\mitapp.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
 ..\mitapp.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\mitapp.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\mitapp.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h
@@ -44,8 +44,8 @@
 ..\mitapp.o: ..\system\abi\abi_messages.h
 ..\mitapp.o: ..\system\abi\abi_common.h
 ..\mitapp.o: ..\system\abi\..\std.h
-..\mitapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
-..\mitapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\mitapp.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\inttypes.h
+..\mitapp.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
 ..\mitapp.o: ..\system\abi\..\msg_pragmas.h
 ..\mitapp.o: ..\system\abi\..\..\power\power_mana_if.h
 ..\mitapp.o: ..\system\abi\..\..\mcu\uart_if.h
@@ -60,7 +60,7 @@
 ..\mitapp.o: ..\modules\MitJoint\MitProtocol_if.h
 ..\mitapp.o: ..\modules\MitJoint\mitprotocol.h
 ..\mitapp.o: ..\walk\DataScope_DP.h
-..\mitapp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\mitapp.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
 ..\mitapp.o: ..\modules\imu\lsm6ds.h
 ..\mitapp.o: ..\lib\CMSIS\Include\arm_math.h
 ..\mitapp.o: ..\lib\CMSIS\Include\core_cm4.h

@@ -62,8 +62,8 @@ static ACTUATOR_STATE actuator_state[ALL_JOINTS] =
 
 
 /* Global functions ----------------------------------------------------------*/
-//uint8_t advanced_mode_switch = SWITCH_ON;
-uint8_t advanced_mode_switch = SWITCH_OFF;
+uint8_t advanced_mode_switch = SWITCH_ON;
+//uint8_t advanced_mode_switch = SWITCH_OFF;         // 会卡 不知道为什么
 /**
   * @brief  task to handle all mit application function.
   * @param  None

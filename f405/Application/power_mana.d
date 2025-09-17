@@ -1,12 +1,12 @@
 ..\power_mana.o: ..\power\power_mana.c
-..\power_mana.o: C:\Keil_v5\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h
-..\power_mana.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\power_mana.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\power_mana.o: C:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h
+..\power_mana.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+..\power_mana.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 ..\power_mana.o: ..\mcu\main.h
 ..\power_mana.o: ..\modules\sound\syn6658.h
 ..\power_mana.o: ..\power\..\system\std.h
-..\power_mana.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
-..\power_mana.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\power_mana.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\inttypes.h
+..\power_mana.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
 ..\power_mana.o: ..\power\..\system\msg_pragmas.h
 ..\power_mana.o: ..\power\..\os\task_if.h
 ..\power_mana.o: ..\power\..\walk\walk.h
@@ -29,7 +29,7 @@
 ..\power_mana.o: ..\lib\CMSIS\Include\core_cmSimd.h
 ..\power_mana.o: ..\lib\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 ..\power_mana.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-..\power_mana.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\power_mana.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
 ..\power_mana.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\power_mana.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
 ..\power_mana.o: ..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h
@@ -70,7 +70,7 @@
 ..\power_mana.o: ..\mcu\internal_flash.h
 ..\power_mana.o: ..\modules\ble\ble_if.h
 ..\power_mana.o: ..\modules\eeprom\at24c256.h
-..\power_mana.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\power_mana.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
 ..\power_mana.o: ..\power\..\power\power_mana.h
 ..\power_mana.o: ..\power\..\power\power_drv.h
 ..\power_mana.o: ..\power\..\power\power_drv_if.h

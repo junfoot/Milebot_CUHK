@@ -5,7 +5,7 @@
 ..\..\output\usmart.o: ..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\..\output\usmart.o: ..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f407xx.h
 ..\..\output\usmart.o: ..\..\Drivers\CMSIS\Include\core_cm4.h
-..\..\output\usmart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\..\output\usmart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 ..\..\output\usmart.o: ..\..\Drivers\CMSIS\Include\cmsis_version.h
 ..\..\output\usmart.o: ..\..\Drivers\CMSIS\Include\cmsis_compiler.h
 ..\..\output\usmart.o: ..\..\Drivers\CMSIS\Include\cmsis_armcc.h
@@ -17,7 +17,7 @@
 ..\..\output\usmart.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h
 ..\..\output\usmart.o: ..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 ..\..\output\usmart.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy/stm32_hal_legacy.h
-..\..\output\usmart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\..\output\usmart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 ..\..\output\usmart.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h
 ..\..\output\usmart.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_exti.h
 ..\..\output\usmart.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h
@@ -70,12 +70,12 @@
 ..\..\output\usmart.o: ..\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_hcd.h
 ..\..\output\usmart.o: ..\..\Drivers\CMSIS\Include\core_cm4.h
 ..\..\output\usmart.o: ..\..\Drivers\./SYSTEM/usart/usart.h
-..\..\output\usmart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\..\output\usmart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
 ..\..\output\usmart.o: ..\..\Middlewares\./USMART/usmart_str.h
-..\..\output\usmart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\..\output\usmart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
 ..\..\output\usmart.o: ..\..\User\utils.h
 ..\..\output\usmart.o: ..\..\Drivers\CMSIS\DSP\Include\arm_math.h
-..\..\output\usmart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-..\..\output\usmart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
-..\..\output\usmart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
-..\..\output\usmart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\usmart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
+..\..\output\usmart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\float.h
+..\..\output\usmart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\limits.h
+..\..\output\usmart.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
