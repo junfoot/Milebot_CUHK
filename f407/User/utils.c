@@ -360,3 +360,8 @@ float Hex2Float(uint8_t *pMem1)
 
 
 
+float smooth_torque(float new_torque, float previous_torque, float alpha)
+{
+    return alpha * new_torque + (1 - alpha) * previous_torque;
+}
+

@@ -62,3 +62,6 @@
 ..\mitapp.o: ..\walk\DataScope_DP.h
 ..\mitapp.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
 ..\mitapp.o: ..\modules\imu\lsm6ds.h
+..\mitapp.o: ..\lib\CMSIS\Include\arm_math.h
+..\mitapp.o: ..\lib\CMSIS\Include\core_cm4.h
+..\mitapp.o: ..\mcu\can.h

@@ -156,6 +156,8 @@ typedef struct
 }ACTUATOR_STATE;
 
 
+extern uint8_t can_flag;
+
 void mit_task(void *argument);
 void actuator_cmd_cb(uint8_t __attribute__((unused)) sender_id, ACTUATOR_CMD *cmddata);
 //uint8_t walk_detect_right_lift_state(ACTUATOR_INFO *right_walk_info);

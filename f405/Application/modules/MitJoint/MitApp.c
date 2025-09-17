@@ -27,6 +27,9 @@
 
 #include <arm_math.h>
 
+#include "can.h"
+#include "can_if.h"
+
 #define SWITCH_ON 1
 #define SWITCH_OFF 0
 
@@ -62,8 +65,8 @@ static ACTUATOR_STATE actuator_state[ALL_JOINTS] =
 
 
 /* Global functions ----------------------------------------------------------*/
-uint8_t advanced_mode_switch = SWITCH_ON;
-//uint8_t advanced_mode_switch = SWITCH_OFF;
+//uint8_t advanced_mode_switch = SWITCH_ON;
+uint8_t advanced_mode_switch = SWITCH_OFF;         // 会卡 不知道为什么
 /**
   * @brief  task to handle all mit application function.
   * @param  None
@@ -112,24 +115,28 @@ unsigned int PackingData(uint8_t* packing_buf, const uint8_t* buf, uint8_t len)
     return index;    
 }
 
-// --------------------------------------------- 2025 ZHZ add -------------------------------------------
+
 #define FLOAT_SIZE 4
 #define NUM_FLOATS 14
 #define RAW_DATA_LEN (NUM_FLOATS * FLOAT_SIZE)
 
 #define SIGN(x)  ((x) >= 0 ? 1 : -1)
 
-#define PI_F 3.1415927f
 //#define P 0
 //#define I 0
 //#define D 0
 
-float P = 0, I = 0, D = 0;
+float P = 8, I = 0, D = 650;   // 初始值，粗调
 
 uint8_t *data_buf = 0;
 int8_t data_lenght = 0;
 uint8_t * data_buf_torque;
 
+uint8_t can_flag = 0;
+
+uint8_t dummy[8];
+
+// --------------------------------------------- 2025 ZHZ add -------------------------------------------
 
 void mit_task(void *argument)
 {
@@ -168,8 +175,8 @@ void mit_task(void *argument)
             osDelay(2000);
 
             // Receive actuator commands from control task
-            if(!advanced_mode_switch)
-                    AbiBindMsgACTUATOR_CMD(ACTUATOR_CMD_ID, &actuator_cmd_ev, actuator_cmd_cb);
+//            if(!advanced_mode_switch)
+//                AbiBindMsgACTUATOR_CMD(ACTUATOR_CMD_ID, &actuator_cmd_ev, actuator_cmd_cb);  // 订阅cmd
 
             actuator_init(&actuator_state[LEFT_HIP]);
             actuator_init(&actuator_state[RIGHT_HIP]);
@@ -179,16 +186,22 @@ void mit_task(void *argument)
             {
                 
                 // get torque command
-                if(uart1_dma_rx_buf_raw[0] == 0xAB && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xCD)
+                if(uart1_dma_rx_buf_raw[0] == 0xAB && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xCD)     // torque control
                 {
                     uart1_dma_rx_buf_len = 0;
                     if (mode != 1){
                         switch_mode = 1;
                         mode = 1;
+                        
+                        TorqueLeftHip = 0;
+                        TorqueRightHip = 0;
                     }
                     else{
                         switch_mode = 0;
                     }
+                    
+                    memcpy(&TorqueLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
+                    memcpy(&TorqueRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
                     
                 }
                 else if(uart1_dma_rx_buf_raw[0] == 0xDC && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0xBA)  // position control
@@ -202,10 +215,15 @@ void mit_task(void *argument)
                         TorqueRightHip = 0;
                         PosLeftRaw = 0;
                         PosRightRaw = 0;
+                        TorqueRightHip_PID = 0;
+                        TorqueRightHip_PID = 0;
                     }
                     else{
                         switch_mode = 0;
                     }
+                    
+                    memcpy(&PosLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
+                    memcpy(&PosRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
                     
                 }
                 else if(uart1_dma_rx_buf_raw[0] == 0x12 && uart1_dma_rx_buf_raw[uart1_dma_rx_buf_len-1] == 0x34)     // get PID
@@ -230,10 +248,7 @@ void mit_task(void *argument)
                         break;
                     
                     case 1:     // torque command
-                        
-                        memcpy(&TorqueLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
-                        memcpy(&TorqueRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
-                    
+
                         // torque limit
                         TorqueLimit = 1;
                         if (fabs(TorqueLeftRaw) < TorqueLimit){
@@ -249,16 +264,15 @@ void mit_task(void *argument)
                             TorqueRightHip = SIGN(TorqueRightRaw) * TorqueLimit;
                         }
                         
+                        
+                        
                         break;
                         
                     case 2:     // position command
-                        
-                        memcpy(&PosLeftRaw, uart1_dma_rx_buf_raw + 1, sizeof(float));
-                        memcpy(&PosRightRaw, uart1_dma_rx_buf_raw + 1 + sizeof(float), sizeof(float));
                     
                         // degree to rad
-                        PosLeftCmd = PosLeftRaw * PI_F / 180.0f;
-                        PosRightCmd = PosRightRaw * PI_F / 180.0f;
+                        PosLeftCmd = PosLeftRaw * PI / 180.0f;
+                        PosRightCmd = PosRightRaw * PI / 180.0f;
                         
                         // pos limit
                         if (PosLeftCmd > 1.571){
@@ -274,11 +288,17 @@ void mit_task(void *argument)
                             PosRightCmd = -0.436;
                         }
                         
+                        /*****************************************************************************/
+                        // gravity feedback
+                        TorqueLeftHip = 0.05 * arm_sin_f32(actuator_info[LEFT_HIP].output_angle);
+                        TorqueRightHip = 0.05 * arm_sin_f32(actuator_info[RIGHT_HIP].output_angle);
+                        
                         // PID control ( Increment )
                         LeftError = PosLeftCmd - actuator_info[LEFT_HIP].output_angle;
                         LeftProportional = LeftError - LeftPrevError1;
                         LeftIntegral = LeftError;
                         LeftDerivative = LeftError - 2 * LeftPrevError1 + LeftPrevError2;
+                        
                         TorqueLeftHip_PID += P * LeftProportional + I * LeftIntegral + D * LeftDerivative;
                         LeftPrevError2 = LeftPrevError1;
                         LeftPrevError1 = LeftError;
@@ -287,24 +307,23 @@ void mit_task(void *argument)
                         RightProportional = RightError - RightPrevError1;
                         RightIntegral = RightError;
                         RightDerivative = RightError - 2 * RightPrevError1 + RightPrevError2;
+                        
                         TorqueRightHip_PID += P * RightProportional + I * RightIntegral + D * RightDerivative;
                         RightPrevError2 = RightPrevError1;
                         RightPrevError1 = RightError;
-                        
+
                         // froward feedback
                         if (fabs(LeftError) > 0.05 && TorqueLeftHip_PID != 0){
-                            TorqueLeftHip = TorqueLeftHip_PID + 0.1 * SIGN(TorqueLeftHip_PID);
+                            TorqueLeftHip += TorqueLeftHip_PID + 0 * SIGN(TorqueLeftHip_PID);
                         }
                         if (fabs(RightError) > 0.05 && TorqueRightHip_PID != 0){
-                            TorqueRightHip = TorqueRightHip_PID + 0.1 * SIGN(TorqueRightHip_PID);
+                            TorqueRightHip += TorqueRightHip_PID + 0 * SIGN(TorqueRightHip_PID);
                         }
                         
-                        // gravity feedback
-                        TorqueLeftHip += 0.05 * arm_sin_f32(actuator_info[LEFT_HIP].output_angle);
-                        TorqueRightHip += 0.05 * arm_sin_f32(actuator_info[RIGHT_HIP].output_angle);
+                        /*****************************************************************************/
                         
                         // torque limit
-                        TorqueLimit = 1;
+                        TorqueLimit = 3;
                         if (fabs(TorqueLeftHip) < TorqueLimit){
                             TorqueLeftHip = TorqueLeftHip;
                         }
@@ -318,10 +337,15 @@ void mit_task(void *argument)
                             TorqueRightHip = SIGN(TorqueRightHip) * TorqueLimit;
                         }
                         
-                        TorqueLeftHip = 0;
-						TorqueRightHip = 0;
-                    
+//                        TorqueLeftHip = 0; 
+//                        TorqueRightHip = 0;    // q:8,0,650
+                        
                         break;
+                        
+                    case 3:            // 
+                        
+                        break;
+                        
                     default:
                         break;
                 }
@@ -338,15 +362,51 @@ void mit_task(void *argument)
                     TorqueRightHip = 0;
                 }
                 
+//                
                 actuator_state[LEFT_HIP].actuator_cmd.set_torque = TorqueLeftHip;
                 actuator_state[RIGHT_HIP].actuator_cmd.set_torque = -TorqueRightHip;   // right is reverse
-                
+
+//                actuator_state[LEFT_HIP].actuator_cmd.set_torque = 0;
+//                actuator_state[RIGHT_HIP].actuator_cmd.set_torque = 0;   // right is reverse
                 
                 
                 //Circular send command to and get state from actuators
                 for(i = FIRST_JOINT; i < ALL_JOINTS; i++)
                 {
+                    // check CAN Tx Mailbox
+                    CAN1->MCR |= CAN_MCR_TTCM;
+                    CAN2->MCR |= CAN_MCR_TTCM;
+                    if ((CAN1->TSR & CAN_TSR_TME0) == 0 && (CAN1->TSR & CAN_TSR_TME1) == 0 && (CAN1->TSR & CAN_TSR_TME2) == 0) 
+                    {
+                        CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+                    }
+                    if ((CAN2->TSR & CAN_TSR_TME0) == 0 && (CAN2->TSR & CAN_TSR_TME1) == 0 && (CAN2->TSR & CAN_TSR_TME2) == 0) 
+                    {
+                        CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+                    }
+                    CAN1->MCR &= ~CAN_MCR_TTCM;
+                    CAN2->MCR &= ~CAN_MCR_TTCM;
+//                    CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+//                    CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+                    
                     send_cmd_to_actuator(&actuator_state[i]);
+                    
+                    // check CAN Tx Mailbox
+                    CAN1->MCR |= CAN_MCR_TTCM;
+                    CAN2->MCR |= CAN_MCR_TTCM;
+                    if ((CAN1->TSR & CAN_TSR_TME0) == 0 && (CAN1->TSR & CAN_TSR_TME1) == 0 && (CAN1->TSR & CAN_TSR_TME2) == 0) 
+                    {
+                        CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+                    }
+                    if ((CAN2->TSR & CAN_TSR_TME0) == 0 && (CAN2->TSR & CAN_TSR_TME1) == 0 && (CAN2->TSR & CAN_TSR_TME2) == 0) 
+                    {
+                        CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+                    }
+                    CAN1->MCR &= ~CAN_MCR_TTCM;
+                    CAN2->MCR &= ~CAN_MCR_TTCM;
+//                    CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+//                    CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+                    
                     get_state_from_actuator(&actuator_info[i], &actuator_state[i]);
                 }
                 
@@ -356,7 +416,8 @@ void mit_task(void *argument)
                 
                 AbiSendMsgACTUATOR_STATE(ACTUATOR_STATE_ID, actuator_info);
         
-        if(advanced_mode_switch)
+//        if(advanced_mode_switch)
+        if(1)
         {
             
             count_num++;
@@ -376,38 +437,33 @@ void mit_task(void *argument)
 //                
 //                int Send_Count = DataScope_Data_Generate(10);
 //                uart2_dma_send_data(DataScope_OutPut_Buffer, Send_Count);	
-				
-				
-//					actuator_state[LEFT_HIP].dir
-				
-				// 按顺序填充float数据
-				index = 0;
-				float_data[index++] = (float)left_lift_sate;
-				float_data[index++] = (float)right_lift_sate;
-				float_data[index++] = actuator_info[LEFT_HIP].output_angle * 180.0f / PI_F;
-				float_data[index++] = actuator_info[LEFT_HIP].output_velocity * 180.0f / PI_F;
-				float_data[index++] = actuator_info[LEFT_HIP].output_torque;
-				float_data[index++] = actuator_info[RIGHT_HIP].output_angle * 180.0f / PI_F;
-				float_data[index++] = actuator_info[RIGHT_HIP].output_velocity * 180.0f / PI_F;
-				float_data[index++] = actuator_info[RIGHT_HIP].output_torque;
-				float_data[index++] = imu_data.eulerf_Mayhony.phi;
-				float_data[index++] = imu_data.eulerf_Mayhony.theta;
-				float_data[index++] = TorqueRightHip;
-				float_data[index++] = (float)mode;
-				float_data[index++] = P;
+                
+                
+    //					actuator_state[LEFT_HIP].dir
+                
+                // 按顺序填充float数据
+                index = 0;
+                float_data[index++] = actuator_info[LEFT_HIP].output_angle * 180.0f / PI;
+                float_data[index++] = actuator_info[LEFT_HIP].output_velocity * 180.0f / PI;
+                float_data[index++] = actuator_info[LEFT_HIP].output_torque;
+                float_data[index++] = actuator_info[RIGHT_HIP].output_angle * 180.0f / PI;
+                float_data[index++] = actuator_info[RIGHT_HIP].output_velocity * 180.0f / PI;
+                float_data[index++] = actuator_info[RIGHT_HIP].output_torque;
+                float_data[index++] = imu_data.eulerf_Mayhony.phi;
+                float_data[index++] = imu_data.eulerf_Mayhony.theta;
+                float_data[index++] = (float)left_lift_sate;
+                float_data[index++] = (float)right_lift_sate;
+                // changeable, for tuing
+                float_data[index++] = (float)mode;
+                float_data[index++] = TorqueLeftHip;
+                float_data[index++] = TorqueRightHip;
                 float_data[index++] = I;
-//									float_data[index++] = imu_data.gyro_data_filter.x;
-//									float_data[index++] = imu_data.gyro_data_filter.y;
-//									float_data[index++] = imu_data.gyro_data_filter.z;
-//									float_data[index++] = imu_data.accel_data_filter.x;
-//									float_data[index++] = imu_data.accel_data_filter.y;
-//									float_data[index++] = imu_data.accel_data_filter.z;
-				// 将float数组转换为字节数组
-				memcpy(buff, float_data, RAW_DATA_LEN);
-				// 打包数据
-				packed_len = PackingData(packed_data, buff, RAW_DATA_LEN);
-				// 通过USART1发送数据
-				uart1_send_data(packed_data, packed_len);	
+                // 将float数组转换为字节数组
+                memcpy(buff, float_data, RAW_DATA_LEN);
+                // 打包数据
+                packed_len = PackingData(packed_data, buff, RAW_DATA_LEN);
+                // 通过USART1发送数据
+                uart1_send_data(packed_data, packed_len);
             }
         }
 					
