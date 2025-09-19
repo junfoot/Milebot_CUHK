@@ -22,7 +22,7 @@ Dialog DLL:      TCM.DLL V1.56.4.0
  
 <h2>Project:</h2>
 D:\PhD\Working\f405\Application\MDK-ARM\HXO01M.uvprojx
-Project File Date:  09/16/2025
+Project File Date:  09/19/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin'
@@ -38,9 +38,6 @@ compiling stm32f4xx_hal_msp.c...
 compiling stm32f4xx_it.c...
 compiling system_stm32f4xx.c...
 compiling uart.c...
-D:\PhD\Working\f405\Application\mcu\uart.c(462): warning:  #177-D: variable "res"  was declared but never referenced
-      uint8_t res;
-..\mcu\uart.c: 1 warning, 0 errors
 compiling wdg.c...
 assembling startup_stm32f405xx.s...
 compiling sysTick.c...
@@ -99,10 +96,10 @@ compiling stm32f4xx_hal_sd.c...
 compiling comm.c...
 compiling bat.c...
 compiling MitApp.c...
-D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(416): warning:  #223-D: function "walk_detect_left_lift_state" declared implicitly
-                  left_lift_sate = walk_detect_left_lift_state(&actuator_info);
-D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(417): warning:  #223-D: function "walk_detect_right_lift_state" declared implicitly
-                  right_lift_sate = walk_detect_right_lift_state(&actuator_info);
+D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(431): warning:  #223-D: function "walk_detect_left_lift_state" declared implicitly
+                      left_lift_sate = walk_detect_left_lift_state(&actuator_info);
+D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(432): warning:  #223-D: function "walk_detect_right_lift_state" declared implicitly
+                      right_lift_sate = walk_detect_right_lift_state(&actuator_info);
 D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(143): warning:  #177-D: variable "actuator_cmd_ev"  was declared but never referenced
       static abi_event actuator_cmd_ev;
 D:\PhD\Working\f405\Application\modules\MitJoint\MitApp.c(153): warning:  #177-D: variable "Torque_limit"  was declared but never referenced
@@ -128,11 +125,11 @@ compiling rtx_lib.c...
 compiling RTX_Config.c...
 linking...
 ..\HXO01M.axf: Warning: L6304W: Duplicate input file ..\HXO01M.lib ignored.
-Program Size: Code=97138 RO-data=4622 RW-data=7480 ZI-data=47136  
+Program Size: Code=96526 RO-data=4626 RW-data=7480 ZI-data=47136  
 Finished: 0 information, 1 warning and 0 error messages.
 FromELF: creating hex file...
 After Build - User command #1: fromelf.exe --bin -o "..\HXO01M.bin" "..\HXO01M.axf"
-"..\HXO01M.axf" - 0 Error(s), 14 Warning(s).
+"..\HXO01M.axf" - 0 Error(s), 13 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -165,21 +162,21 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.1.1
 
    * Component: ARM::CMSIS:RTOS2:Keil RTX5:Library:5.3.0
-      Source file:   CMSIS/RTOS2/RTX/Template/Semaphore.c
+      Include file:  CMSIS/RTOS2/RTX/Include/rtx_os.h
+      Include file:  CMSIS/RTOS2/RTX/Config/RTX_Config.h
       Source file:   CMSIS/RTOS2/RTX/Config/RTX_Config.c
+      Source file:   CMSIS/RTOS2/RTX/Template/main.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Events.c
+      Source file:   CMSIS/RTOS2/RTX/Template/MemPool.c
+      Source file:   CMSIS/RTOS2/RTX/Template/MsgQueue.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Mutex.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_lib.c
+      Library file:  CMSIS/RTOS2/RTX/Library/ARM/RTX_CM4F.lib
       Source file:   CMSIS/RTOS2/RTX/Template/Thread.c
       Source file:   CMSIS/RTOS2/RTX/Template/Timer.c
       Source file:   CMSIS/RTOS2/RTX/Template/svc_user.c
-      Include file:  CMSIS/RTOS2/RTX/Config/RTX_Config.h
-      Source file:   CMSIS/RTOS2/RTX/Template/main.c
-      Source file:   CMSIS/RTOS2/RTX/Template/MemPool.c
-      Source file:   CMSIS/RTOS2/RTX/Source/rtx_lib.c
-      Include file:  CMSIS/RTOS2/RTX/Include/rtx_os.h
-      Source file:   CMSIS/RTOS2/RTX/Template/Events.c
-      Source file:   CMSIS/RTOS2/RTX/Template/MsgQueue.c
-      Source file:   CMSIS/RTOS2/RTX/Template/Mutex.c
-      Library file:  CMSIS/RTOS2/RTX/Library/ARM/RTX_CM4F.lib
-Build Time Elapsed:  00:00:22
+      Source file:   CMSIS/RTOS2/RTX/Template/Semaphore.c
+Build Time Elapsed:  00:00:21
 </pre>
 </body>
 </html>

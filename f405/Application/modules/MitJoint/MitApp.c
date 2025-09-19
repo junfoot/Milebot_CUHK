@@ -370,51 +370,46 @@ void mit_task(void *argument)
 //                actuator_state[RIGHT_HIP].actuator_cmd.set_torque = 0;   // right is reverse
                 
                 
-                //Circular send command to and get state from actuators
-                for(i = FIRST_JOINT; i < ALL_JOINTS; i++)
-                {
-                    // check CAN Tx Mailbox
-                    CAN1->MCR |= CAN_MCR_TTCM;
-                    CAN2->MCR |= CAN_MCR_TTCM;
-                    if ((CAN1->TSR & CAN_TSR_TME0) == 0 && (CAN1->TSR & CAN_TSR_TME1) == 0 && (CAN1->TSR & CAN_TSR_TME2) == 0) 
-                    {
-                        CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
-                    }
-                    if ((CAN2->TSR & CAN_TSR_TME0) == 0 && (CAN2->TSR & CAN_TSR_TME1) == 0 && (CAN2->TSR & CAN_TSR_TME2) == 0) 
-                    {
-                        CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
-                    }
-                    CAN1->MCR &= ~CAN_MCR_TTCM;
-                    CAN2->MCR &= ~CAN_MCR_TTCM;
-//                    CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
-//                    CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
-                    
-                    send_cmd_to_actuator(&actuator_state[i]);
-                    
-                    // check CAN Tx Mailbox
-                    CAN1->MCR |= CAN_MCR_TTCM;
-                    CAN2->MCR |= CAN_MCR_TTCM;
-                    if ((CAN1->TSR & CAN_TSR_TME0) == 0 && (CAN1->TSR & CAN_TSR_TME1) == 0 && (CAN1->TSR & CAN_TSR_TME2) == 0) 
-                    {
-                        CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
-                    }
-                    if ((CAN2->TSR & CAN_TSR_TME0) == 0 && (CAN2->TSR & CAN_TSR_TME1) == 0 && (CAN2->TSR & CAN_TSR_TME2) == 0) 
-                    {
-                        CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
-                    }
-                    CAN1->MCR &= ~CAN_MCR_TTCM;
-                    CAN2->MCR &= ~CAN_MCR_TTCM;
-//                    CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
-//                    CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
-                    
-                    get_state_from_actuator(&actuator_info[i], &actuator_state[i]);
-                }
-                
-                /*ºÏ≤‚ÃßÕ»£∫1-ºÏ≤‚µΩÃßÕ»£¨0-Œ¥ºÏ≤‚µΩÃßÕ»*/
-                left_lift_sate = walk_detect_left_lift_state(&actuator_info);
-                right_lift_sate = walk_detect_right_lift_state(&actuator_info);
-                
-                AbiSendMsgACTUATOR_STATE(ACTUATOR_STATE_ID, actuator_info);
+//                //Circular send command to and get state from actuators
+//                for(i = FIRST_JOINT; i < ALL_JOINTS; i++)
+//                {
+//                    // check CAN Tx Mailbox
+//                    CAN1->MCR |= CAN_MCR_TTCM;
+//                    CAN2->MCR |= CAN_MCR_TTCM;
+//                    if ((CAN1->TSR & CAN_TSR_TME0) == 0 && (CAN1->TSR & CAN_TSR_TME1) == 0 && (CAN1->TSR & CAN_TSR_TME2) == 0) 
+//                    {
+//                        CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+//                    }
+//                    if ((CAN2->TSR & CAN_TSR_TME0) == 0 && (CAN2->TSR & CAN_TSR_TME1) == 0 && (CAN2->TSR & CAN_TSR_TME2) == 0) 
+//                    {
+//                        CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+//                    }
+//                    CAN1->MCR &= ~CAN_MCR_TTCM;
+//                    CAN2->MCR &= ~CAN_MCR_TTCM;
+////                    CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+////                    CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+//                    
+//                    send_cmd_to_actuator(&actuator_state[i]);
+//                    
+//                    // check CAN Tx Mailbox
+//                    CAN1->MCR |= CAN_MCR_TTCM;
+//                    CAN2->MCR |= CAN_MCR_TTCM;
+//                    if ((CAN1->TSR & CAN_TSR_TME0) == 0 && (CAN1->TSR & CAN_TSR_TME1) == 0 && (CAN1->TSR & CAN_TSR_TME2) == 0) 
+//                    {
+//                        CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+//                    }
+//                    if ((CAN2->TSR & CAN_TSR_TME0) == 0 && (CAN2->TSR & CAN_TSR_TME1) == 0 && (CAN2->TSR & CAN_TSR_TME2) == 0) 
+//                    {
+//                        CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+//                    }
+//                    CAN1->MCR &= ~CAN_MCR_TTCM;
+//                    CAN2->MCR &= ~CAN_MCR_TTCM;
+////                    CAN1->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+////                    CAN2->TSR |= CAN_TSR_ABRQ0 | CAN_TSR_ABRQ1 | CAN_TSR_ABRQ2;
+//                    
+//                    get_state_from_actuator(&actuator_info[i], &actuator_state[i]);
+//                }
+
         
 //        if(advanced_mode_switch)
         if(1)
@@ -424,6 +419,21 @@ void mit_task(void *argument)
             if (count_num >= 10)
             {
                 count_num = 0;
+                
+                //Circular send command to and get state from actuators
+                for(i = FIRST_JOINT; i < ALL_JOINTS; i++)
+                {
+                    
+                    send_cmd_to_actuator(&actuator_state[i]);
+                    get_state_from_actuator(&actuator_info[i], &actuator_state[i]);
+                
+                    /*ºÏ≤‚ÃßÕ»£∫1-ºÏ≤‚µΩÃßÕ»£¨0-Œ¥ºÏ≤‚µΩÃßÕ»*/
+                    left_lift_sate = walk_detect_left_lift_state(&actuator_info);
+                    right_lift_sate = walk_detect_right_lift_state(&actuator_info);
+                    
+                    AbiSendMsgACTUATOR_STATE(ACTUATOR_STATE_ID, actuator_info);
+                        
+                }
 
 //                DataScope_Get_Channel_Data(actuator_info[LEFT_HIP].output_angle * 180.0 / 3.14, 1);
 //                DataScope_Get_Channel_Data(actuator_info[LEFT_HIP].output_velocity * 180.0 / 3.14, 2);

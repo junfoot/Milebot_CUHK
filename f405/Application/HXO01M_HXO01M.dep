@@ -105,7 +105,7 @@ I (..\mcu\..\modules\can\canopen\CO_SYNC.h)(0x63BD03B4)
 I (..\mcu\..\modules\can\canopen\CO_PDO.h)(0x63BD03B4)
 I (..\mcu\..\modules\can\canopen\CO_HBconsumer.h)(0x63BD03B4)
 I (..\mcu\..\modules\can\canopen\CO_SDOmaster.h)(0x63BD03B4)
-I (..\modules\MitJoint\mitapp.h)(0x68CA57EC)
+I (..\modules\MitJoint\mitapp.h)(0x68CA6ACB)
 I (..\mcu\can_if.h)(0x655EC394)
 I (..\walk\common.h)(0x66757AFA)
 I (..\walk\algorithm.h)(0x6549D37E)
@@ -446,7 +446,7 @@ I (..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h)(0x63BD03B4)
 I (..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h)(0x63BD03B4)
 I (..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h)(0x63BD03B4)
 I (..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_wwdg.h)(0x63BD03B4)
-F (..\mcu\uart.c)(0x68CA1674)(--c99 --gnu -c --cpu Cortex-M4.fp.sp -D__RTX -g -O0 --apcs=interwork --split_sections -I ..\lib\STM32F4xx_HAL_Driver\Inc -I ..\lib\CMSIS\Device\ST\STM32F4xx\Include -I ..\lib\STM32_Cryptographic_Library\inc -I ..\lib\STM32F4xx_StdPeriph_Driver\inc -I ..\lib\CMSIS\Driver -I ..\lib\STM32_Cryptographic_Library\inc\Common -I .\RTE -I ..\mcu -I ..\system -I ..\modules\fram -I ..\modules\MitJoint -I ..\walk -I ..\system\abi -I ..\config -I ..\controllers -I ..\modules\wireless_comm -I ..\modules\sound -I ..\modules\ble -I ..\modules\imu -I ..\lib\CMSIS\Include -I ..\modules\eeprom -I ..\modules\wireless --C99 --diag_suppress=1035-I.\RTE\CMSIS-I.\RTE\_HXO01M-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\RTX\Include-IC:\Users\13416\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -DPRINTF_ENABLE -DAPP_PRJ-o ..\uart.o --depend ..\uart.d)
+F (..\mcu\uart.c)(0x68CA6AB0)(--c99 --gnu -c --cpu Cortex-M4.fp.sp -D__RTX -g -O0 --apcs=interwork --split_sections -I ..\lib\STM32F4xx_HAL_Driver\Inc -I ..\lib\CMSIS\Device\ST\STM32F4xx\Include -I ..\lib\STM32_Cryptographic_Library\inc -I ..\lib\STM32F4xx_StdPeriph_Driver\inc -I ..\lib\CMSIS\Driver -I ..\lib\STM32_Cryptographic_Library\inc\Common -I .\RTE -I ..\mcu -I ..\system -I ..\modules\fram -I ..\modules\MitJoint -I ..\walk -I ..\system\abi -I ..\config -I ..\controllers -I ..\modules\wireless_comm -I ..\modules\sound -I ..\modules\ble -I ..\modules\imu -I ..\lib\CMSIS\Include -I ..\modules\eeprom -I ..\modules\wireless --C99 --diag_suppress=1035-I.\RTE\CMSIS-I.\RTE\_HXO01M-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\RTX\Include-IC:\Users\13416\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -DPRINTF_ENABLE -DAPP_PRJ-o ..\uart.o --depend ..\uart.d)
 I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
 I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdarg.h)(0x5E8E3CC2)
 I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
@@ -1053,7 +1053,7 @@ I (..\os\..\walk\mcl_interpolation_if.h)(0x63BD03B4)
 I (..\os\..\walk\common.h)(0x66757AFA)
 I (..\os\..\system\sys_task_if.h)(0x6580F3FE)
 I (..\os\..\modules\can\can_app_if.h)(0x63BD03B4)
-I (..\os\..\modules\mitjoint\mitapp.h)(0x68CA57EC)
+I (..\os\..\modules\mitjoint\mitapp.h)(0x68CA6ACB)
 I (..\mcu\can_if.h)(0x655EC394)
 I (..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x63BD03B4)
 I (..\lib\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x63BD03B4)
@@ -1102,7 +1102,7 @@ I (..\modules\sound\syn6658.h)(0x65FA56BC)
 I (..\os\..\comm\comm.h)(0x63BD03B4)
 I (..\modules\ble\ble_if.h)(0x65F3ACEA)
 I (..\mcu\main.h)(0x65EAB940)
-I (..\os\..\os\task.h)(0x68CA30BA)
+I (..\os\..\os\task.h)(0x68CA6D66)
 I (..\os\..\os\task_if.h)(0x65EAB940)
 F (..\lib\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c)(0x63BD03B4)(--c99 --gnu -c --cpu Cortex-M4.fp.sp -D__RTX -g -O0 --apcs=interwork --split_sections -I ..\lib\STM32F4xx_HAL_Driver\Inc -I ..\lib\CMSIS\Device\ST\STM32F4xx\Include -I ..\lib\STM32_Cryptographic_Library\inc -I ..\lib\STM32F4xx_StdPeriph_Driver\inc -I ..\lib\CMSIS\Driver -I ..\lib\STM32_Cryptographic_Library\inc\Common -I .\RTE -I ..\mcu -I ..\system -I ..\modules\fram -I ..\modules\MitJoint -I ..\walk -I ..\system\abi -I ..\config -I ..\controllers -I ..\modules\wireless_comm -I ..\modules\sound -I ..\modules\ble -I ..\modules\imu -I ..\lib\CMSIS\Include -I ..\modules\eeprom -I ..\modules\wireless --C99 --diag_suppress=1035-I.\RTE\CMSIS-I.\RTE\_HXO01M-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\RTX\Include-IC:\Users\13416\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -DPRINTF_ENABLE -DAPP_PRJ-o ..\stm32f4xx_hal.o --depend ..\stm32f4xx_hal.d)
 I (..\lib\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x63BD03B4)
@@ -2408,7 +2408,7 @@ I (..\modules\bat\..\..\system\timer_if.h)(0x63BD03B4)
 I (..\modules\bat\..\..\system\..\mcu\tim_if.h)(0x63BD03B4)
 I (..\modules\bat\bat.h)(0x63BD03B4)
 I (..\modules\bat\bat_if.h)(0x63BD03B4)
-F (..\modules\MitJoint\MitApp.c)(0x68CA68FF)(--c99 --gnu -c --cpu Cortex-M4.fp.sp -D__RTX -g -O0 --apcs=interwork --split_sections -I ..\lib\STM32F4xx_HAL_Driver\Inc -I ..\lib\CMSIS\Device\ST\STM32F4xx\Include -I ..\lib\STM32_Cryptographic_Library\inc -I ..\lib\STM32F4xx_StdPeriph_Driver\inc -I ..\lib\CMSIS\Driver -I ..\lib\STM32_Cryptographic_Library\inc\Common -I .\RTE -I ..\mcu -I ..\system -I ..\modules\fram -I ..\modules\MitJoint -I ..\walk -I ..\system\abi -I ..\config -I ..\controllers -I ..\modules\wireless_comm -I ..\modules\sound -I ..\modules\ble -I ..\modules\imu -I ..\lib\CMSIS\Include -I ..\modules\eeprom -I ..\modules\wireless --C99 --diag_suppress=1035-I.\RTE\CMSIS-I.\RTE\_HXO01M-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\RTX\Include-IC:\Users\13416\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -DPRINTF_ENABLE -DAPP_PRJ-o ..\mitapp.o --depend ..\mitapp.d)
+F (..\modules\MitJoint\MitApp.c)(0x68CD09D1)(--c99 --gnu -c --cpu Cortex-M4.fp.sp -D__RTX -g -O0 --apcs=interwork --split_sections -I ..\lib\STM32F4xx_HAL_Driver\Inc -I ..\lib\CMSIS\Device\ST\STM32F4xx\Include -I ..\lib\STM32_Cryptographic_Library\inc -I ..\lib\STM32F4xx_StdPeriph_Driver\inc -I ..\lib\CMSIS\Driver -I ..\lib\STM32_Cryptographic_Library\inc\Common -I .\RTE -I ..\mcu -I ..\system -I ..\modules\fram -I ..\modules\MitJoint -I ..\walk -I ..\system\abi -I ..\config -I ..\controllers -I ..\modules\wireless_comm -I ..\modules\sound -I ..\modules\ble -I ..\modules\imu -I ..\lib\CMSIS\Include -I ..\modules\eeprom -I ..\modules\wireless --C99 --diag_suppress=1035-I.\RTE\CMSIS-I.\RTE\_HXO01M-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include-IC:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\RTX\Include-IC:\Users\13416\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -DPRINTF_ENABLE -DAPP_PRJ-o ..\mitapp.o --depend ..\mitapp.d)
 I (C:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h)(0x5A55AB2A)
 I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
 I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
@@ -2463,7 +2463,7 @@ I (..\system\abi\..\..\mcu\mcu_if.h)(0x65D5E5D4)
 I (..\walk\common.h)(0x66757AFA)
 I (..\walk\algorithm.h)(0x6549D37E)
 I (..\system\abi\abi_sender_ids.h)(0x63BD03B4)
-I (..\modules\MitJoint\MitApp.h)(0x68CA57EC)
+I (..\modules\MitJoint\MitApp.h)(0x68CA6ACB)
 I (..\mcu\can_if.h)(0x655EC394)
 I (..\modules\MitJoint\MitProtocol_if.h)(0x65FA88AE)
 I (..\modules\MitJoint\mitprotocol.h)(0x63BD03B4)
@@ -2706,7 +2706,7 @@ I (C:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\Include\cmsis_co
 I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
 I (C:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\Include\cmsis_armcc.h)(0x5A8E1FE2)
 I (.\RTE\CMSIS\RTX_Config.h)(0x63BD03B4)
-I (.\RTE\_HXO01M\RTE_Components.h)(0x68C93A3C)
+I (.\RTE\_HXO01M\RTE_Components.h)(0x68CCBBD6)
 I (C:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\RTX\Include\rtx_os.h)(0x5A8E1FE2)
 I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
 I (C:\Users\13416\AppData\Local\Arm\Packs\ARM\CMSIS\5.3.0\CMSIS\RTOS2\Include\cmsis_os2.h)(0x5A55AB2A)

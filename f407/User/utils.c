@@ -365,3 +365,8 @@ float smooth_torque(float new_torque, float previous_torque, float alpha)
     return alpha * new_torque + (1 - alpha) * previous_torque;
 }
 
+float clamp(float x, float lo, float hi) {
+    if (x > hi) return hi;
+    if (x < lo) return lo;
+    return x;
+}

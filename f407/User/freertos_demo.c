@@ -106,6 +106,12 @@ float testp = 0;
 // x:
 float para_left = 0, para_right = 0;
 
+//20250919 begin
+#define NO_LIFT 0
+#define LEFT_LIFT 1
+#define RIGHT_LIFT 2
+//20250919 end
+
 /* --------------------------变量-------------------------------------------- */
 
 /**
@@ -204,6 +210,12 @@ void task2(void *pvParameters)
     float left_pos = 0, right_pos = 0;
     
     float smooth_alpha = 0.3;
+    
+    //20250919 begin
+    static int count_current_state = 0;
+    static short current_state,last_state,tmp_state = NO_LIFT; 
+    short hold_time=20;
+    //20250919 end
 
     while(1) 
     {
@@ -266,15 +278,15 @@ void task2(void *pvParameters)
             pc_2 = strtof(p, &p); // 提取第二个数字
             
             // limit 
-            pc_1 = clamp(pc_1, 0, 20);
+            pc_1 = clamp(pc_1, 0, 0.3);
             pc_2 = clamp(pc_2, 0.1, 1);
             
             LeftTorque = pc_1 * arm_sin_f32( 2 * PI_F * pc_2 * t);
             RightTorque = -LeftTorque;
             t += 0.01;
             
-            tcmd[0] = 0xDC;
-            tcmd[sizeof(tcmd)-1] = 0xBA;
+            tcmd[0] = 0xAB;
+            tcmd[sizeof(tcmd)-1] = 0xCD;
             memcpy(tcmd + 1, &LeftTorque, sizeof(float));
             memcpy(tcmd + 1 + sizeof(float), &RightTorque, sizeof(float));
             
@@ -287,7 +299,6 @@ void task2(void *pvParameters)
             p++;
             pc_2 = strtof(p, &p); // 提取第二个数字
             
-            
             // MAIN CONTROL
             left_lift_state = (int)exo_state[8];
             right_lift_state = (int)exo_state[9];
@@ -297,27 +308,77 @@ void task2(void *pvParameters)
             para_left = pc_1;
             para_right = pc_2;
             
+            //20250919 begin
             if (left_lift_state)
             {
-                testp = 1;
-                LeftTorque = + para_left;
-                RightTorque = - para_right;
+                    tmp_state = LEFT_LIFT;
             }
             else if (right_lift_state)
             {
-                testp = 2;
-                LeftTorque = - para_left;
-                RightTorque = + para_right;
+                    tmp_state = RIGHT_LIFT;
             }
             else
             {
-                testp = 3;
-                LeftTorque = smooth_torque(0, LeftTorquePrev, smooth_alpha);
-                RightTorque = smooth_torque(0, RightTorquePrev, smooth_alpha);
+                    tmp_state = NO_LIFT;
+            }
+            
+            // avoid jerk
+            if ( count_current_state < hold_time ) // hold >200ms for each state
+            {
+                    count_current_state++;
+            }
+            else if (tmp_state != last_state)
+            {
+                    current_state = tmp_state;
+                    last_state = current_state;
+                    count_current_state = 0;
+            }
+            
+            if (current_state == LEFT_LIFT)
+            {
+                    testp = 1;
+                    LeftTorque = + para_left;
+                    RightTorque = - para_right;
+            }
+            else if (current_state == RIGHT_LIFT)
+            {
+                    testp = 2;
+                    LeftTorque = - para_left;
+                    RightTorque = + para_right;
+            }
+            else
+            {
+                    testp = 3;
+                    LeftTorque = smooth_torque(0, LeftTorquePrev, smooth_alpha);
+                    RightTorque = smooth_torque(0, RightTorquePrev, smooth_alpha);
             }
             LeftTorquePrev = LeftTorque;
             RightTorquePrev = RightTorque;
+            //20250919 end
             
+            //20250919 delete
+//            if (left_lift_state)
+//            {
+//                testp = 1;
+//                LeftTorque = + para_left;
+//                RightTorque = - para_right;
+//            }
+//            else if (right_lift_state)
+//            {
+//                testp = 2;
+//                LeftTorque = - para_left;
+//                RightTorque = + para_right;
+//            }
+//            else
+//            {
+//                testp = 3;
+//                LeftTorque = smooth_torque(0, LeftTorquePrev, smooth_alpha);
+//                RightTorque = smooth_torque(0, RightTorquePrev, smooth_alpha);
+//            }
+//            LeftTorquePrev = LeftTorque;
+//            RightTorquePrev = RightTorque;
+            //20250919 delete end
+           
             
             tcmd[0] = 0xAB;
             tcmd[sizeof(tcmd)-1] = 0xCD;
